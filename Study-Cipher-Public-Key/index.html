@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"southsea.st","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":false,"nav":null,"activeClass":"disqusjs"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="再续前缘，整理一下bibi师傅的笔记。 公钥密码部分。 公钥密码【Public-key cryptography，也称非对称密码学，是密码学的一种算法，它需要两个密钥，一个是公开密钥，另一个是私有密钥；一个用作加密，另一个则用作解密。使用其中一个密钥把明文加密后所得的密文，只能用相对应的另一个密钥才能解密得到原本的明文；甚至连最初用来加密的密钥也不能用作解密。由于加密和解密需要两个不同的密钥，故被">
+<meta property="og:type" content="article">
+<meta property="og:title" content="密码学 从入门到放弃 公钥密码">
+<meta property="og:url" content="https://southsea.st/Study-Cipher-Public-Key/index.html">
+<meta property="og:site_name" content="南溟NaN">
+<meta property="og:description" content="再续前缘，整理一下bibi师傅的笔记。 公钥密码部分。 公钥密码【Public-key cryptography，也称非对称密码学，是密码学的一种算法，它需要两个密钥，一个是公开密钥，另一个是私有密钥；一个用作加密，另一个则用作解密。使用其中一个密钥把明文加密后所得的密文，只能用相对应的另一个密钥才能解密得到原本的明文；甚至连最初用来加密的密钥也不能用作解密。由于加密和解密需要两个不同的密钥，故被">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-20T00:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-18T15:04:46.768Z">
+<meta property="article:author" content="南溟NaN">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="Crypto">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://southsea.st/Study-Cipher-Public-Key/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://southsea.st/Study-Cipher-Public-Key/","path":"Study-Cipher-Public-Key/","title":"密码学 从入门到放弃 公钥密码"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>密码学 从入门到放弃 公钥密码 | 南溟NaN</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">南溟NaN</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">在这浩瀚星河的你是什么</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">65</span></a></li><li class="menu-item menu-item-links"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E8%AE%BA%E5%89%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">数论前置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AC%A7%E6%8B%89%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text">欧拉函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">欧几里得算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%B4%E8%9C%80%E5%AE%9A%E7%90%86"><span class="nav-number">1.3.</span> <span class="nav-text">裴蜀定理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95"><span class="nav-number">1.4.</span> <span class="nav-text">扩展欧几里得算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B9%98%E6%B3%95%E9%80%86%E5%85%83"><span class="nav-number">1.4.1.</span> <span class="nav-text">乘法逆元</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98"><span class="nav-number">1.4.2.</span> <span class="nav-text">例题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AC%A7%E6%8B%89%E5%AE%9A%E7%90%86"><span class="nav-number">1.4.3.</span> <span class="nav-text">欧拉定理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86"><span class="nav-number">1.5.</span> <span class="nav-text">中国剩余定理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B"><span class="nav-number">1.5.1.</span> <span class="nav-text">算法流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BE%E4%BE%8B%E6%B1%82%E8%A7%A3"><span class="nav-number">1.5.2.</span> <span class="nav-text">举例求解</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rsa"><span class="nav-number">2.</span> <span class="nav-text">RSA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">2.1.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86%E8%BF%87%E7%A8%8B"><span class="nav-number">2.1.1.</span> <span class="nav-text">加密过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E5%B7%A5%E5%85%B7"><span class="nav-number">2.1.2.</span> <span class="nav-text">一些工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#rsatool"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">RSAtool</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#openssl"><span class="nav-number">2.1.2.2.</span> <span class="nav-text">openssl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E8%A7%A3%E6%95%B4%E6%95%B0%E5%B7%A5%E5%85%B7"><span class="nav-number">2.1.2.3.</span> <span class="nav-text">分解整数工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rsa-wiener-attack"><span class="nav-number">2.1.2.4.</span> <span class="nav-text">rsa-wiener-attack</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ctf-rsa-tool"><span class="nav-number">2.1.2.5.</span> <span class="nav-text">CTF-RSA-tool</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E6%A8%A1%E6%95%B0%E5%88%86%E8%A7%A3"><span class="nav-number">2.1.3.</span> <span class="nav-text">直接模数分解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9A%B4%E5%8A%9B%E5%88%86%E8%A7%A3"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">暴力分解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pq%E9%80%89%E6%8B%A9%E4%B8%8D%E5%BD%93"><span class="nav-number">2.1.3.2.</span> <span class="nav-text">PQ选择不当</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#yafu%E5%88%86%E8%A7%A3"><span class="nav-number">2.1.3.3.</span> <span class="nav-text">Yafu分解</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98-1"><span class="nav-number">2.1.3.3.1.</span> <span class="nav-text">例题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AC%E7%BA%A6%E6%95%B0%E6%A8%A1%E6%95%B0%E5%88%86%E8%A7%A3"><span class="nav-number">2.1.4.</span> <span class="nav-text">公约数模数分解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B1%E6%A8%A1%E6%94%BB%E5%87%BB"><span class="nav-number">2.1.5.</span> <span class="nav-text">共模攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98-2"><span class="nav-number">2.1.5.1.</span> <span class="nav-text">例题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E6%8C%87%E6%95%B0%E6%98%8E%E6%96%87%E7%88%86%E7%A0%B4"><span class="nav-number">2.1.6.</span> <span class="nav-text">小指数明文爆破</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98-3"><span class="nav-number">2.1.6.1.</span> <span class="nav-text">例题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E5%AF%86%E6%96%87%E6%94%BB%E5%87%BB"><span class="nav-number">2.1.7.</span> <span class="nav-text">选择密文攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#rsa-parity-oracle"><span class="nav-number">2.1.7.1.</span> <span class="nav-text">RSA parity oracle</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-1"><span class="nav-number">2.1.7.1.1.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#step-1"><span class="nav-number">2.1.7.1.1.1.</span> <span class="nav-text">Step 1</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#step-2"><span class="nav-number">2.1.7.1.1.2.</span> <span class="nav-text">Step 2</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wieners-attack"><span class="nav-number">2.1.8.</span> <span class="nav-text">Wiener’s Attack</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90"><span class="nav-number">2.1.8.1.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98-4"><span class="nav-number">2.1.8.2.</span> <span class="nav-text">例题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%BF%E6%92%AD%E6%94%BB%E5%87%BB"><span class="nav-number">2.1.9.</span> <span class="nav-text">广播攻击</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%8C%E5%8C%85"><span class="nav-number">3.</span> <span class="nav-text">背包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF"><span class="nav-number">4.</span> <span class="nav-text">椭圆曲线</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟NaN"
+      src="https://avatars.githubusercontent.com/u/34373144?v=4">
+  <p class="site-author-name" itemprop="name">南溟NaN</p>
+  <div class="site-description" itemprop="description">在这浩瀚星河的你是什么</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:st.southsea@gmail.com" title="E-Mail → mailto:st.southsea@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/Study-Cipher-Public-Key/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/34373144?v=4">
+      <meta itemprop="name" content="南溟NaN">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟NaN">
+      <meta itemprop="description" content="在这浩瀚星河的你是什么">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="密码学 从入门到放弃 公钥密码 | 南溟NaN">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          密码学 从入门到放弃 公钥密码
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-20 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-20T00:00:00+00:00">2022-05-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>再续前缘，整理一下<strong>bibi</strong>师傅的笔记。</p>
+<p>公钥密码部分。</p>
+<p>公钥密码【<strong>Public-key cryptography</strong>，也称非对称密码学，是密码学的一种算法，它需要两个密钥，一个是公开密钥，另一个是私有密钥；一个用作加密，另一个则用作解密。使用其中一个密钥把明文加密后所得的密文，只能用相对应的另一个密钥才能解密得到原本的明文；甚至连最初用来加密的密钥也不能用作解密。由于加密和解密需要两个不同的密钥，故被称为非对称加密；不同于加密和解密都使用同一个密钥的对称加密。虽然两个密钥在数学上相关，但如果知道了其中一个，并不能凭此计算出另外一个来源请求；因此其中一个可以公开，称为公钥，任意向外发布；不公开的密钥为私钥，必须由用户自行严格秘密保管，绝不透过任何途径向任何人提供，也不会透露给被信任的要通信的另一方。</p>
+<span id="more"></span>
+<h1 id="数论前置">数论前置</h1>
+<h2 id="欧拉函数">欧拉函数</h2>
+<p><span class="math inline">\(\varphi(n)\)</span>表示为小于等于<span class="math inline">\(n\)</span>的正整数中和<span class="math inline">\(n\)</span>互质的数，对于质数来说，<span class="math inline">\(\varphi(n)=1\)</span>。</p>
+<h2 id="欧几里得算法">欧几里得算法</h2>
+<p>求最大公约数的算法，又称辗转相除法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 递归版</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">gcd</span>(<span class="params">a, b</span>):</span><br><span class="line">    <span class="keyword">return</span> a <span class="keyword">if</span> <span class="keyword">not</span> b <span class="keyword">else</span> gcd(b, a % b)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 迭代版</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">gcd2</span>(<span class="params">a, b</span>):</span><br><span class="line">    <span class="keyword">while</span> b:</span><br><span class="line">        a, b = b, a % b</span><br><span class="line">    <span class="keyword">return</span> a</span><br></pre></td></tr></table></figure>
+<h2 id="裴蜀定理">裴蜀定理</h2>
+<p>𝑎𝑥+𝑏𝑦=𝑔𝑐𝑑(𝑎,𝑏)</p>
+<p>对于任意的整数𝑎,b，都存在一对整数𝑥,y，使得<span class="math inline">\(ax+by=gcd(a,b)\)</span>成立。</p>
+<p>那么对于一个经典方程ax+by=1，有gcd(a,b)=1，即a,b一定互质。</p>
+<h2 id="扩展欧几里得算法">扩展欧几里得算法</h2>
+<p>快速欧拉演算</p>
+<ul>
+<li>求解不定方程</li>
+<li>求解模的逆元</li>
+<li>求解线性同余方程</li>
+</ul>
+<p>从裴蜀定理的ax+by=m得出，若存在合法的x,y使得该不定方程有解，则其m必为gcd(a,b)的倍数。</p>
+<p>a-&gt;e,b-&gt;(n)</p>
+<p>而扩展欧几里得算法可以求出x,y的值。</p>
+<h3 id="乘法逆元">乘法逆元</h3>
+<p>对于任意整数<span class="math inline">\(a\)</span>和正整数<span class="math inline">\(m\)</span>，取模运算就是求出<span class="math inline">\(a\)</span>除以<span class="math inline">\(m\)</span>的余数，通常表示为<span class="math inline">\(a\,mod\,m\)</span>。</p>
+<p>对于给定的整数<span class="math inline">\(a\)</span>和模数<span class="math inline">\(m\)</span>，如果存在一个整数<span class="math inline">\(x\)</span>，使得<span class="math inline">\(ax\,mod\,m\)</span>等于<span class="math inline">\(1\)</span>，那么<span class="math inline">\(x\)</span>就是<span class="math inline">\(a\)</span>在模<span class="math inline">\(m\)</span>下的乘法逆元。</p>
+<p>注意，乘法逆元存在的前提是<span class="math inline">\(a\)</span>和<span class="math inline">\(m\)</span>互素（即<span class="math inline">\(a\)</span>和<span class="math inline">\(m\)</span>没有除<span class="math inline">\(1\)</span>以外的公因子）。</p>
+<h3 id="例题">例题</h3>
+<p>求47x+30y=1的整数解。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">47=30*1+17 // y=1, x=1</span><br><span class="line">30=17*1+13 //    </span><br><span class="line">17=13*1+4 // 同上</span><br><span class="line">13=4*3+1 // 同上</span><br></pre></td></tr></table></figure>
+<p>然后改写</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">17=47*1+30*(-1)</span><br><span class="line">13=30*1+17*(-1)</span><br><span class="line">4=17*1+13*(-1)</span><br><span class="line">1=13+4*(-3)</span><br></pre></td></tr></table></figure>
+<p>倒回去</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1=13+4*(-3)</span><br><span class="line">1=13+[17*1+13*(-1)]*(-3)</span><br><span class="line">1=17*(-3)+13*4</span><br><span class="line">1= 17*(-3)+[30*1+17*(-1)]*4</span><br><span class="line">1=30*4+17*(-7)</span><br><span class="line">1=30*4+[47*1+30*(-1)]*(-7)</span><br><span class="line">1=47*(-7)+30*11</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def ext_euclid(a, b):</span><br><span class="line">     if b == 0:</span><br><span class="line">         return 1, 0, a</span><br><span class="line">     else:</span><br><span class="line">         x, y, q = ext_euclid(b, a % b) # q = gcd(a, b) = gcd(b, a%b)</span><br><span class="line">         x, y = y, (x - (a // b) * y)</span><br><span class="line">         return x, y, q</span><br></pre></td></tr></table></figure>
+<h3 id="欧拉定理">欧拉定理</h3>
+<h2 id="中国剩余定理">中国剩余定理</h2>
+<p>《孙子算经》中有问：今有物不知其数，三三数之剩二，五五数之剩三，七七数之剩二，问物几何？在现代数论中我们把它写成解一元线性同余方程组。 <span class="math display">\[
+x\equiv2(mod\,3)
+\\
+x\equiv3(mod\,5)
+\\
+x\equiv2(mod\,7)
+\]</span></p>
+<h3 id="算法流程">算法流程</h3>
+<ol type="1">
+<li>计算模数之积：<span class="math inline">\(N=n_1n_2n_3\cdot\cdot\cdot n_n\)</span></li>
+<li>对于第i个方程：
+<ol type="1">
+<li>计算<span class="math inline">\(m_i=\frac{n}{n_i}\)</span></li>
+<li>计算<span class="math inline">\(m_i\)</span>对于<span class="math inline">\(n_i\)</span>的逆元<span class="math inline">\(m^{-1}_i\)</span></li>
+<li>计算<span class="math inline">\(c_i=m_im^{-1}_i\)</span></li>
+</ol></li>
+<li>方程得解：<span class="math inline">\(x=\sum^{i=1}_{k}a_ic_i(mod\,n)\)</span></li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">CRT</span>(<span class="params">k, a, r</span>):</span><br><span class="line">    n = <span class="number">1</span>; ans = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, k + <span class="number">1</span>):</span><br><span class="line">        n = n * r[i]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, k + <span class="number">1</span>):</span><br><span class="line">        m = n // r[i]; b = y = <span class="number">0</span></span><br><span class="line">        exgcd(m, r[i], b, y) <span class="comment"># b * m mod r[i] = 1</span></span><br><span class="line">        ans = (ans + a[i] * m * b % n) % n</span><br><span class="line">    <span class="keyword">return</span> (ans % n + n) % n</span><br></pre></td></tr></table></figure>
+<h3 id="举例求解">举例求解</h3>
+<ul>
+<li><span class="math inline">\(n=3*5*7=105\)</span></li>
+<li><span class="math inline">\(m_1=\frac{n}{n_1}=35,m^{-1}_i=2,c_1=35*2=70\)</span></li>
+<li>依次得出<span class="math inline">\(m_2=21,m^{-1}_2=1,c_2=21,m_3=15,m^{-1}_3=1,c_3=15\)</span></li>
+<li>故解为<span class="math inline">\(x=a_1c_1+a_2c_2+a_3c_3\,(mod\,n)=233(mod\,105)=23\)</span></li>
+</ul>
+<h1 id="rsa">RSA</h1>
+<h2 id="原理">原理</h2>
+<ol type="1">
+<li><p>选两个大素数 <span class="math inline">\(p\)</span> 、 <span class="math inline">\(q\)</span> ,计算出模数 <span class="math inline">\(N = p * q\)</span> 。</p></li>
+<li><p>再计算欧拉函数，<span class="math inline">\(φ(N) = φ(p)φ(q) = (p−1)(q−1)\)</span>。</p></li>
+<li><p>选择一个小于 <span class="math inline">\(φ(N)\)</span> 但大于 1 的整数 <span class="math inline">\(e\)</span>，使 <span class="math inline">\(e\)</span> 和 <span class="math inline">\(φ(N)\)</span> 互质。</p></li>
+<li><p>求得 <span class="math inline">\(e\)</span> 关于 <span class="math inline">\(φ(N)\)</span> 的模反元素，命名为 <span class="math inline">\(d\)</span> ，有 <span class="math inline">\(ed\,mod\,\varphi(n)=1\,mod\,\varphi(n)\)</span>。</p></li>
+</ol>
+<blockquote>
+<p>欧拉定理：e与n互质时，n的欧拉函数<span class="math inline">\(\varphi(n)\)</span>使得<span class="math inline">\(e^{φ(n)}=1\,mod\,n\)</span>，而n为质数，所以n的欧拉函数<span class="math inline">\(\varphi(n)=n-1\)</span>，此时欧拉定理可写为<span class="math inline">\(e^{n-1}=1\,mod\,n\)</span>，被称为费马小定理。</p>
+</blockquote>
+<ol start="5" type="1">
+<li>此时，<span class="math inline">\((N,e)\)</span> 是公钥，发送给对方用来加密消息，<span class="math inline">\((N,d)\)</span> 是私钥，自己留着用来解密消息。</li>
+<li>消息加密：<span class="math inline">\(m^e\,mod\,N=c\)</span></li>
+<li>消息解密：<span class="math inline">\(c^d\,mod\,N=m\)</span></li>
+<li>在这个过程中，第三方窃听者只能获取到 <span class="math inline">\(c,e,n\)</span>，无法解出明文 <span class="math inline">\(m\)</span>。</li>
+<li>其中，明文 <span class="math inline">\(m\)</span> 长度需小于模数 <span class="math inline">\(n\)</span>。</li>
+</ol>
+<h3 id="加密过程">加密过程</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import gmpy</span><br><span class="line">from Crypto.Util.number import *</span><br><span class="line">from Crypto.PublicKey import RSA</span><br><span class="line">from Crypto.Cipher import PKCS1_v1_5</span><br><span class="line"></span><br><span class="line">msg = &#x27;crypto here&#x27;</span><br><span class="line">p = getPrime(128)</span><br><span class="line">q = getPrime(128)</span><br><span class="line">n = p*q</span><br><span class="line">e = getPrime(64)</span><br><span class="line">pubkey = RSA.construct((long(n), long(e)))</span><br><span class="line">privatekey = RSA.construct((long(n), long(e), long(d), long(p), long(q)))</span><br><span class="line">key = PKCS1_v1_5.new(pubkey)</span><br><span class="line">enc = key.encrypt(msg).encode(&#x27;base64&#x27;)</span><br><span class="line">key = PKCS1_v1_5.new(privatekey)</span><br><span class="line">msg = key.decrypt(enc.decode(&#x27;base64&#x27;), e)</span><br></pre></td></tr></table></figure>
+<h3 id="一些工具">一些工具</h3>
+<h4 id="rsatool"><a target="_blank" rel="noopener" href="https://github.com/ius/rsatool">RSAtool</a></h4>
+<h4 id="openssl">openssl</h4>
+<ul>
+<li><p>查看公钥文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rsa -pubin -in pubkey.pem -text -modulus</span><br></pre></td></tr></table></figure></li>
+<li><p>解密</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rsautl -decrypt -inkey private.pem -in flag.enc -out flag</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="分解整数工具">分解整数工具</h4>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://factordb.com/">factor.db</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ryosan-470/factordb-pycli">factordb-pycli</a></li>
+<li><a target="_blank" rel="noopener" href="https://sourceforge.net/projects/yafu/">yafu</a></li>
+</ul>
+<h4 id="rsa-wiener-attack"><a target="_blank" rel="noopener" href="https://github.com/pablocelayes/rsa-wiener-attack">rsa-wiener-attack</a></h4>
+<h4 id="ctf-rsa-tool"><a target="_blank" rel="noopener" href="https://ctf-wiki.org/crypto/asymmetric/rsa/rsa_theory/">CTF-RSA-tool</a></h4>
+<h3 id="直接模数分解">直接模数分解</h3>
+<p>直接模数分解首当其冲的一个便是数学难题：分解大素数<strong>N</strong>。</p>
+<h4 id="暴力分解">暴力分解</h4>
+<p>当<strong>N</strong>的长度较小可直接分解【长度小于<strong>512bit</strong>。</p>
+<p>例题</p>
+<p><strong>Jarvis OJ</strong>的一题<strong>Medium RSA</strong>，给了一个公钥和一个密文。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">openssl rsa -in pubkey.pem -pubin -noout -text -modulus</span><br><span class="line">Public-Key: (256 bit)</span><br><span class="line">Modulus:</span><br><span class="line">    00:c2:63:6a:e5:c3:d8:e4:3f:fb:97:ab:09:02:8f:</span><br><span class="line">    1a:ac:6c:0b:f6:cd:3d:70:eb:ca:28:1b:ff:e9:7f:</span><br><span class="line">    be:30:dd</span><br><span class="line">Exponent: 65537 (0x10001)</span><br><span class="line">Modulus=C2636AE5C3D8E43FFB97AB09028F1AAC6C0BF6CD3D70EBCA281BFFE97FBE30DD</span><br></pre></td></tr></table></figure>
+<p><strong>N</strong>很小，可以直接分解，使用<strong><a target="_blank" rel="noopener" href="https://github.com/3summer/CTF-RSA-tool">CTF-RSA-Tool</a></strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">python solve.py --verbose --private -N 87924348264132406875276140514499937145050893665602592992418171647042491658461 -e 65537</span><br><span class="line">DEBUG: factor N: try past ctf primes</span><br><span class="line">DEBUG: factor N: try Gimmicky Primes method</span><br><span class="line">DEBUG: factor N: try Wiener&#x27;s attack</span><br><span class="line">DEBUG: Starting new HTTP connection (1): www.factordb.com:80</span><br><span class="line">DEBUG: http://www.factordb.com:80 &quot;GET /index.php?query=87924348264132406875276140514499937145050893665602592992418171647042491658461 HTTP/1.1&quot; 200 1021</span><br><span class="line">DEBUG: http://www.factordb.com:80 &quot;GET /index.php?id=1100000000836631227 HTTP/1.1&quot; 200 899</span><br><span class="line">DEBUG: http://www.factordb.com:80 &quot;GET /index.php?id=1100000000836631226 HTTP/1.1&quot; 200 898</span><br><span class="line">DEBUG: d = 0x1806799bd44ce649122b78b43060c786f8b77fb1593e0842da063ba0d8728bf1L</span><br><span class="line">INFO:</span><br><span class="line">p=275127860351348928173285174381581152299</span><br><span class="line">q=319576316814478949870590164193048041239</span><br><span class="line">d=10866948760844599168252082612378495977388271279679231539839049698621994994673</span><br><span class="line"></span><br><span class="line">INFO: private key:</span><br><span class="line">-----BEGIN RSA PRIVATE KEY-----</span><br><span class="line">MIGqAgEAAiEAwmNq5cPY5D/7l6sJAo8arGwL9s09cOvKKBv/6X++MN0CAwEAAQIg</span><br><span class="line">GAZ5m9RM5kkSK3i0MGDHhvi3f7FZPghC2gY7oNhyi/ECEQDO+7LPfhipjr7cNuPn</span><br><span class="line">w7ArAhEA8Gwo6RyJIrnCNuI1YMCXFwIRAJulRkclqWIHx5pNZIAp9VUCEGjeJLIZ</span><br><span class="line">ek+lSut5m+LJ3p0CEDRBEd7C622/wt1+58xOIfE=</span><br><span class="line">-----END RSA PRIVATE KEY-----</span><br></pre></td></tr></table></figure>
+<p>然后解出<strong>flag</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import libnum</span><br><span class="line">from Crypto.Util.number import long_to_bytes</span><br><span class="line"></span><br><span class="line">n = 87924348264132406875276140514499937145050893665602592992418171647042491658461</span><br><span class="line">d = 10866948760844599168252082612378495977388271279679231539839049698621994994673</span><br><span class="line">c = open(&#x27;flag.enc&#x27;).read().encode(&#x27;hex&#x27;)</span><br><span class="line">c = int(c, 16)</span><br><span class="line">m = pow(c, d, n)</span><br><span class="line">print long_to_bytes(m)</span><br><span class="line"># ���&amp;[�PCTF&#123;256b_i5_m3dium&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="pq选择不当">PQ选择不当</h4>
+<p><strong>N</strong>中<strong>P</strong>和<strong>Q</strong>选择存在的问题【过于接近/差距过大/光滑。</p>
+<ul>
+<li><strong>|p-q|</strong>很大：当<strong>p-q</strong>很大时，一定存在某一个参数较小，这里我们假设为<strong>p</strong>，那么我们可以通过穷举的方法对模数进行试除，从而分解模数，得到保密参数与明文信息。基本来说，不怎么可行。</li>
+<li>费马分解和<strong>Pollard_rho</strong>分解</li>
+<li><strong>p-1光滑</strong></li>
+<li><strong>p+1</strong>光滑【<strong>2017 SECCON very smooth</strong></li>
+<li>一些特定的<strong>N</strong>【在<strong>factordb</strong>上测试一下</li>
+</ul>
+<h4 id="yafu分解"><strong>Yafu</strong>分解</h4>
+<h5 id="例题-1">例题</h5>
+<p>[xman2019]xyf</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">d=modinv(e,(p-1)*(q-1))%((p-1)*(q-1)) </span><br><span class="line">m=pow(c,d,n) </span><br><span class="line">print long_to_bytes(m)</span><br></pre></td></tr></table></figure>
+<h3 id="公约数模数分解">公约数模数分解</h3>
+<p>如果在两个模数中使用了1个相同的素因子，那么可以使用求最大公约数的方法求出来</p>
+<p>一般会给两个很难通过其他方法解出的模数</p>
+<p>c1,e1,n1</p>
+<p>c2,e2,n2</p>
+<p>gcd(n1,n2)如果不是1的话，那么就可以分解n1和n2</p>
+<h3 id="共模攻击">共模攻击</h3>
+<p>​ 两组及以上的RSA加密过程，而且其中两次的<span class="math inline">\(m\)</span>和<span class="math inline">\(n\)</span>都是相同的，但是<span class="math inline">\(e\)</span>不同，那么就可以使用共模攻击。 <span class="math display">\[
+c_1=m^{e_1}\,mod\,N
+\\
+c_2=m^{e_2}\,mod\,N
+\]</span></p>
+<p>​ 使用扩展的欧几里得算法求出<span class="math inline">\(r\)</span>和<span class="math inline">\(s\)</span> <span class="math display">\[
+re_1+se_2=1\,mod\,N
+\\
+c^r_1c^s_2=(m^{re_1})*(m^{se_2})mod\,N=m\,mod\,N
+\]</span></p>
+<h4 id="例题-2">例题</h4>
+<p>[xman2019]xgm</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">import gmpy2</span><br><span class="line">from Crypto.Util.number import long_to_bytes</span><br><span class="line"></span><br><span class="line">e1 = 773</span><br><span class="line">e2 = 839</span><br><span class="line">n = 6266565720726907265997241358331585417095726146341989755538017122981360742813498401533594757088796536341941659691259323065631249</span><br><span class="line">c1 = 3453520592723443935451151545245025864232388871721682326408915024349804062041976702364728660682912396903968193981131553111537349</span><br><span class="line">c2 = 5672818026816293344070119332536629619457163570036305296869053532293105379690793386019065754465292867769521736414170803238309535</span><br><span class="line"></span><br><span class="line">_, r, s = gmpy2.gcdext(e1, e2)</span><br><span class="line"></span><br><span class="line">m = pow(c1, r, n) * pow(c2, s, n) % n</span><br><span class="line">print(m)</span><br><span class="line">i = 0</span><br><span class="line">flag = &quot;&quot;</span><br><span class="line">plain = str(m)</span><br><span class="line">while i &lt; len(plain):</span><br><span class="line">    if plain[i] == &#x27;1&#x27;:</span><br><span class="line">        flag += chr(int(plain[i:i + 3]))</span><br><span class="line">        i += 3</span><br><span class="line">    else:</span><br><span class="line">        flag += chr(int(plain[i:i + 2]))</span><br><span class="line">        i += 2</span><br><span class="line">print(flag)</span><br><span class="line">print(long_to_bytes(m))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="小指数明文爆破">小指数明文爆破</h3>
+<p><span class="math display">\[
+c = m^e\,mod\,N
+\]</span></p>
+<p>如果<span class="math inline">\(e\)</span>很小，比如<span class="math inline">\(e=3\)</span>，那么如果明文也很小的情况下可能会出现这种情况：<span class="math inline">\(m^e&lt;n\)</span></p>
+<p>此时直接对<span class="math inline">\(c\)</span>开<span class="math inline">\(e\)</span>次根号就可以得到<span class="math inline">\(m\)</span>。</p>
+<p>还有一种一般一点的情况：</p>
+<p><span class="math inline">\(kn&lt;m^3&lt;(k+1)n\)</span></p>
+<p>就是说<span class="math inline">\(m^e\)</span>虽然大于<span class="math inline">\(n\)</span>了但是没有超出太多</p>
+<p>爆破<span class="math inline">\(k\)</span></p>
+<h4 id="例题-3">例题</h4>
+<p>JarvisOJ，crypto，[xman2019]xbk</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import gmpy2</span><br><span class="line"></span><br><span class="line">e = 3</span><br><span class="line"># 读入 n, 密文</span><br><span class="line">n= 22885480907469109159947272333565375109310485067211461543881386718201442106967914852474989176175269612229966461160065872310916096148216253429849921988412342732706875998100337754561586600637594798877898552625378551427864501926224989873772743227733285336042475675299391051376624685754547818835551263597996620383338263448888107691240136257201191331617560711786674975909597833383395574686942099700631002290836152972352041024137872983284691831292216787307841877839674258086005814225532597955826353796634417780156185485054141684249037538570742860026295194559710972266059844824388916869414355952432189722465103299013237588737</span><br><span class="line">c= 15685364647213619014219110070569189770745535885901269792039052046431067708991036961644224230125219358149236447900927116989931929305133870392430610563331490276096858863490412102016758082433435355613099047001069687409209484751075897343335693872741</span><br><span class="line"></span><br><span class="line">print &#x27;n=&#x27;, n</span><br><span class="line">print &#x27;c=&#x27;, c</span><br><span class="line"></span><br><span class="line">print &#x27;[+]Detecting m...&#x27;</span><br><span class="line">result = gmpy2.iroot(c, 3)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import gmpy2</span><br><span class="line">from Crypto.Util.number import long_to_bytes</span><br><span class="line"></span><br><span class="line">n = 114976915747243387792157708464120735018971336213935438953074748276198282761939060395482051056351068439137722626185590043024556656813730840050547350912425438364703854627760482842307943026011880815011654341047422453012558617703411700393668892701036222135444420377515575624398723436532681305293727164639582093389</span><br><span class="line">c = 5828813410620741112500628876643872258919868379601617907887884191584237969605489971465692568848339200057188383649365078832766143513766368216471491824042974016773526107276856706832404477882581400769791378958901067683158857990261489285951805740071223765359992165262854641069674603160977034446644199945940251030</span><br><span class="line">e = 3</span><br><span class="line"></span><br><span class="line">i = 0</span><br><span class="line">while 1:</span><br><span class="line">    if (gmpy2.iroot(c + i * n, 3)[1] == 1):</span><br><span class="line">        print(long_to_bytes(gmpy2.iroot(c + i * n, 3)[0]))</span><br><span class="line">        break</span><br><span class="line">    i = i + 1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">e = 3</span><br><span class="line">n = 18970053728616609366458286067731288749022264959158403758357985915393383117963693827568809925770679353765624810804904382278845526498981422346319417938434861558291366738542079165169736232558687821709937346503480756281489775859439254614472425017554051177725143068122185961552670646275229009531528678548251873421076691650827507829859299300272683223959267661288601619845954466365134077547699819734465321345758416957265682175864227273506250707311775797983409090702086309946790711995796789417222274776215167450093735639202974148778183667502150202265175471213833685988445568819612085268917780718945472573765365588163945754761</span><br><span class="line">c = 150409620528139732054476072280993764527079006992643377862720337847060335153837950368208902491767027770946661</span><br></pre></td></tr></table></figure>
+<h3 id="选择密文攻击">选择密文攻击</h3>
+<h4 id="rsa-parity-oracle">RSA parity oracle</h4>
+<p>假设目前存在一个 Oracle，它会对一个给定的密文进行解密，并且会检查解密的明文的奇偶性，并根据奇偶性返回相应的值，比如 1 表示奇数，0 表示偶数。那么给定一个加密后的密文，我们只需要 log(N) 次就可以知道这个密文对应的明文消息。</p>
+<h5 id="原理-1">原理</h5>
+<h6 id="step-1">Step 1</h6>
+<p><span class="math display">\[
+C=P^emod\,N
+\]</span></p>
+<p>如果我们给服务器发送<span class="math inline">\(2^eC\)</span>，那么由于<span class="math inline">\(2^eC=(2P)^e\,mod\,N\)</span>，服务器会计算<span class="math inline">\((2^eC)^d\,mod\,N=2^{ed}C^d\,mod\,N\)</span>得到<span class="math inline">\(2P\,mod\,N\)</span>。</p>
+<p>此处2P是偶数，其幂次也是偶数，而N是奇数，因为是两个素数相乘得到。</p>
+<p>如果服务器返回奇数，则说明2P&gt;N，因为偶数减去奇数为奇数。由2P&gt;N，又因为P&lt;N，得<span class="math inline">\(\frac{N}{2}&lt;P&lt;N\)</span>。</p>
+<p>如果服务器返回偶数，则说明2P&lt;N，得<span class="math inline">\(0&lt;P&lt;\frac{N}{2}\)</span>。</p>
+<h6 id="step-2">Step 2</h6>
+<p>假设第一步返回奇数，<span class="math inline">\(\frac{N}{2}&lt;P&lt;N\)</span>。</p>
+<p>那么继续给服务器发送<span class="math inline">\(2^{2e}C\)</span>，即<span class="math inline">\(4^eC\)</span></p>
+<p>https://dawn-whisper.hack.best/2020/10/10/RSA_Parity_Oracle/</p>
+<h3 id="wieners-attack">Wiener’s Attack</h3>
+<p>在<span class="math inline">\(e\)</span>过大或过小的情况下，可使用算法利用<span class="math inline">\(e\)</span>快速推断出<span class="math inline">\(d\)</span>的值。</p>
+<p>与低加密指数相同，低解密指数可以加快解密的过程，但是也带来了安全问题。</p>
+<p>如果满足<span class="math inline">\(d&lt;\frac{1}{3}n^{\frac{1}{4}}\)</span>，那么一种基于连分数【一个数论当中的问题】的特殊攻击类型就可以危害 RSA 的安全。</p>
+<p>此时需要满足：<span class="math inline">\(q&lt;p&lt;2q\)</span>，则可以在多项式时间中分解 <span class="math inline">\(n\)</span>，思路如下。 <span class="math display">\[
+n=pq
+\\
+\varphi(n)=(p-1)(q-1)=pq-(p+q)+1=n-(p+q)+1
+\]</span> 由于<span class="math inline">\(n\)</span>很大，因此<span class="math inline">\(\varphi(n)\approx n\)</span>，而<span class="math inline">\(ed\equiv1\,mod\,\varphi(n)\)</span>得<span class="math inline">\(ed-1=k\varphi(n)\)</span>，两边同除<span class="math inline">\(d\varphi(n)\)</span>得<span class="math inline">\(\frac{e}{\varphi(n)}-\frac{k}{d}=\frac{1}{d\varphi(n)}\)</span>。</p>
+<p><span class="math inline">\(\varphi(n)\)</span>很大，且近似<span class="math inline">\(n\)</span>，故等式右边近似0，得出<span class="math inline">\(\frac{e}{n}\)</span>略大于<span class="math inline">\(\frac{k}{d}\)</span>。</p>
+<p>而在RSA中，对于窃听者而言，<span class="math inline">\(e\)</span>和<span class="math inline">\(n\)</span>是公开的，那么对于<span class="math inline">\(\frac{k}{d}\)</span>，计算出<span class="math inline">\(\frac{e}{n}\)</span>的每个渐进分数，便可精确覆盖<span class="math inline">\(\frac{k}{d}\)</span>。【论文的结论，不多赘述】</p>
+<h4 id="例子">例子</h4>
+<p>设公钥(N,e)=(90581,17993)。</p>
+<p>先求<span class="math inline">\(\frac{e}{n}\)</span>的渐进分数。 <span class="math display">\[
+\frac{e}{n}=\frac{17993}{90581}
+\\=\frac{1}{\frac{90581}{17993}}=\frac{1}{5+\frac{616}{17993}}
+\\=\frac{1}{5+\frac{1}{\frac{17993}{616}}}=\frac{1}{5+\frac{1}{29+\frac{129}{616}}}...
+\]</span></p>
+<p>故有<span class="math inline">\(\frac{k}{d}=0,\frac{1}{5},\frac{29}{146}...\)</span></p>
+<p>假设<span class="math inline">\(\frac{29}{146}\)</span>成立，则<span class="math inline">\(k=29\)</span>，<span class="math inline">\(d=146\)</span>，代入<span class="math inline">\(ed-1=k\varphi(n)\)</span>，得出<span class="math inline">\(\varphi(n)\)</span>的值，又因<span class="math inline">\(\varphi(n)=n-(p+q)+1\)</span>，故得到p+q和pq的值。</p>
+<p>由韦达定理可解。</p>
+<h4 id="例题-4">例题</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">n = 12238605063252292170613110607692779326628090745751955692266649177882959231822580682548279800443278979485092243645806337103841086023159482786712759291169541633901936290854044069486201989034158882661270017305064348254800318759062921744741432214818915527537124001063995865927527037625277330117588414586505635959411443039463168463608235165929831344586283875119363703480280602514451713723663297066810128769907278246434745483846869482536367912810637275405943566734099622063142293421936734750356828712268385319217225803602442033960930413469179550331907541244416573641309943913383658451409219852933526106735587605884499707827</span><br><span class="line">e = 11850552481503020257392808424743510851763548184936536180317707155841959788151862976445957810691568475609821000653594584717037528429828330763571556164988619635320288125983463358648887090031957900011546300841211712664477474767941406651977784177969001025954167441377912326806132232375497798238928464025466905201977180541053129691501120197010080001677260814313906843670652972019631997467352264392296894192998971542816081534808106792758008676039929763345402657578681818891775091140555977382868531202964486261123748663752490909455324860302967636149379567988941803701512680099398021640317868259975961261408500449965277690517</span><br><span class="line">c = 9472193174575536616954091686751964873836697237500198884451530469300324470671555310791335185133679697207007374620225900775502162690848135615431624557389304657410880981454777737587420426091879654002644281066474715074536611611252677882396384453641127487515845176069574754606670518031472235144795376526854484442135299818868525539923568705203042265537204111153151119105287648912908771710419648445826883069030285651763726003413418764301988228077415599665616637501056116290476861280240577145515875430665394216054222788697052979429015400411487342877096677666406389711074591330476335174211990429870900468249946600544116793793</span><br></pre></td></tr></table></figure>
+<p>求解。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">import gmpy2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def transform(x,y):       #使用辗转相处将分数 x/y 转为连分数的形式</span><br><span class="line">    res=[]</span><br><span class="line">    while y:</span><br><span class="line">        res.append(x//y)</span><br><span class="line">        x,y=y,x%y</span><br><span class="line">    return res</span><br><span class="line">    </span><br><span class="line">def continued_fraction(sub_res):</span><br><span class="line">    numerator,denominator=1,0</span><br><span class="line">    for i in sub_res[::-1]:      #从sublist的后面往前循环</span><br><span class="line">        denominator,numerator=numerator,i*numerator+denominator</span><br><span class="line">    return denominator,numerator   #得到渐进分数的分母和分子，并返回</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">#求解每个渐进分数def sub_fraction(x,y):</span><br><span class="line">    res=transform(x,y)</span><br><span class="line">    res=list(map(continued_fraction,(res[0:i] for i in range(1,len(res)))))  #将连分数的结果逐一截取以求渐进分数</span><br><span class="line">    return res</span><br><span class="line"></span><br><span class="line">#以上是获得e/n的连分数</span><br><span class="line"></span><br><span class="line">def get_pq(a,b,c):      #由p+q和pq的值通过维达定理来求解p和q</span><br><span class="line">    par=gmpy2.isqrt(b*b-4*a*c)   #由上述可得，开根号一定是整数，因为有解</span><br><span class="line">    x1,x2=(-b+par)//(2*a),(-b-par)//(2*a)</span><br><span class="line">    return x1,x2</span><br><span class="line"></span><br><span class="line">def wienerAttack(e,n):</span><br><span class="line">    for (d,k) in sub_fraction(e,n):  #用一个for循环来注意试探e/n的连续函数的渐进分数，直到找到一个满足条件的渐进分数</span><br><span class="line">        if k==0:                     #可能会出现连分数的第一个为0的情况，排除</span><br><span class="line">            continue</span><br><span class="line">        if (e*d-1)%k!=0:             #ed=1 (\pmod φ(n)) 因此如果找到了d的话，(ed-1)会整除φ(n),也就是存在k使得(e*d-1)//k=φ(n)</span><br><span class="line">            continue</span><br><span class="line">        </span><br><span class="line">        phi=(e*d-1)//k               #这个结果就是 φ(n)</span><br><span class="line">        px,qy=get_pq(1,n-phi+1,n)</span><br><span class="line">        if px*qy==n:</span><br><span class="line">            p,q=abs(int(px)),abs(int(qy))     #可能会得到两个负数，负负得正未尝不会出现</span><br><span class="line">            d=gmpy2.invert(e,(p-1)*(q-1))     #求ed=1 (\pmod  φ(n))的结果，也就是e关于 φ(n)的乘法逆元d</span><br><span class="line">            return d</span><br><span class="line">    print(&quot;该方法不适用&quot;)</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">e = 14058695417015334071588010346586749790539913287499707802938898719199384604316115908373997739604466972535533733290829894940306314501336291780396644520926473</span><br><span class="line">n = 33608051123287760315508423639768587307044110783252538766412788814888567164438282747809126528707329215122915093543085008547092423658991866313471837522758159</span><br><span class="line">d = wienerAttack(e,n)</span><br><span class="line">print(&quot;d=&quot;,d)</span><br></pre></td></tr></table></figure>
+<h3 id="广播攻击">广播攻击</h3>
+<p>如果相同的信息被不同的公钥加密的了，并且如果使用的<span class="math inline">\(e\)</span>较小，就可以进行广播攻击。</p>
+<p>准确的条件：$m.bit_length*e &lt; c.bit_length $。</p>
+<p><span class="math inline">\(m\)</span>和<span class="math inline">\(e\)</span>相同，由于不同的<span class="math inline">\(n\)</span>计算出不同的<span class="math inline">\(c\)</span>，故有： <span class="math display">\[
+c_1=m^e\,mod\,n_1
+\\
+c_2=m^e\,mod\,n_2
+\\
+c_3=m^e\,mod\,n_3
+\\\cdot\cdot\cdot\\
+c_n=m^e\,mod\,n_n
+\]</span> 在<span class="math inline">\(n_i\)</span>互素时，通过中国剩余定理，得到<span class="math inline">\(c \equiv m^e \pmod {n_1n_2n_3\cdot\cdot\cdot n_n}\)</span>。</p>
+<p>若不互素，可通过欧几里得算法求解<span class="math inline">\(pq\)</span>。</p>
+<p>当<span class="math inline">\(c &lt; n_1n_2n_3\cdot\cdot\cdot n_n\)</span>时，上面等式成立，故此时开e次方即可得解。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install libgmp-dev</span><br><span class="line">sudo apt install libmpfr-dev</span><br><span class="line">sudo apt install libmpc-dev</span><br><span class="line">pip install sympy gmpy2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">from Crypto.Util.number import long_to_bytes</span><br><span class="line">from gmpy2 import iroot</span><br><span class="line">from sympy.ntheory.modular import crt</span><br><span class="line"></span><br><span class="line">e = 9</span><br><span class="line">N = [142782424368849674771976671955176187834932417027468006479038058385550042422280158726561712259205616626939123504489410624745195777853423961104590708231562726165590769610040722589287393102301338152085670464005026301781192671834390892019478189768725018303217559795377795540494239283891894830166363576205812991157,153610425077816156109768509904751446801233412970601397035720458311275245730833227428213917577405780162151444202393431444812010569489900435979730559895340377469612234558042643742219128033827948585534761030527275423811282367831985007507137144308704413007806012914286105842311420933479771294576841956749281552971,152540067782701001222493009941492423063369171831039847414320547494725020441901272486665728360741395415762864872737675660423920609681185809510355937534756399208661762715484879562585724584849261266873624875852300611683382543315580370484972470694466195837255994159609193239840228218925381488410059939975556977947,125842716702134814646356078531900645012495638692517778270527426844383063904041812273637776798591687732598509470005151551320457132061693618473039437320011446697406190781306264437609046721508738109650829547010385875425097336266103994639126319889016342284747700714199556143378526590058467791687837422897022829661,116144389285266462769913139639175922392318396923181100785008570884082681963637784423143843845816350379438789947802939701820129805341796427821894273985551331666719808355412080909245720551238149511778060242720419584504473490216670437024863860559347959698828131475160058721701582089480924088773887932997353631767,127833907448946785858374094953899556339175475846831397383049660262333005992005484987913355932559627279178940862787593749842796469355336182379062826441222705075178971785791223706944120681105575965622931327112817747065200324610697178273898956820957640413744954233327851461318200323486469677469950386824833536523,130561613227079478921314550968562766645507834694262831586725464124109153306162445639759476845681271537955934718244296904503168256991962908095007040044300188572466395275317838178325500238288302672390013747102961340256309124310478931896245221622317302428447389760864327859640573452084295225059466376349115703119,115953389401040751013569404909249958538962411171147823610874077094621794755967854844224923689925397631692572916641171075740839099217316101334941033937183815345038898177087515909675028366437302462022970987947264115373697445950951595479758872029099661065186221250394358255523574834723958546450323357472451930993,143437107845384843564651522639125300763388830136500260725097766445883003928355325003575359566631064630487365774344508496878731109174874449170057678821440711511966073934025028100604234445470976333825866939923998344367645612128590820812489407412175198698290167077116185959180877334222693344630253253476594907313]</span><br><span class="line">C = [85033868418784308573673709960700777350314426427677627319697346811123742342359072170220428874952996988431950989321281905284522596263957356289624365171732095210045916218066135140320107686084053271623461104022705353814233772164502775939590711842361956121603943483040254727995655776263673058788416722141673409688,66065963470666895005407449599703926269325406456711861190876894466341571726360462706664546294453572319565476664348345756905411939632955966517708138047546806602828064213238537646393524578984547577761559965654539771172357089802682793169968961304179886652390277814477825753096636750388350662980872556701402397564,116011740820520887443111656288411611070614127688662643257265381793048354928820176624229624692124188995846076431510548507016903260774215950803926107831505634778278712070141663189086436127990584944132764896694777031370995058271038329228336417590284517922855284619653301817355115583540545182119702335431334401666,97640420284096094887471273365295984332267897927392169402918423863919914002451127544715668846623138003564829254309568918651163254043205129883843425179687841236818720463784828905460885026290909768599562386370732119591181513319548915478512030197629196018254041500662654260834562708620760373487652389789200792120,8112507653841374573057048967617108909055624101437903775740427861003476480616929517639719198652146909660899632120639789106782550275648578142883715280547602249589837441805676364041484345030575130408744621981440093280624046635769338568542048839419939250444929802135605724150484414516536378791500915047844188300,36792148360808115566234645242678223867680969786675055638670907933041180936164293809961667801099516457636164692292891528415720085345494773373966277807505798679784807614784581861287048096977968620964436947452527540958289441390882589051225367658014709290392321808926567572528170531844664734909469690750971883323,53043093283305492238903255767698153246673671181809989362223466090875767705978690531154079519999671834688647277179370374802495005937892824566602423646978168777735383632928274082669949750078161820002768640908750005814934158829006019656592134357897586040866207754535586785064545866404380204728594863102313407789,88499407133762624445946519155722583633934260410706930537441122463087556094734626189377091740335667052378955691250910459790202385799502439716173363179773811920751410726795431402796346647688144853156900427797933862087074385441977254140336390678022955770879265490567987868532251217565094093318626424653599450992,138337520305048557335599940473834485492131424901034295018189264168040969172072024612859307499682986987325414798210700710891033749119834960687318156171051379643844580970963540418974136891389303624057726575516576726845229494107327508855516437230240365759885913142671816868762838801720492804671259709458388192984]</span><br><span class="line"></span><br><span class="line">resultant, mod = crt(N, C)</span><br><span class="line">value, is_perfect = iroot(resultant, e)</span><br><span class="line">print(long_to_bytes(value))</span><br></pre></td></tr></table></figure>
+<h1 id="背包">背包</h1>
+<h1 id="椭圆曲线">椭圆曲线</h1>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"><i class="fa fa-tag"></i> CTF</a>
+              <a href="/tags/Crypto/" rel="tag"><i class="fa fa-tag"></i> Crypto</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Study-Java-IO/" rel="prev" title="复习Java的IO相关">
+                  <i class="fa fa-chevron-left"></i> 复习Java的IO相关
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Study-URLDNS/" rel="next" title="Java反序列化修炼计划 URLDNS">
+                  Java反序列化修炼计划 URLDNS <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs-container">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟NaN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"Cz7uQCDoGwWYGv80HeDq40mZr1rrmYy9tHhCpcWG95DFzOD1TJKLXtbTxFqWBCr5","shortname":"southseast","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>
