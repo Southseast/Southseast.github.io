@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"southsea.st","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":false,"nav":null,"activeClass":"disqusjs"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="阅读笔记，2023 AAAI。 摘要 AD（活动目录, Active Directory）可以看做是一个攻击图，其中节点代表计算机&#x2F;账户&#x2F;安全组，边代表现有访问权限&#x2F;已知漏洞，这些访问权限&#x2F;漏洞允许攻击方从一个节点访问另一个节点。 与许多仅具有理论性质的攻击图模型不同，AD 攻击图正在被实际攻击者和 IT 管理员积极使用。已开发了多个软件工具（包括开源和商业软件），用于扫描、可视化和分析 AD 图">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文 Scalable Edge Blocking Algorithms for Defending Active Directory Style Attack Graphs">
+<meta property="og:url" content="https://southsea.st/Paper-Scalable-Edge-Blocking-Algorithms-for-Defending-Active-Directory-Style-Attack-Graphs/index.html">
+<meta property="og:site_name" content="南溟NaN">
+<meta property="og:description" content="阅读笔记，2023 AAAI。 摘要 AD（活动目录, Active Directory）可以看做是一个攻击图，其中节点代表计算机&#x2F;账户&#x2F;安全组，边代表现有访问权限&#x2F;已知漏洞，这些访问权限&#x2F;漏洞允许攻击方从一个节点访问另一个节点。 与许多仅具有理论性质的攻击图模型不同，AD 攻击图正在被实际攻击者和 IT 管理员积极使用。已开发了多个软件工具（包括开源和商业软件），用于扫描、可视化和分析 AD 图">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-01-09T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-24T03:34:53.072Z">
+<meta property="article:author" content="南溟NaN">
+<meta property="article:tag" content="Paper">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://southsea.st/Paper-Scalable-Edge-Blocking-Algorithms-for-Defending-Active-Directory-Style-Attack-Graphs/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://southsea.st/Paper-Scalable-Edge-Blocking-Algorithms-for-Defending-Active-Directory-Style-Attack-Graphs/","path":"Paper-Scalable-Edge-Blocking-Algorithms-for-Defending-Active-Directory-Style-Attack-Graphs/","title":"论文 Scalable Edge Blocking Algorithms for Defending Active Directory Style Attack Graphs"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>论文 Scalable Edge Blocking Algorithms for Defending Active Directory Style Attack Graphs | 南溟NaN</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">南溟NaN</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">在这浩瀚星河的你是什么</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">68</span></a></li><li class="menu-item menu-item-links"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A0%94%E7%A9%B6%E7%9B%AE%E7%9A%84"><span class="nav-number">2.</span> <span class="nav-text">研究目的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ad-%E5%9B%BE%E7%9A%84%E7%BB%93%E6%9E%84%E7%89%B9%E5%BE%81"><span class="nav-number">3.</span> <span class="nav-text">AD 图的结构特征</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E5%86%85%E5%AE%B9"><span class="nav-number">4.</span> <span class="nav-text">工作内容</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AD%96%E7%95%A5%E8%AE%BE%E8%AE%A1"><span class="nav-number">4.1.</span> <span class="nav-text">策略设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%AF%E7%AD%96%E7%95%A5pure-strategy"><span class="nav-number">4.1.1.</span> <span class="nav-text">纯策略(pure strategy)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B7%E5%90%88%E7%AD%96%E7%95%A5mixed-strategy"><span class="nav-number">4.1.2.</span> <span class="nav-text">混合策略(mixed strategy)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E8%AE%BE%E8%AE%A1"><span class="nav-number">4.2.</span> <span class="nav-text">方法设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80"><span class="nav-number">4.2.1.</span> <span class="nav-text">方法一</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%91%E5%88%86%E8%A7%A3-tree-decomposition"><span class="nav-number">4.3.</span> <span class="nav-text">树分解 Tree decomposition</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">4.3.1.</span> <span class="nav-text">示例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B6%88%E5%BA%8F"><span class="nav-number">4.3.1.1.</span> <span class="nav-text">消序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%8C%85%E5%BA%8F%E5%88%97"><span class="nav-number">4.3.1.2.</span> <span class="nav-text">生成包序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%88%E5%B9%B6%E9%83%A8%E5%88%86%E8%8A%82%E7%82%B9%E5%8C%85"><span class="nav-number">4.3.1.3.</span> <span class="nav-text">合并部分节点包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%80%E5%90%8E%E5%BE%97%E5%88%B0%E5%88%86%E8%A7%A3%E6%A0%91"><span class="nav-number">4.3.1.4.</span> <span class="nav-text">最后得到分解树</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%91%E5%AE%BD%E5%BA%A6"><span class="nav-number">4.4.</span> <span class="nav-text">树宽度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#k-tree"><span class="nav-number">4.5.</span> <span class="nav-text">K-Tree</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C"><span class="nav-number">4.5.1.</span> <span class="nav-text">方法二</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B7%E5%90%88%E6%95%B4%E6%95%B0%E8%A7%84%E5%88%92%E6%B1%82%E8%A7%A3"><span class="nav-number">4.6.</span> <span class="nav-text">混合整数规划求解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%8F%8F%E8%BF%B0"><span class="nav-number">5.</span> <span class="nav-text">模型描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%A8%E4%BA%8E%E7%BA%AF%E7%AD%96%E7%95%A5%E9%98%BB%E6%8C%A1%E7%9A%84%E5%9F%BA%E4%BA%8E%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%9A%84%E6%A0%91%E5%88%86%E8%A7%A3"><span class="nav-number">6.</span> <span class="nav-text">用于纯策略阻挡的基于动态规划的树分解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E5%81%87%E8%AE%BE"><span class="nav-number">6.1.</span> <span class="nav-text">两个假设</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4"><span class="nav-number">6.2.</span> <span class="nav-text">步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%90%86-1"><span class="nav-number">6.3.</span> <span class="nav-text">引理 1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%9A%84%E4%B8%BB%E8%A6%81%E8%BF%87%E7%A8%8B"><span class="nav-number">6.3.1.</span> <span class="nav-text">动态规划的主要过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E5%AE%9A"><span class="nav-number">6.3.2.</span> <span class="nav-text">设定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E8%AE%BE%E5%AE%9A"><span class="nav-number">6.3.3.</span> <span class="nav-text">基础设定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%A7%8B%E9%97%AE%E9%A2%98"><span class="nav-number">6.3.4.</span> <span class="nav-text">原始问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E5%85%A5%E8%8A%82%E7%82%B9-introduce-node"><span class="nav-number">6.3.5.</span> <span class="nav-text">引入节点 (Introduce Node)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%97%E5%BF%98%E8%8A%82%E7%82%B9-forget-node"><span class="nav-number">6.3.6.</span> <span class="nav-text">遗忘节点 (Forget Node)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E8%8A%82%E7%82%B9-join-node"><span class="nav-number">6.3.7.</span> <span class="nav-text">连接节点 (Join Node)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%B8%E5%8C%96"><span class="nav-number">7.</span> <span class="nav-text">核化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-1%E9%9D%9E%E5%88%86%E8%A3%82%E8%B7%AF%E5%BE%84"><span class="nav-number">7.1.</span> <span class="nav-text">定义 1（非分裂路径）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%90%86-2"><span class="nav-number">7.2.</span> <span class="nav-text">引理 2</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B7%B7%E5%90%88%E9%98%BB%E6%96%AD%E7%AD%96%E7%95%A5"><span class="nav-number">8.</span> <span class="nav-text">混合阻断策略</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3-lp-%E8%BF%91%E4%BC%BC%E5%90%AF%E5%8F%91%E5%BC%8F%E7%AE%97%E6%B3%95"><span class="nav-number">8.1.</span> <span class="nav-text">迭代 LP 近似启发式算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E-mip-%E7%9A%84%E8%BF%91%E4%BC%BC%E6%96%B9%E6%B3%95"><span class="nav-number">8.2.</span> <span class="nav-text">基于 MIP 的近似方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#refer"><span class="nav-number">9.</span> <span class="nav-text">REFER</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟NaN"
+      src="https://avatars.githubusercontent.com/u/34373144?v=4">
+  <p class="site-author-name" itemprop="name">南溟NaN</p>
+  <div class="site-description" itemprop="description">在这浩瀚星河的你是什么</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:st.southsea@gmail.com" title="E-Mail → mailto:st.southsea@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/Paper-Scalable-Edge-Blocking-Algorithms-for-Defending-Active-Directory-Style-Attack-Graphs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/34373144?v=4">
+      <meta itemprop="name" content="南溟NaN">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟NaN">
+      <meta itemprop="description" content="在这浩瀚星河的你是什么">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="论文 Scalable Edge Blocking Algorithms for Defending Active Directory Style Attack Graphs | 南溟NaN">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          论文 Scalable Edge Blocking Algorithms for Defending Active Directory Style Attack Graphs
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-01-09 00:00:00" itemprop="dateCreated datePublished" datetime="2024-01-09T00:00:00+00:00">2024-01-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Paper/" itemprop="url" rel="index"><span itemprop="name">Paper</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>阅读笔记，<strong>2023 AAAI</strong>。</p>
+<h1 id="摘要">摘要</h1>
+<p><strong>AD</strong>（活动目录, <strong>Active
+Directory</strong>）可以看做是一个攻击图，其中节点代表计算机/账户/安全组，边代表现有访问权限/已知漏洞，这些访问权限/漏洞允许攻击方从一个节点访问另一个节点。</p>
+<p>与许多仅具有理论性质的攻击图模型不同，<strong>AD</strong>
+攻击图正在被实际攻击者和 <strong>IT</strong>
+管理员积极使用。已开发了多个软件工具（包括开源和商业软件），用于扫描、可视化和分析
+<strong>AD</strong> 图。</p>
+<blockquote>
+<p>比如
+<strong>BLOODHOUND</strong>，模拟了身份雪球攻击。攻击者从一个低权限帐户开始，这被称为攻击者的入口节点（例如，通过钓鱼邮件获得）。然后，攻击者从一个节点移动到另一个节点，最终目标是获取名为
+<strong>DA</strong>（域管理员，<strong>Domain
+Admin</strong>）的最高权限帐户。</p>
+</blockquote>
+<span id="more"></span>
+<h1 id="研究目的">研究目的</h1>
+<p>如何通过付出最小的代价来阻断攻击线路，降低攻击者获取
+<strong>DA</strong> 权限的成功率。</p>
+<blockquote>
+<p>如果一个 <strong>IT</strong> 管理员需要 <strong>1</strong> 小时来阻断
+<strong>1</strong> 条线路（包括审计、报告、实施），并且一天有
+<strong>8</strong> 小时工作时间，那么代价 <strong>b = 8</strong>。</p>
+<p>且一些线路是企业正常运营所必须的，阻断的代价相当昂贵。</p>
+</blockquote>
+<p>在本文的模型中，假设不同的线路具有不同的攻击失败率，而阻断攻击线路即是将攻击失败率提升至
+<strong>100%</strong>。</p>
+<p>本文的重点不在于推进固定参数分析（<strong>fixed-parameter
+analysis</strong>）的理论前沿，这只是在 <strong>AD</strong>
+图上设计可扩展算法的手段。</p>
+<p>实际上，本文的研究方法结合了固定参数分析和实际优化技术（<strong>practical
+optimisation techniques</strong>）。</p>
+<h1 id="ad-图的结构特征">AD 图的结构特征</h1>
+<p>观察到实际 <strong>AD</strong> 图有两个明显的结构特征。</p>
+<ol type="1">
+<li><p>攻击路径倾向于很短</p>
+<blockquote>
+<p>这是一种尚未经证实的观察，但本文认为在实际应用中这是合理的。</p>
+<p>并不是说长路径不存在，指攻击方实际使用的最短路径。</p>
+<p><strong>BLOODHOUND</strong>
+团队类比了著名的“六度分隔”理念，即，这个世界上的所有人平均通过六步或更少的社交连接就能相互联系。在域中也一样，在一个组织中，从一个实习生的账户到
+<strong>CEO</strong> 的账户通常只需要几步。</p>
+</blockquote></li>
+<li><p><strong>AD</strong> 图与树非常相似</p>
+<blockquote>
+<p>人力资源部门可能构成一个树枝，而市场营销部门则形成另一个树枝。</p>
+<p>但不完全对，因为人力资源部门的一个账户可能有合理的理由访问属于市场营销部门的计算机上的数据。</p>
+<p>可以将活动目录攻击图解释为带有额外非树边的树，这些非树边代表安全例外。</p>
+</blockquote></li>
+</ol>
+<h1 id="工作内容">工作内容</h1>
+<ol type="1">
+<li>为纯策略和混合策略的最优边缘阻塞设计实际可扩展的算法。</li>
+</ol>
+<blockquote>
+<p>对于内网中拥有数千台计算机的组织，<strong>AD</strong>
+图通常涉及数万个节点。本文通过利用 <strong>AD</strong>
+图的结构特征，成功地扩展到这样的规模。</p>
+</blockquote>
+<ol start="2" type="1">
+<li>证明仅有短攻击路径不足以推导出高效的阻断策略。</li>
+</ol>
+<blockquote>
+<p>即使最大攻击路径长度是一个常数，纯策略和混合策略阻断都是
+<strong>NP</strong> 难的。</p>
+</blockquote>
+<ol start="3" type="1">
+<li>探索 <strong>AD</strong> 图的树状特征。</li>
+</ol>
+<h2 id="策略设计">策略设计</h2>
+<h3 id="纯策略pure-strategy">纯策略(pure strategy)</h3>
+<p>毫不犹豫地阻断 <span class="math inline">\(b\)</span> 个线路。</p>
+<p>采用 <strong>Stackelberg</strong>
+博弈模型，假设攻击者可以观察到防御者的策略并采取最佳反应。</p>
+<blockquote>
+<p><strong>Stackelberg</strong>
+博弈模型，在这个模型中，通常有两家公司：一家是“领导者”，另一家是“追随者”。领导者公司首先采取行动，然后追随者公司在观察了领导者的决定后作出决策。</p>
+</blockquote>
+<p>可以简化为单源单目的地最短路径边界阻断问题。</p>
+<blockquote>
+<p>这被认为是 <strong>NP</strong> 难的，但是在一般图上的
+<strong>NP</strong> 难并不意味着 <strong>AD</strong>
+图上无法找到高效算法。</p>
+<p>参数计算方法通常将一个优化问题(以最小值问题为例)转化为参数化问题“判定问题是否存在一个大小至多为参数
+<strong>k</strong> 的解”。</p>
+<p>一个参数化问题如果可以在时间 <span
+class="math inline">\(O(f(k)n^{O(1)})\)</span> 内求解，其中 <span
+class="math inline">\(f(k)\)</span> 是一个关于参数 <strong>k</strong>
+的单调非减函数，<strong>n</strong>
+为实例的规模，则该问题称为固定参数可解的 <strong>(Fixed-Parameter
+Tractable)</strong>，习惯上用 <strong>FPT</strong>
+表示该类问题的集合，相应的算法称为固定参数可解算法。</p>
+</blockquote>
+<h3 id="混合策略mixed-strategy">混合策略(mixed strategy)</h3>
+<p>注明了多组 <span class="math inline">\(b\)</span>
+个线路组合和选择对应组合的概率。</p>
+<p>攻击者只能观察到选择阻断组合的概率，而不能观察到实际的选择情况。</p>
+<h2 id="方法设计">方法设计</h2>
+<h3 id="方法一">方法一</h3>
+<p>针对纯策略的阻塞。</p>
+<p>对于<a
+target="_blank" rel="noopener" href="https://joeylian.github.io/2020/06/29/2020-06-30-%E5%9B%BE%E7%9A%84%E6%A0%91%E5%88%86%E8%A7%A3/">数宽</a>较小的，本文使用了一个基于树分解的动态规划方法，然后将其转化为强化学习环境。</p>
+<blockquote>
+<h2 id="树分解-tree-decomposition">树分解 Tree decomposition</h2>
+<p>图的树分解是为了<strong>简单无向图</strong>尽可能地分解为树形结构，通过研究树上的结构信息来刻画原图的一些性质。</p>
+<p>在实际应用中，很多问题涉及的图的规模都很大，直接求解的难度也很高。<strong>若将这类问题的图转化为树，则可在多项式时间甚至线性时间内求解问题</strong>。</p>
+<p>图的树分解是对图 <span class="math inline">\(G\)</span>
+的结点集进行划分，生成与之对应的一棵分解树 <span
+class="math inline">\(T\)</span>，<span class="math inline">\(T\)</span>
+中的节点 <span class="math inline">\(i\)</span> 对应 <span
+class="math inline">\(G\)</span> 的一个结点子集 <span
+class="math inline">\(X_i\)</span>。</p>
+<p>对于<strong>简单无向图</strong> <span
+class="math inline">\(G=(V,E)\)</span>，其树分解是 <span
+class="math inline">\(T_G=(X,T)\)</span>，其中 <span
+class="math inline">\(T=(I,F)\)</span> 是一颗有根树，<span
+class="math inline">\(I\)</span> 为其点集，也称作包，<span
+class="math inline">\(F\)</span> 为其边集。</p>
+<p><span class="math inline">\(X=\{X_i:i \in I\}\)</span> 是一个 <span
+class="math inline">\(V\)</span> 的子集族。其满足以下条件：</p>
+<ol type="1">
+<li><span class="math inline">\(\underset{i \in
+I}{\cup}X_i=V\)</span>，即所有的子集族并集等于 <span
+class="math inline">\(G\)</span> 的结点集。</li>
+<li>对于 <span class="math inline">\(\forall (u,v) \in E,\exists \, i
+\in I\)</span>， 存在 <span class="math inline">\(u,v \in
+X_i\)</span>，即 <span class="math inline">\(G\)</span>
+中每条边的两个节点必存在于某个子集中。</li>
+<li>对于 <span class="math inline">\(i,j,k \in I\)</span>， 如果 <span
+class="math inline">\(T\)</span> 中 <span
+class="math inline">\(k\)</span> 出现在 <span
+class="math inline">\(i\)</span> 到 <span
+class="math inline">\(j\)</span> 到一条路径上，则有 <span
+class="math inline">\(X_i \cap X_j=X_k\)</span>。</li>
+</ol>
+<h3 id="示例">示例</h3>
+<p><img
+src="/images/Paper-Scalable-Edge-Blocking-Algorithms-for-Defending-Active-Directory-Style-Attack-Graphs/image-20240215204550057.png" /></p>
+<h4 id="消序">消序</h4>
+<p>上图使用最小度、最小填边数优先排序的贪心算法产生一个消点序。</p>
+<ol type="1">
+<li><p>遍历最小度，生成一个结点集 <span
+class="math inline">\(MV_i\)</span>。</p></li>
+<li><p>遍历 <span class="math inline">\(MV_i\)</span>，选择一个节点
+<span class="math inline">\(v\)</span>，要求其邻域 <span
+class="math inline">\(N(v)\)</span>
+中任意两点<strong>未相连的边数量最少</strong>。</p></li>
+<li><p>然后删除节点 <span class="math inline">\(v\)</span>
+和与其相邻的边，并将 <span class="math inline">\(N(v)\)</span>
+中未相连的边集 <span class="math inline">\(F_i\)</span>
+也加入。</p></li>
+<li><p>最后根据删除的节点 <span
+class="math inline">\(v\)</span>，生成一个消点序 <span
+class="math inline">\(V=\{\pi^{-1}(1),...,\pi^{-1}(n)\}\)</span>【<span
+class="math inline">\(\pi\)</span> 为点和次序的双射排列】。 <span
+class="math display">\[
+\pi=\begin{pmatrix} a &amp; b &amp; c &amp; d &amp; e &amp; f &amp; g
+&amp; h \\ ６ &amp; ７ &amp; １ &amp; ４ &amp; ５ &amp; ８ &amp; ２
+&amp; ３ \end{pmatrix}
+\]</span></p></li>
+<li><p>合并 <span class="math inline">\(F\)</span> 到 <span
+class="math inline">\(E\)</span>，就可以得到图 <span
+class="math inline">\(G\)</span> 的三角剖分。【大概是多了 <span
+class="math inline">\(G_5\)</span> 的那条虚线边吧，大概】</p></li>
+</ol>
+<h4 id="生成包序列">生成包序列</h4>
+<p><span class="math display">\[X_1=N_G[v_1]=N_G(v_1) \cup
+\{v_1\}\]</span> <span class="math display">\[X_2=N_{G_{[e(v_1)]}}(v_2)
+\cup \{v_2\}\]</span> <span class="math display">\[...\]</span> <span
+class="math display">\[X_k=N_{G_{[e(v_1,...,v_{k-1})]}}(v_k) \cup
+\{v_k\}\]</span> <span class="math display">\[...\]</span> <span
+class="math display">\[X_n=\{v_n\}\]</span></p>
+<p><span class="math inline">\(G_{[e(v_1,...,v_{k-1})]}\)</span>
+表示依次从 <span class="math inline">\(G\)</span> 中删去 <span
+class="math inline">\(V_i\)</span> 产生的图，然后得到下面这玩意。 <span
+class="math inline">\(X_8=\{f\},X_7=\{b,f\},X_6=\{a,b,f\},X_5=\{e,a,f\},X_4=\{d,a,e\},X_3=\{h,e\},X_2=\{g,e,h\},X_1=\{c,b\}\)</span>。</p>
+<h4 id="合并部分节点包">合并部分节点包</h4>
+<p><span class="math display">\[X_8 \subset X_7 \subset X_6 = \{a,b,f\},
+8 = max\{6,7,8\}\]</span> <span class="math display">\[X_3 \subset X_2 =
+\{g,e,h\}, 3 = max\{2,3\}\]</span> <span class="math display">\[X_5 =
+\{e,a,f\}, X_4 = \{d,a,e\}, X_1 = \{c,b\}\]</span> <span
+class="math display">\[I=\{1,3,4,5,8\}\]</span></p>
+<h4 id="最后得到分解树">最后得到分解树</h4>
+<h2 id="树宽度">树宽度</h2>
+<p>引入树宽的概念是为了反映给定的图形结构与分解后的树形结构的相似程度。</p>
+<p>较小的树宽表示该图接近于一棵树。</p>
+<p>图本身是树时，树宽为 <span class="math inline">\(1\)</span>。</p>
+<p>宽度为所有片段 <span class="math inline">\(X\)</span>
+的大小的最大值减 <span class="math inline">\(1\)</span>，<span
+class="math inline">\(max(|X_i|-1)\)</span>。</p>
+<h2 id="k-tree">K-Tree</h2>
+<p><strong>K-Tree</strong> 是往一个 <strong>K+1</strong>
+顶点的完全图里加顶点，使得每个新加的顶点 <strong>v</strong> 都有
+<strong>K</strong> 个邻居 <strong>U</strong>，这样，<strong>v</strong>
+和 <strong>U</strong> 合起来共计 <strong>K+1</strong> 个顶点构成一个
+<strong>Clique</strong>。</p>
+<p>如下图，<strong>K=3</strong>，即初始为 <strong>4</strong>
+顶点完全图。</p>
+<p><img
+src="/images/Paper-Scalable-Edge-Blocking-Algorithms-for-Defending-Active-Directory-Style-Attack-Graphs/2880px-Goldner-Harary_graph.svg.png" /></p>
+<p><strong>Treewidth</strong> 为 <strong>K</strong> 的图是
+<strong>K-Tree</strong> 的子图，因此被称为 <strong>A partial
+K-Tree</strong>。</p>
+</blockquote>
+<p>这使得 <strong>Anytime Algorithm</strong>
+具有更好的拓展性，但是无法保证最优。</p>
+<blockquote>
+<p>任意时间算法（<strong>Anytime
+Algorithm</strong>）更多的是一种算法设计的概念或思想，而不是一个具体的、固定的算法框架。这种算法的核心特点是能够在任何时候停止执行，并提供当前已得到的最佳解决方案。这对于时间敏感或计算资源受限的应用场景特别重要。</p>
+</blockquote>
+<h3 id="方法二">方法二</h3>
+<p>处理纯策略和混合策略的阻塞。</p>
+<p>为了应对 <strong>AD</strong>
+图上的特定应用，提出了一种非标准的固定参数。</p>
+<blockquote>
+<p>常规的攻击路径描述了一条权限提升路径。</p>
+<p>一个节点拥有多个权限提升出边是罕见的【因为这样的边通常代表安全例外或配置错误】。</p>
+</blockquote>
+<p>本文观察到实际的AD图包含非分割路径【本文提出的特征：每个节点都有一条出边的路径】，对于非分裂路径数量较少的图，本文提出了核化技术来缩小模型规模，然后通过混合整数规划求解。</p>
+<blockquote>
+<h2 id="混合整数规划求解">混合整数规划求解</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Food</th>
+<th>Cost per serving</th>
+<th>Vitamin A</th>
+<th>Calories</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Corn</td>
+<td>0.18</td>
+<td>107</td>
+<td>72</td>
+</tr>
+<tr class="even">
+<td>2% Milk</td>
+<td>0.23</td>
+<td>500</td>
+<td>121</td>
+</tr>
+<tr class="odd">
+<td>Wheat Bread</td>
+<td>0.05</td>
+<td>0</td>
+<td>65</td>
+</tr>
+</tbody>
+</table>
+<p>超市里头有卖 <strong>3</strong>
+种食品，玉米，牛奶和面包，价格，所含的维他命 <strong>A</strong>
+和卡路里的信息见上表。现在的问题是买多少份的玉米，牛奶，面包，使得总价格最低，而维他命
+<strong>A</strong> 的总摄取量不小于 <strong>500</strong> 但不大于
+<strong>50000</strong>，卡路里的总摄取量不小于 <strong>2000</strong>
+但不大于 <strong>2250</strong>。这个问题的数学描述如下：</p>
+<p><span class="math display">\[min:
+0.18X_{corn}+0.23X_{milk}+0.05X_{bread}\]</span></p>
+<p><span class="math display">\[s.t.,\]</span></p>
+<p><span
+class="math display">\[107X_{corn}+500X_{milk}\le50000\]</span></p>
+<p><span
+class="math display">\[107X_{corn}+500X_{milk}\ge500\]</span></p>
+<p><span
+class="math display">\[72X_{corn}+121X_{milk}+65X_{bread}\le2250\]</span></p>
+<p><span
+class="math display">\[72X_{corn}+121X_{milk}+65X_{bread}\ge2000\]</span></p>
+<p><span
+class="math display">\[X_{corn},X_{milk},X_{bread}\ge0\]</span></p>
+<p>现在回到之前的问题，如果在线性规划问题中有<strong>部分</strong>决策变量，比如上面的
+<span class="math inline">\(X_{corn}\)</span> 要求必须是整数，
+那么这时的规划问题就转变成混合整数线性规划问题了。</p>
+</blockquote>
+<p>这样，本文提出的算法可以扩展处理包含数万个节点的合成
+<strong>AD</strong> 图。</p>
+<h1 id="模型描述">模型描述</h1>
+<p>如图所示，本文使用有向图 <span class="math inline">\(G=(V,E)\)</span>
+来描述 <strong>AD</strong> 环境，每条边 <strong>e</strong>
+都有一个攻击的失败率 <span class="math inline">\(f(e)\)</span>。</p>
+<blockquote>
+<p>节点 <strong>0</strong> 是 <strong>DA</strong>。节点
+<strong>3、4、5</strong> 是入口节点（用 *
+标记），边标签代表边的失败率，粗边（即 <strong>1 →
+0</strong>）不可阻断。</p>
+</blockquote>
+<p>有一个目的节点 <strong>DA</strong> 和 <strong>s</strong>
+个入口节点。攻击方可以从任意入口节点出发，选择任意路径。</p>
+<p>目标是通过选择最佳入口节点和最佳攻击路径，最大限度地提高到达
+<strong>DA</strong> 的成功率。</p>
+<p>防守方从一组可阻断的边 <span class="math inline">\(E_b \subseteq
+E\)</span> 中选择 <strong>b</strong> 条边进行阻断，其中
+<strong>b</strong> 是防御预算。</p>
+<p>防守方的目标是最小化攻击方攻击成功的概率。</p>
+<p><img
+src="/images/Paper-Scalable-Edge-Blocking-Algorithms-for-Defending-Active-Directory-Style-Attack-Graphs/image-20240112152819596.png" /></p>
+<p>约束预算 <span class="math inline">\(\sum_{e \in E_b} B(e) \leq
+b\)</span>。</p>
+<ul>
+<li>纯策略阻塞: <span class="math inline">\(B(e)\)</span> 等于 <span
+class="math inline">\(0\)</span> 或 <span
+class="math inline">\(1\)</span>。</li>
+<li>混合策略阻塞: <span class="math inline">\(B(e)\)</span> 在 <span
+class="math inline">\([0, 1]\)</span> 之间。</li>
+</ul>
+<p>给定
+<strong>B</strong>，可以通过以下公式找到攻击者的最优攻击路径：<span
+class="math inline">\(max_{p\in P}\{\prod_{e\in
+p}(1-f(e))(1-B(e))\}\)</span>，其中 <strong>P</strong>
+是所有入口节点到所有攻击路径的集合。</p>
+<p>这个最大化问题等价于 <span class="math inline">\(min_{p\in
+P}\{\sum_{e\in p}(-ln(1-f(e))-ln(1-B(e)))\}\)</span>。</p>
+<p>通过应用自然对数将乘积转换为求和，本文将一条边的“距离”视为 <span
+class="math inline">\(-ln(1-f(e))-ln(1-B(e))\)</span> 【非负数】。</p>
+<p>攻击者的最优攻击路径可以使用 <strong>Dijkstra</strong>
+的最短路径算法。</p>
+<p><span class="math inline">\(SR(B)\)</span> 表示面对阻挡策略 <span
+class="math inline">\(B\)</span> 的攻击者的成功率，防御者的问题是最小化
+<span class="math inline">\(SR(B)\)</span>，即降低攻击者的成功率。</p>
+<p>本文的第一个结果是一个负面结果，表明仅有短攻击路径是不足以推导出高效算法的。也就是说，接下来确实需要考虑树状特征。</p>
+<blockquote>
+<p>说实话读到这里的时候我没找到文中所谓的负面结果究竟指什么。</p>
+</blockquote>
+<p><strong>定理1：对于常数最大攻击路径长度，纯策略和混合策略阻挡都是NP难的。</strong></p>
+<blockquote>
+<p>由于篇幅限制，证明被推迟到附录中。</p>
+</blockquote>
+<h1
+id="用于纯策略阻挡的基于动态规划的树分解">用于纯策略阻挡的基于动态规划的树分解</h1>
+<p>对于普通图的许多NP难的组合问题，如果专注于树宽度小的图，这些问题就变得易于处理。</p>
+<blockquote>
+<p>本文使用节点来指代树分解中的树节点，使用顶点来指代
+<strong>AD</strong> 图中的顶点。</p>
+</blockquote>
+<h2 id="两个假设">两个假设</h2>
+<ol type="1">
+<li>树宽较小</li>
+<li>一条路径的成功率来自一个最多包含 <strong>H</strong>
+个值的小集合</li>
+</ol>
+<blockquote>
+<p>路径的成功率是攻击者在没有任何阻挡的情况下通过它的成功率，如果所有边都有相同的失败率，则
+<strong>H</strong> 仅为最大攻击路径长度
+<strong>l+2</strong>（<strong>0～l</strong> 跳，加上“无路径”）。</p>
+<ul>
+<li><strong>0 到 l 跳</strong>：这表示攻击路径可以从 <strong>0</strong>
+跳（即没有任何移动，路径长度为 <strong>0</strong>）到 <strong>l</strong>
+跳（路径包含 <strong>l</strong> 个移动步骤）。这里的 <strong>l</strong>
+代表攻击路径的最大长度。</li>
+<li><strong>“无路径”</strong>：这是一个特殊情况，指的是不存在从起点到终点的有效路径。在分析攻击路径时，考虑“无路径”的情况是重要的，因为它表示攻击者无法成功到达目标。</li>
+</ul>
+</blockquote>
+<p>一般来说，如果边的类型数量是一个小常数 <strong>k</strong>，那么 <span
+class="math inline">\(H \in O(l^k)\)</span>。</p>
+<p>在本文的实验中，<strong>假设有两种类型的边【高失败率和低失败率】</strong>，因此有
+<span class="math inline">\(H \in O(l^2)\)</span>，【<strong>H</strong>
+仅用于最坏情况下的复杂性分析】。</p>
+<p>在实验中，对于给定的特定图，一条路径可能的成功率数量通常显著较少。</p>
+<h2 id="步骤">步骤</h2>
+<p>本文的动态规划称为
+<strong>TDCYCLE</strong>（具有循环的树分解），其将攻击图视为一个无向图，然后生成一个树分解。</p>
+<p>在本文的实验中，采用<a
+target="_blank" rel="noopener" href="https://doi.org/10.1007/11786986_59">顶点消除启发式方法生成树分解</a>。</p>
+<p>然后将得到的<a
+target="_blank" rel="noopener" href="https://link.springer.com/book/10.1007/978-3-319-21275-3">树分解转换为
+<strong>nice</strong> 树分解</a>，其中根节点是一个只包含
+<strong>DA</strong> 的包，所有叶节点是大小为 <strong>1</strong>
+的包。</p>
+<p>本文用 <span class="math inline">\(TD\)</span> 来表示得到的
+<strong>nice</strong> 树分解。<span class="math inline">\(TD\)</span> 有
+<span class="math inline">\(O(wn)\)</span> 个节点，其中 <span
+class="math inline">\(w\)</span> 是树宽度。</p>
+<h2 id="引理-1">引理 1</h2>
+<p>设 <span class="math inline">\((u, v)\)</span> 是 <strong>AD</strong>
+图中的任意一条边。在 <span class="math inline">\(TD\)</span>
+下，有且仅有一个“遗忘”节点 <span
+class="math inline">\(X\)</span>，其子节点记为 <span
+class="math inline">\(X&#39;\)</span>，其中 <span
+class="math inline">\(\{u, v\} \subseteq X&#39;\)</span> 且 <span
+class="math inline">\(X&#39; \backslash X\)</span> 是 <span
+class="math inline">\(\{u\}\)</span> 或 <span
+class="math inline">\(\{v\}\)</span>。</p>
+<blockquote>
+<p><span class="math inline">\(X&#39; \backslash X\)</span>
+表示集合的差集，即从集合 <span class="math inline">\(X&#39;\)</span>
+中去除掉在集合 <span class="math inline">\(X\)</span>
+中出现的所有元素后剩下的元素集合。</p>
+<p>设想树分解的一个可能的情况是这样的：</p>
+<ol type="1">
+<li><strong>开始节点</strong>：包含 <span class="math inline">\(\{A, B,
+C\}\)</span></li>
+<li><strong>子节点 1</strong>：包含 <span class="math inline">\(\{B, C,
+D\}\)</span> (这里 <span class="math inline">\(A\)</span>
+被“遗忘”，因为它不在子节点中)</li>
+</ol>
+<p>那么这里的遗忘节点 <span class="math inline">\(X\)</span> 即是 <span
+class="math inline">\(\{B, C,
+D\}\)</span>，因为它是发生顶点遗忘后的结果。而子节点 <span
+class="math inline">\(X&#39;\)</span> 是 <span
+class="math inline">\(\{A, B,
+C\}\)</span>，因为它是在顶点遗忘之前的状态。</p>
+</blockquote>
+<p>上述引理基本上表明，<strong>每条边都可以准确地“分配”给一个遗忘节点</strong>。对于遗忘节点
+<span class="math inline">\(X \, (x_2, x_3, ..., x_k)\)</span>
+与其子节点 <span class="math inline">\(C \, (x_1, x_2, ...,
+x_k)\)</span>【即 <span class="math inline">\(x_1\)</span>
+被遗忘】，本文将 <span class="math inline">\(x_1, x_2, ..., x_k\)</span>
+之间的所有边分配给这个遗忘节点。</p>
+<h3 id="动态规划的主要过程">动态规划的主要过程</h3>
+<ol type="1">
+<li>首先从图中移除所有边，然后自下而上地遍历 <span
+class="math inline">\(TD\)</span>。</li>
+<li>在遗忘节点 <span class="math inline">\(X\)</span> 处，首先检查分配给
+<span class="math inline">\(X\)</span> 的所有边。
+<ol type="1">
+<li>如果一条边不可阻挡或决定不阻挡，则将其重新放入图中。</li>
+<li>否则，不将其放回。</li>
+</ol></li>
+<li>在完成整棵树后（同时确保花费的预算最多为 <span
+class="math inline">\(b\)</span>，至少放回了 <span
+class="math inline">\(|E| - b\)</span>
+条边），得到了一个完整的阻挡策略。</li>
+</ol>
+<h3 id="设定">设定</h3>
+<p>设 <span class="math inline">\(X=(x_1, x_2, ..., x_k)\)</span>
+是一个树节点 <span class="math inline">\((k \le w + 1)\)</span>。</p>
+<p>设 <span class="math inline">\(St(X)\)</span> 是以 <span
+class="math inline">\(X\)</span> 为根的树分解 <span
+class="math inline">\(TD\)</span> 中的子树。</p>
+<p>设 <span class="math inline">\(Ch(X)\)</span> 是 <span
+class="math inline">\(St(X)\)</span> 中引用的所有图顶点的集合。</p>
+<p>设 <span class="math inline">\(Ch(X)&#39; = Ch(X) \backslash
+X\)</span>。</p>
+<p>那么，<span class="math inline">\(Ch(X)&#39;\)</span>
+就是在自底向上处理 <span class="math inline">\(St(X)\)</span>
+后的一个遗忘顶点的集合。树分解的一个已知属性是，<span
+class="math inline">\(Ch(X)&#39;\)</span> 中的顶点不能直接到达 <span
+class="math inline">\(V \backslash Ch(X)\)</span>
+中的任何顶点。也就是说，任何从 <span
+class="math inline">\(Ch(X)&#39;\)</span> 中的入口顶点到 <span
+class="math inline">\(DA\)</span>（域管理员）的攻击路径都必须经过 <span
+class="math inline">\(X\)</span> 中的某个 <span
+class="math inline">\(x_i\)</span>。</p>
+<p>同样，任何攻击路径（不一定起源于 <span
+class="math inline">\(Ch(X)&#39;\)</span>）可能通过进入由 <span
+class="math inline">\(Ch(X)&#39;\)</span> 形成的图区域（通过某个特定的
+<span class="math inline">\(x_i\)</span>），然后通过不同的节点 <span
+class="math inline">\(x_j\)</span> 退出该区域，从而涉及 <span
+class="math inline">\(Ch(X)&#39;\)</span>
+中的顶点。一个攻击路径可能多次“进入和退出”该区域，但所有的进入和退出都必须通过
+<span class="math inline">\(X\)</span> 中的顶点。</p>
+<blockquote>
+<p>有一个图，它由顶点 <span class="math inline">\(A, B, C, D, E\)</span>
+组成，并且有以下连接：<span class="math inline">\(A-B, B-C, C-D,
+D-E\)</span>。现在，对这个图进行树分解。</p>
+<ol type="1">
+<li>假设有一个树节点 <span class="math inline">\(X = (B,
+C)\)</span>，这意味着树分解中有一个节点包含图中的 <span
+class="math inline">\(B\)</span> 和 <span
+class="math inline">\(C\)</span> 顶点。</li>
+<li><span class="math inline">\(St(X)\)</span> 就是以 <span
+class="math inline">\(X\)</span>
+为根的子树，在简单例子中，可以想象它就是包含 <span
+class="math inline">\(B\)</span> 和 <span
+class="math inline">\(C\)</span> 的部分，可能还会向下包括与 <span
+class="math inline">\(B\)</span> 和 <span
+class="math inline">\(C\)</span> 直接相连的其他顶点，比如 <span
+class="math inline">\(A\)</span> 和 <span
+class="math inline">\(D\)</span>。</li>
+<li><span class="math inline">\(Ch(X)\)</span> 是在 <span
+class="math inline">\(St(X)\)</span>
+中引用的所有顶点的集合。在例子中，如果 <span
+class="math inline">\(St(X)\)</span> 包括边 <span
+class="math inline">\(B-A\)</span> 和 <span
+class="math inline">\(C-D\)</span>，那么 <span
+class="math inline">\(Ch(X)\)</span> 就是 <span
+class="math inline">\(\{A, B, C, D\}\)</span>。</li>
+<li><span class="math inline">\(Ch(X)&#39;\)</span> 是 <span
+class="math inline">\(Ch(X)\)</span> 移除 <span
+class="math inline">\(X\)</span> 中顶点后的集合，所以 <span
+class="math inline">\(Ch(X)&#39; = \{A, D\}\)</span>，这表示在处理完包含
+<span class="math inline">\(B\)</span> 和 <span
+class="math inline">\(C\)</span> 的树节点后，<span
+class="math inline">\(A\)</span> 和 <span
+class="math inline">\(D\)</span>
+是“被忘记的”或者说是“不再考虑的”顶点。</li>
+</ol>
+<p>现在，根据树分解的性质，<span
+class="math inline">\(Ch(X)&#39;\)</span> 中的顶点 <span
+class="math inline">\((A,D)\)</span> 不能直接到达图中不在 <span
+class="math inline">\(Ch(X)\)</span> 中的任何顶点（比如 <span
+class="math inline">\(E\)</span>）。这意味着，任何从 <span
+class="math inline">\(A\)</span> 或 <span
+class="math inline">\(D\)</span> 到达图中其他部分（比如到达
+E）的路径都必须经过 B 或 C。</p>
+<p>举个具体的例子：</p>
+<ul>
+<li>如果有一个攻击路径想从 <span class="math inline">\(A\)</span> 到达
+<span class="math inline">\(E\)</span>，这个路径必须经过 <span
+class="math inline">\(B\)</span> 或 <span
+class="math inline">\(C\)</span>（因为 <span
+class="math inline">\(A\)</span> 是通过 <span
+class="math inline">\(B\)</span> 连接的，而 <span
+class="math inline">\(E\)</span> 是通过 <span
+class="math inline">\(D\)</span> 和 <span
+class="math inline">\(C\)</span> 连接的）。</li>
+<li>同样，如果攻击路径在图中的某个点进入了 A 和 D
+形成的区域，然后想要离开这个区域去到图的其他部分，它也必须通过 <span
+class="math inline">\(B\)</span> 或 <span
+class="math inline">\(C\)</span> 进行。</li>
+</ul>
+</blockquote>
+<p>这个引理及其描述的动态规划过程为如何在给定的预算约束下制定有效的阻挡策略提供了一种方法。</p>
+<p>通过结构化地处理图中的每条边，可以确保在满足预算限制的同时实现最优的阻挡配置。</p>
+<p>在这种情境下，假设在处理树分解中的 <span
+class="math inline">\(St(X)\)</span>（即以 <span
+class="math inline">\(X\)</span> 为根的子树）时，已经花费了 <span
+class="math inline">\(b&#39;\)</span>
+单位的预算来“忘记节点”，也就是说，用于阻断与这些被忘记节点相关的边。</p>
+<p>关键在于不需要详细记录哪些具体的边被阻断。相反，只需跟踪总共的预算花费以及一个所谓的“距离”矩阵。</p>
+<blockquote>
+<p>这个矩阵用于表示在考虑到已经使用的阻断预算后，图中各顶点之间可达性的变化。</p>
+<p>即在执行了一系列阻断操作后，从一个顶点到另一个顶点是否仍然存在未被阻断的路径，以及这些路径的“距离”（路径的长度或者需要通过的边的数量）。</p>
+<p>假设有一个小型网络，顶点集合为 <span class="math inline">\(\{A, B, C,
+D\}\)</span>，目标是阻断攻击者从 <span class="math inline">\(A\)</span>
+达到 <span class="math inline">\(D\)</span> 的能力。</p>
+<p>如果决定花费一定的预算来阻断从 <span class="math inline">\(B\)</span>
+到 <span class="math inline">\(C\)</span> 的连接（假设这是忘记节点 <span
+class="math inline">\(B\)</span> 与 <span
+class="math inline">\(C\)</span>
+相关的操作的一部分），矩阵需要更新以反映现在从 <span
+class="math inline">\(A\)</span> 到 <span
+class="math inline">\(D\)</span>
+的路径要么变得更长（需要通过更多的边），要么变得不可达（如果没有其他路径）。</p>
+<p>因此，即使不记录每一条被阻断的边，通过维护总预算花费和更新“距离”矩阵，仍然能够有效地理解和控制网络的安全状况，尤其是在考虑到预算限制和操作的优化配置时。</p>
+<p>这种方法在处理大型或复杂网络时特别有用，它可以更抽象的方式理解网络的安全性，而不是沉浸在繁琐的细节中。</p>
+</blockquote>
+<p><span class="math display">\[
+M = \begin{bmatrix} d_{11} &amp; d_{12} &amp; ... &amp; d_{1k} \\ ...
+\\  d_{k1} &amp; d_{k2} &amp; ... &amp; d_{kk}  \\ \end{bmatrix}\quad
+\]</span></p>
+<p><span class="math display">\[
+M = \begin{bmatrix} 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ 0.05 &amp; 0
+&amp; 0.05 &amp; 0.05 &amp; 0 \\ 0.05 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0.05 \\ 0.05 &amp; 0.05 &amp; 0 &amp; 0
+&amp; 0 \\ \end{bmatrix}\quad
+\]</span></p>
+<p><span class="math inline">\(d_{ij}\)</span> 代表了处理完 <span
+class="math inline">\(St(X)\)</span> 后放回的边中，从 <span
+class="math inline">\(x_i\)</span> 到 <span
+class="math inline">\(x_j\)</span> 的最小路径距离。</p>
+<p>当且仅当可以在 <span class="math inline">\(St(X)\)</span> 上花费
+<span class="math inline">\(b&#39; (b&#39; \le b)\)</span>
+来获得距离矩阵 <span class="math inline">\(M\)</span> 时，则称元组 <span
+class="math inline">\((M, b&#39;)\)</span> 在 <span
+class="math inline">\(X\)</span> 是可能的。</p>
+<p>树分解的每个树节点对应一个动态规划子问题，总共有 <span
+class="math inline">\(O(wn)\)</span> 个这样的子问题，其中 <span
+class="math inline">\(w\)</span> 是树的宽度，<span
+class="math inline">\(n\)</span> 是图的顶点数量。</p>
+<p>与 <span class="math inline">\(X\)</span> 对应的子问题表示为 <span
+class="math inline">\(DP(X)\)</span>，它简单地返回在节点 <span
+class="math inline">\(X\)</span> 可能的所有元组集合。</p>
+<blockquote>
+<p>这种方法通过将大问题分解成较小的子问题来解决，每个子问题都是关于树节点的，并考虑在该节点上可实现的所有可能的预算花费和距离矩阵组合。</p>
+<p>这样，每个子问题都可以独立解决，并且它们的解可以用来构建整个问题的解。</p>
+<p>动态规划的这种方法允许算法有效地遍历整个问题空间，同时避免重复计算已解决的子问题，从而提高了算法的效率。</p>
+<p>举个简单的例子，如果在处理某个节点 <span
+class="math inline">\(X\)</span> 时发现可以通过花费 <span
+class="math inline">\(b&#39;\)</span>
+单位的预算来阻断某些边，并且这导致了从一个顶点到另一个顶点的最小路径距离发生变化，那么这个新的距离矩阵和预算花费
+<span class="math inline">\(b&#39;\)</span> 就构成了一个可能的元组 <span
+class="math inline">\((M, b&#39;)\)</span>。</p>
+<p><span class="math inline">\(DP(X)\)</span>
+的任务就是找出所有这样的可能元组，为进一步的计算和最终解的构建提供基础。</p>
+</blockquote>
+<h3 id="基础设定">基础设定</h3>
+<ul>
+<li>对于一个叶子节点 <span class="math inline">\(X =
+\{x\}\)</span>，如果 <span class="math inline">\(x\)</span>
+是一个入口顶点，那么 <span class="math inline">\(DP(X)\)</span>
+包含一个元组，即 <span
+class="math inline">\(([0],0)\)</span>。这表示从这个入口顶点到它自身的最小路径距离为
+<span
+class="math inline">\(0\)</span>，且没有预算被花费（因为不需要阻断任何路径）。</li>
+<li>否则，如果 <span class="math inline">\(x\)</span>
+不是入口顶点，<span class="math inline">\(DP(X)\)</span>
+中唯一可能的元组是 <span
+class="math inline">\(([\infty],0)\)</span>。这表示从这个顶点到任何入口顶点（或反之）的距离是无穷大，即不可达，同时没有预算被花费。</li>
+</ul>
+<h3 id="原始问题">原始问题</h3>
+<ul>
+<li>树分解的根是 <span
+class="math inline">\(DA\)</span>，因此，原始问题则是 <span
+class="math inline">\(DP(\{DA\})\)</span>，它返回根节点所有可能的元组集合。</li>
+<li>集合中的每个元组都有形式 <span class="math inline">\(([d_{DA,DA}],
+b&#39;)\)</span>，这表示可以花费 <span
+class="math inline">\(b&#39;\)</span> 预算来确保攻击者到达 <span
+class="math inline">\(DA\)</span> 的最小路径距离是 <span
+class="math inline">\(d_{DA,DA}\)</span>。</li>
+<li><span class="math inline">\(DP(\{DA\})\)</span> 中的最大 <span
+class="math inline">\(d_{DA,DA}\)</span>
+对应于面对最优阻断策略时攻击者的成功率。换句话说，它表示即使在最优的阻断策略下，攻击者也能达到的最远距离。因此，防御的目标是最大化这个距离，以最大限度地减少攻击者成功攻击域管理员的可能性。</li>
+</ul>
+<h3 id="引入节点-introduce-node">引入节点 (Introduce Node)</h3>
+<ul>
+<li>当处理一个引入节点 <span class="math inline">\(X = (x_1, ..., x_k,
+y)\)</span> ，其子节点为 <span class="math inline">\(X&#39; = (x_1, ...,
+x_k)\)</span> 时，需要从 <span class="math inline">\(DP(X&#39;)\)</span>
+中的可能元组出发，生成新的元组，其应该属于 <span
+class="math inline">\(DP(X)\)</span>。</li>
+<li>如果 <span class="math inline">\(y\)</span> 是一个入口顶点，则 <span
+class="math inline">\(d_{yy}=0\)</span>；否则当 <span
+class="math inline">\(y\)</span> 被引入时，它的所有边尚未恢复，因此它与
+<span class="math inline">\(x_i\)</span> 断开连接，<span
+class="math inline">\(d_{yy}=\infty\)</span>。</li>
+<li>这样，可以在 <span class="math inline">\(DP(X)\)</span> 中为每个来自
+<span class="math inline">\(DP(X&#39;)\)</span>
+的可能元组添加了一个新顶点 <span
+class="math inline">\(y\)</span>，并设置了 <span
+class="math inline">\(y\)</span> 到自身的距离。</li>
+</ul>
+<p><span class="math display">\[
+\begin{pmatrix} \begin{bmatrix} d_{11} &amp; ... &amp; d_{1k} \\ ...
+\\  d_{k1} &amp; ... &amp; d_{kk}  \\ \end{bmatrix}\quad,b&#39;
+\end{pmatrix} \rightarrow \begin{pmatrix} \begin{bmatrix} d_{11}
+&amp;  ... &amp; d_{1k} &amp; \infty \\ ... \\  d_{k1} &amp; ... &amp;
+d_{kk} &amp; \infty \\ \infty &amp; ... &amp; \infty &amp; d_{yy}
+\end{bmatrix}\quad,b&#39; \end{pmatrix}
+\]</span></p>
+<h3 id="遗忘节点-forget-node">遗忘节点 (Forget Node)</h3>
+<ul>
+<li>对于一个遗忘节点 <span class="math inline">\(X = (x_2, ...,
+x_k)\)</span>，其子节点为 <span class="math inline">\(X&#39; = (x_1,
+..., x_k)\)</span> ，需要确定如何阻断连接 <span
+class="math inline">\(x_1\)</span> 和其余 <span
+class="math inline">\(x_2, ..., x_k\)</span> 的边。</li>
+<li>因为最多有 <span class="math inline">\(k − 1\)</span>
+条边需要阻断，需要简单地检查最多 <span
+class="math inline">\(2^{k-1}\)</span> 种阻断选项。</li>
+<li>对于每个具体的阻断选项（对应于花费 <span
+class="math inline">\(b^{&#39;&#39;}\)</span>），需要将 <span
+class="math inline">\(DP(X&#39;)\)</span> 中的元组转换为 <span
+class="math inline">\(DP(X)\)</span> 中的元组(如果 <span
+class="math inline">\(b&#39;+b&#39;&#39;&gt;b\)</span>，则新元组被丢弃)。<span
+class="math inline">\(d_{ij}^{&#39;}\)</span>
+是来考虑新加回的边的更新距离。更新距离需要运行一个全点对最短路径算法，其复杂度为
+<span class="math inline">\(O(k^3)\)</span>。</li>
+</ul>
+<p><span class="math display">\[
+\begin{pmatrix} \begin{bmatrix} d_{11} &amp; ... &amp; d_{1k} \\ ...
+\\  d_{k1} &amp; ... &amp; d_{kk}  \\ \end{bmatrix}\quad,b&#39;
+\end{pmatrix} \rightarrow \begin{pmatrix} \begin{bmatrix} d^{&#39;}_{22}
+&amp;  ... &amp; d^{&#39;}_{2k}\\ ... \\  d^{&#39;}_{k2} &amp; ... &amp;
+d^{&#39;}_{kk} \\ \end{bmatrix}\quad,b&#39; + b&#39;&#39; \end{pmatrix}
+\]</span></p>
+<h3 id="连接节点-join-node">连接节点 (Join Node)</h3>
+<ul>
+<li>对于一个连接节点 <span
+class="math inline">\(X\)</span>，它有两个子节点 <span
+class="math inline">\(X_1\)</span> 和 <span
+class="math inline">\(X_2\)</span>。对于 <span
+class="math inline">\((M_1,b_1) \in DP(X_1)\)</span> 和 <span
+class="math inline">\((M_2,b_2) \in DP(X_2)\)</span>，如果 <span
+class="math inline">\(b_1+b_2\leb\)</span>，则标记 <span
+class="math inline">\((M&#39;,b1+b2)\)</span> 为 <span
+class="math inline">\(DP(X)\)</span> 中的一个可能元组。</li>
+<li><span class="math inline">\(M&#39;\)</span> 是 <span
+class="math inline">\(M_1\)</span> 和 <span
+class="math inline">\(M_2\)</span> 之间按元素取最小值得到的矩阵。</li>
+</ul>
+<p>通过这种递归方式，动态规划算法能够在考虑图的结构和预算限制的同时，逐步构建出解决问题的解空间。</p>
+<p>其每一步都精确地考虑了如何通过引入、遗忘或连接操作来更新当前的状态，使得最终能够在树分解的根节点找到原始问题的解。</p>
+<p><strong>定理2 TDCYCLE 算法的复杂度为 <span
+class="math inline">\(O(H^{2w^2}b^2w^2n)\)</span></strong></p>
+<p>总结动态规划方法。</p>
+<ol type="1">
+<li>其遵循自底向上的顺序（从树分解 <span
+class="math inline">\(TD\)</span> 的叶子节点到根节点）处理。</li>
+<li>在处理节点时，传播所有可能的元组集合 <span class="math inline">\((M,
+b&#39;)\)</span>。</li>
+<li>在引入/连接节点时，遵循预定的传播规则，不做任何阻断决策。</li>
+<li>在遗忘节点时，从最多 <span class="math inline">\(w\)</span>
+条边中决定哪些边要阻断。</li>
+</ol>
+<p>给定一个特定的 <span class="math inline">\(AD\)</span>
+图及其对应的树分解 <span
+class="math inline">\(TD\)</span>，可以通过动态规划转换为强化学习环境。</p>
+<p>这样便出现了一个比动态规划有更好扩展性的随时算法（即强化学习总能产生一个解决方案，这个解决方案可能是最优的，也可能不是，但通常会随着时间改进；另一方面，动态规划无法扩展以处理稍大的树宽度）。</p>
+<p>本文提出的转换技术有可能被应用到基于树分解的动态规划中，用于其他组合优化问题。</p>
+<p>这表明，通过将传统的动态规划方法与现代的机器学习技术相结合，可以提高处理复杂问题的能力，特别是在那些难以直接通过传统方法解决的大规模问题上。</p>
+<p>通过这种转换，可以利用强化学习的优点，如能够处理大规模状态空间和学习复杂策略，从而提高算法的适应性和扩展性。</p>
+<ol type="1">
+<li><strong>节点排序</strong>：本文通过在 <span
+class="math inline">\(TD\)</span>
+上执行后序遍历来创建节点的顺序，确保在处理父节点之前先处理子节点。这样的顺序保证了在做出决策时已经考虑了所有子节点的信息。</li>
+<li><strong>传播最佳元组</strong>：与传统动态规划中传播所有可能的元组
+<span class="math inline">\((M, b&#39;)\)</span>
+不同，本文在强化学习训练过程中只传播最佳元组。举个例子，对于一个遗忘节点
+<span class="math inline">\(X\)</span> 和它的子节点 <span
+class="math inline">\(X&#39;\)</span>，<span
+class="math inline">\(X&#39;\)</span> 处的最佳元组被作为观察传递给 <span
+class="math inline">\(X\)</span>。然后，基于这个观察来决定在 <span
+class="math inline">\(X\)</span> 阻断哪些边。</li>
+<li><strong>遗忘节点的特定处理</strong>：对于遗忘节点 <span
+class="math inline">\(X\)</span>，如果有 <span class="math inline">\(k
+(k \le w)\)</span> 条边需要决定是否阻断，则在强化学习环境中将其视为
+<span class="math inline">\(k\)</span>
+个独立的步骤。也就是说，每一步都对单一边做出阻断决策，且动作空间始终是二元的。</li>
+<li><strong>引入/连接节点的自动处理</strong>：对于引入节点和连接节点，由于不需要做出任何决策，强化学习环境会在步骤之间自动处理这些节点。</li>
+<li><strong>最终奖励设置</strong>：设置的最终奖励等同于解决方案的质量。因为强化学习模型的目标是最大化最终奖励，从而找到最优或接近最优的阻断策略。</li>
+</ol>
+<p>将特定的 <span class="math inline">\(AD\)</span>
+图转化为强化学习环境后，可以应用标准的强化学习算法来寻找最优阻塞策略。</p>
+<p>在转化后，当树的宽度较小时，观察和行动空间都很小。不幸的是，上述转化技术的一个缺点是无法保证有一个小的
+<strong>episode</strong> 长度。</p>
+<p>本文可以认为同时保证小的观察空间、小的行动空间和小的
+<strong>episode</strong> 长度是不可能的，除非 <span
+class="math inline">\(AD\)</span>
+图在规模上相对较小。毕竟，这解决的是一个 <strong>NP</strong>
+难问题。</p>
+<p>实验证明，对于较小的 <span class="math inline">\(AD\)</span>
+图，本文能够在 <strong>episode</strong>
+长度可管理的情况下实现接近最优的性能。</p>
+<p>对于较大的 <span class="math inline">\(AD\)</span>
+图，<strong>episode</strong> 长度太长，因此引入以下启发式方法来限制
+<strong>episode</strong> 长度。</p>
+<ol type="1">
+<li>设 T 为目标 <strong>episode</strong> 长度，想法是手动选择
+<strong>T</strong> 个相对重要的边，并将未选择的边设置为不可阻塞。</li>
+<li>在实验中，首先计算将入口节点与 <strong>DA</strong>
+分开的最小割（不可阻塞边的容量设置为大），令最小割中可阻塞边的数量为
+<span class="math inline">\(C\)</span>。</li>
+<li>如果 <span class="math inline">\(C \ge T\)</span>，则简单地将这
+<span class="math inline">\(C\)</span> 条边视为重要，并将
+<strong>episode</strong> 长度设置为 <span
+class="math inline">\(C\)</span>。</li>
+<li>如果 <span class="math inline">\(C &lt; T\)</span>，则加入距离 <span
+class="math inline">\(DA\)</span> 最近的 <span class="math inline">\(T −
+C\)</span> 条可阻塞边。</li>
+</ol>
+<p>在本文附录中，有一个实验证明基于强化学习的方法并非仅通过探索进行“随机搜索”，它确实能够“学习”以对给定观察做出反应。</p>
+<p>在原始方法中，观察包含距离矩阵 <span
+class="math inline">\(M\)</span>、已花费的预算 $<span
+class="math inline">\(b&#39;\)</span>
+以及当前步骤索引。如果用零矩阵或随机矩阵替换 <span
+class="math inline">\(M\)</span>，那么训练结果会显著下降。</p>
+<h1 id="核化">核化</h1>
+<blockquote>
+<p>核化是一种常用的固定参数分析技术，它预处理给定的问题实例，并将其转换为一个更小的等价问题，称为内核。</p>
+</blockquote>
+<p>本文要求内核的大小受到特殊参数的限制（而不是依赖于 <span
+class="math inline">\(n\)</span>）。</p>
+<p>如引言所述，对于实际的 <span class="math inline">\(AD\)</span>
+图，大多数节点最多只有一个出边。</p>
+<ul>
+<li>如果一条边对攻击者没有用处，那么可以在不失一般性的情况下将其移除。</li>
+<li>如果一条边对攻击者有用，那么通常它是特权提升的。</li>
+<li>一个节点具有两条独立的特权提升出边是少见的（因为它们通常对应于安全异常或配置错误）。</li>
+</ul>
+<p>本文使用 <span class="math inline">\(SPLIT\)</span>
+来表示所有分裂节点（具有多个出边的节点）；<span
+class="math inline">\(SPLIT+DA\)</span> 来表示在 <span
+class="math inline">\(SPLIT\)</span> 中添加 <span
+class="math inline">\(DA\)</span>；<span
+class="math inline">\(ENTRY\)</span>
+来表示所有入口节点；引入了一个新参数，称为非分裂路径的数量。</p>
+<p>实验表明，这个参数导致了算法在使用两个不同的开源 <span
+class="math inline">\(AD\)</span> 图生成器生成的合成 <span
+class="math inline">\(AD\)</span> 图上表现异常优秀。</p>
+<h2 id="定义-1非分裂路径">定义 1（非分裂路径）</h2>
+<p>给定节点 <span class="math inline">\(u\)</span>，假设 <span
+class="math inline">\(v\)</span> 是 <span
+class="math inline">\(u\)</span> 的一个后继节点。非分裂路径 <span
+class="math inline">\(NSP(u, v)\)</span> 被递归地定义如下：</p>
+<ul>
+<li>如果 <span class="math inline">\(v \in SPLIT + DA\)</span>，则 <span
+class="math inline">\(NSP(u, v)\)</span> 是 <span
+class="math inline">\(u \to v\)</span>。</li>
+<li>否则，<span class="math inline">\(v\)</span> 必须有唯一的后继节点
+<span class="math inline">\(v&#39;\)</span>。<span
+class="math inline">\(NSP(u, v)\)</span> 是将 <span
+class="math inline">\(u \to v\)</span> 与 <span
+class="math inline">\(NSP(v, v&#39;)\)</span> 结合的路径。</li>
+</ul>
+<p>换句话说，<span class="math inline">\(NSP(u, v)\)</span> 是从 <span
+class="math inline">\(u\)</span> 到 <span
+class="math inline">\(v\)</span> 的路径，然后如果 <span
+class="math inline">\(v\)</span> 只有一个后继节点，则重复移动到 <span
+class="math inline">\(v\)</span> 的唯一后继节点，直到到达分裂节点或
+<span class="math inline">\(DA\)</span>。</p>
+<p>使用 <span class="math inline">\(DEST(u, v)\)</span> 来表示 <span
+class="math inline">\(NSP(u, v)\)</span> 的结束节点，因此有 <span
+class="math inline">\(DEST(u, v) \in SPLIT + DA\)</span>。</p>
+<p>如果非分裂路径至少有一条边是可阻塞的，则称其为可阻塞的。</p>
+<p><span class="math inline">\(AD\)</span>
+图可以被视为以下一组非分裂路径的连接，参数（非分裂路径数量 <span
+class="math inline">\(\#NSP\)</span>）是这组路径的大小。</p>
+<p><span class="math inline">\(\{NSP(u, v)|u \in SPLIT \cup ENTRY, v \in
+SUCCESSORS(u)\}\)</span></p>
+<p>在路径 <span class="math inline">\(NSP(u, v)\)</span> 上距离 <span
+class="math inline">\(u\)</span> 最远的可阻塞边被标记为 <span
+class="math inline">\(BW(u, v)\)</span>。<span
+class="math inline">\(BW\)</span>
+代表“值得阻塞”，这是由于以下引理所导致的。</p>
+<h2 id="引理-2">引理 2</h2>
+<p>对于纯策略和混合策略的阻挡，永远别在非分裂路径上花费超过一个单位的预算。</p>
+<p>对于任何问题实例，存在一个最优的防御策略，即只阻挡来自以下集合的边：</p>
+<p><span class="math inline">\(BW = \{BW(u, v)|u \in SPLIT \cup ENTRY, v
+\in SUCCESSORS(u)\}\)</span></p>
+<p>本文介绍了如何通过前述的非分裂路径构建一个非线性规划，然后将其转化为混合整数规划，并使用最先进的混合整数规划求解器进行高效求解。</p>
+<p>本文使用 <span class="math inline">\(B_e\)</span> 来表示在边 <span
+class="math inline">\(e\)</span> 上花费的预算单位。</p>
+<p>对于纯策略阻挡，<span class="math inline">\(B_e\)</span>
+是二进制的；对于混合策略阻挡，<span class="math inline">\(B_e\)</span>
+在 <span class="math inline">\(0\)</span> 到 <span
+class="math inline">\(1\)</span> 之间。</p>
+<p>如前所述，对于 <span class="math inline">\(e \in BW\)</span>，<span
+class="math inline">\(B_e \ge 0\)</span>，对于 <span
+class="math inline">\(e \notin BW\)</span>，<span
+class="math inline">\(B_e = 0\)</span>。</p>
+<p>本文使用 <span class="math inline">\(r_u\)</span> 来表示节点 <span
+class="math inline">\(u\)</span>
+的成功率，节点的成功率是从该节点开始的最优攻击路径在当前防御策略（即
+<span class="math inline">\(B_e\)</span>）下的成功率；<span
+class="math inline">\(c_{u,v}\)</span> 来表示当没有阻挡时非分裂路径
+<span class="math inline">\(NSP(u, v)\)</span> 的成功率，<span
+class="math inline">\(c_{u,v} = \prod_{e \in
+NSP(u,v)}(1−f(e))\)</span>，<span class="math inline">\(c_{u,v}\)</span>
+是常数。</p>
+<p>本文使用 <span class="math inline">\(r^*\)</span>
+来表示攻击者的最优成功率。 <span class="math display">\[C = \{(u, v)|u
+\in SPLIT \cup ENTRY, v \in SUCCESSORS(u)\}\]</span> <span
+class="math display">\[C^+ = \{(u, v)|(u, v) \in C, NSP(u, v) \;
+blockable\}\]</span> <span class="math display">\[C^− = \{(u, v)|(u, v)
+\in C, NSP(u, v) \; not \; blockable\}\]</span></p>
+<p>本文有以下非线性规划： <span class="math display">\[min \,
+r^∗\]</span> <span class="math display">\[r^∗ \ge r_u \, , ∀u \in
+ENTRY\]</span> <span class="math display">\[r_u \ge
+r_{DEST(u,v)}·c_{u,v}·(1-B_{BW(u,v)}), ∀(u,v) \in C^+\]</span> <span
+class="math display">\[r_u \ge r_{DEST(u,v)}·c_{u,v}, ∀(u,v) \in
+C^-\]</span> <span class="math display">\[b \ge \sum_{e \in
+BW}B_e\]</span> <span class="math display">\[r_{DA}=1\]</span> <span
+class="math display">\[r_u,r^* \in [0,1]\]</span> <span
+class="math display">\[B_e \in \{0,1\} or [0,1]\]</span></p>
+<p>上述规划最多有 <span class="math inline">\(O(\#NSP)\)</span>
+个变量和最多 <span class="math inline">\(O(\#NSP)\)</span>
+个约束（都不依赖于 <span class="math inline">\(n\)</span>）。</p>
+<p>对于纯策略阻挡，可以通过将 <span class="math inline">\(r_u \ge
+r_{DEST(u,v)}·c_{u,v}·(1−B_{BW(u,v)})\)</span> 重写为等价的线性形式
+<span class="math inline">\(r_u \ge
+r_{DEST(u,v)}·c_{u,v}−B_{BW(u,v)}\)</span>
+将上述规划转换为一个整数规划。</p>
+<h1 id="混合阻断策略">混合阻断策略</h1>
+<p>为了达到目的，这里可以将前一节的非线性规划程序转换为一个几乎是线性的程序。</p>
+<p>可以观察到，如果在最优混合策略防御下，攻击者的成功率至少为 <span
+class="math inline">\(\varepsilon\)</span>，那么这意味着防守方永远不希望以严格大于
+<span class="math inline">\(1 - \varepsilon\)</span>
+的概率阻挡任何边。</p>
+<p>基于这一观察，本文强制要求不以超过 <span class="math inline">\(1 -
+\varepsilon\)</span>
+的概率阻挡一条边，并在这一限制下求解最优防御策略。</p>
+<p>如果最终结果中，攻击者的成功率至少为 <span
+class="math inline">\(\varepsilon\)</span>，那么这个限制实际上根本不是限制。</p>
+<p>如果本文的解决方案表明攻击者的成功率低于 <span
+class="math inline">\(\varepsilon\)</span>，那么仍然有一个几乎最优的防御策略。</p>
+<p>本文设置 <span
+class="math inline">\(\varepsilon=0.01\)</span>，即对于所有 <span
+class="math inline">\(e \in BW\)</span>，要求 <span
+class="math inline">\(0 \le B_e \le 0.99\)</span>，而不是 <span
+class="math inline">\(0 \le B_e \le 1\)</span>。</p>
+<p>通过上述观察可以将涉及乘法的非线性规划程序转换为几乎是线性的程序。</p>
+<p>技巧是将 <span class="math inline">\(r_u\)</span> 替换为 <span
+class="math inline">\(r&#39;_u = −ln(r_u)\)</span>，将 <span
+class="math inline">\(r&#39;^*\)</span> 替换为 <span
+class="math inline">\(r&#39;^* = −ln(r^*)\)</span>，将 <span
+class="math inline">\(B_e\)</span> 替换为 <span
+class="math inline">\(B&#39;_e = − ln(1 − B_e)\)</span>，最后将 <span
+class="math inline">\(c_{u,v}\)</span> 替换为 <span
+class="math inline">\(c&#39;_{u,v} = − ln(c_{u,v})\)</span>。</p>
+<p>则变量现在是 <span
+class="math inline">\(r&#39;_u,r&#39;^*,B&#39;_e\)</span>。由于自然对数的单调性，可以将之前的非线性规划重写为：
+<span class="math display">\[max \, r&#39;^{∗}\]</span> <span
+class="math display">\[r&#39;^{∗} ≥ r&#39;_u \, , ∀u \in ENTRY \]</span>
+<span class="math display">\[r&#39;_u ≥
+r&#39;_{DEST(u,v)}+c&#39;_{u,v}+B&#39;_{BW(u,v)}, ∀(u,v) \in
+C^+\]</span> <span class="math display">\[r&#39;_u ≥
+r&#39;_{DEST(u,v)}+c&#39;_{u,v}, ∀(u,v) \in C^-\]</span> <span
+class="math display">\[b ≥ \sum_{e \in BW}(1-e^{-B&#39;_e})\]</span>
+<span class="math display">\[r&#39;_{DA}=0\]</span> <span
+class="math display">\[r&#39;_u,r&#39;^* \in [0,\infty)\]</span> <span
+class="math display">\[B&#39;_e \in [0,-ln(0.01)]\]</span>
+不幸的是，上述程序不是线性的，因为预算约束不是线性的。</p>
+<p>此外，上述程序甚至不是凸的：由于 <span class="math inline">\(1 −
+e^{−x}\)</span> 是凹的，两个可行解的平均值可能会违反预算约束。</p>
+<h2 id="迭代-lp-近似启发式算法">迭代 LP 近似启发式算法</h2>
+<p>可以注意到 <span class="math inline">\(1 − e^{−x}\)</span>
+是增加的，也就是说，只要降低 <span class="math inline">\(b&#39;\)</span>
+的总和，最终将达到一个满足预算约束的情况。</p>
+<p>即如果将预算约束重新表述为 <span class="math inline">\(b&#39; \ge
+\sum_{e \in BW}B&#39;_e\)</span>，这是一个线性约束。</p>
+<p>然后可以猜测一个值 <span
+class="math inline">\(b&#39;\)</span>，然后解决对应的 <span
+class="math inline">\(LP\)</span>。</p>
+<p>接下来验证 <span class="math inline">\(LP\)</span>
+解是否也满足原始的非线性预算约束。如果是的话，那么这意味着可以增加对
+<span class="math inline">\(b&#39;\)</span> 的猜测（增加 <span
+class="math inline">\(b&#39;\)</span> 意味着花费更多预算）。</p>
+<p>如果 <span class="math inline">\(LP\)</span>
+解违反了原始的非线性预算约束，那么这意味着应该减少对 <span
+class="math inline">\(b&#39;\)</span> 的猜测。</p>
+<p>一个好的 <span class="math inline">\(b&#39;\)</span> 的猜测可以通过从
+<span class="math inline">\(0\)</span> 到 <span
+class="math inline">\(−|BW| ln(0.01)\)</span> 的二分搜索获得。</p>
+<h2 id="基于-mip-的近似方法">基于 MIP 的近似方法</h2>
+<p>另一种解决非线性预算约束的方法是将 <span
+class="math inline">\(B_e\)</span> 添加回模型中（对于 <span
+class="math inline">\(e \in BW，0 \le B_e \le 0.99\)</span>）。</p>
+<p>这样，预算约束 <span class="math inline">\(\sum_{e \in BW} B_e \le
+b\)</span> 又变成线性的了，不过还需要将 <span
+class="math inline">\(B_e\)</span> 和 <span
+class="math inline">\(B&#39;_e\)</span>
+连接起来，因此引入一组新的非线性约束，即 <span
+class="math inline">\(B&#39;_e =−ln(1−B_e), e \in BW\)</span>。</p>
+<p>函数 <span class="math inline">\(− ln(1 − x)\)</span>
+在一个小区间内接近一条直线。如果 <span class="math inline">\(x \in [a,
+b]\)</span>，连接 <span class="math inline">\((a, − ln(1 − a))\)</span>
+和 <span class="math inline">\((b, − ln(1 − b))\)</span> 的直线是 <span
+class="math inline">\(− ln(1 − x)\)</span> 的一个上界。表示 <span
+class="math inline">\(− ln(1 − x)\)</span> 下界的直线是在区间中点 <span
+class="math inline">\(a+b\)</span> 处的切线。</p>
+<p>给定一个特定的 <span class="math inline">\(Be\)</span>，可以将 <span
+class="math inline">\(Be\)</span> 的区域 <span class="math inline">\([0,
+0.99]\)</span> 划分为多个较小的区间。对于每个区间，有两条直线分别表示
+<span class="math inline">\(− ln(1 − x)\)</span> 的下界和上界。</p>
+<p>可以连接这些区域组成 <span class="math inline">\(g_L(x)\)</span> 和
+<span class="math inline">\(g_U(x)\)</span>，它们分别是 <span
+class="math inline">\(− ln(1 − x)\)</span> 的分段线性下界和上界。然后将
+<span class="math inline">\(B&#39;_e =−ln(1−Be)\)</span> 替换为 <span
+class="math inline">\(B&#39;_e =g_L(Be)\)</span> 或 <span
+class="math inline">\(B&#39;_e
+=g_U(Be)\)</span>，分别创建两个不同的混合整数规划程序。</p>
+<p>最后使用 <a
+target="_blank" rel="noopener" href="https://pubsonline.informs.org/doi/abs/10.1287/mnsc.49.9.1268.16570"><strong>Croxton</strong></a>
+等人提出的多选模型来实现带有辅助二进制变量的分段线性约束。</p>
+<p>当区间足够细时，实验上，所得到的可行防御接近于下界【因此接近于最优】。</p>
+<h1 id="refer">REFER</h1>
+<p><a
+target="_blank" rel="noopener" href="https://joeylian.github.io/2020/06/29/2020-06-30-%E5%9B%BE%E7%9A%84%E6%A0%91%E5%88%86%E8%A7%A3/">图的树分解</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/loverpaul/post-xue-xi-bi-ji-shu-fen-xie-suan-fa">【学习笔记】树分解算法</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://www.win.tue.nl/~nikhil/courses/2015/2WO08/treewidth-erickson.pdf">Treewidth</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://www.zhihu.com/question/25560707/answer/31133440">什么是混合整数线性规划(MILP)模型？
+- JH CHEN的回答 - 知乎</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://www.jsjkx.com/CN/article/openArticlePDF.jsp?id=19020">图的树分解算法及其应用</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Paper/" rel="tag"><i class="fa fa-tag"></i> Paper</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023-Final/" rel="prev" title="2024 要成为想成为的人">
+                  <i class="fa fa-chevron-left"></i> 2024 要成为想成为的人
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Paper-Efficient-Detection-of-Java-Deserialization-Gadget-Chains-via-Bottom-up-Gadget-Search-and-Dataflow-aided-Payload-Construction/" rel="next" title="论文 Efficient Detection of Java Deserialization Gadget Chains via Bottom-up Gadget Search and Dataflow-aided Payload Construction">
+                  论文 Efficient Detection of Java Deserialization Gadget Chains via Bottom-up Gadget Search and Dataflow-aided Payload Construction <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs-container">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟NaN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"Cz7uQCDoGwWYGv80HeDq40mZr1rrmYy9tHhCpcWG95DFzOD1TJKLXtbTxFqWBCr5","shortname":"southseast","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

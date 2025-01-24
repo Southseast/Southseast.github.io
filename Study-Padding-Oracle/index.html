@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"southsea.st","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":false,"nav":null,"activeClass":"disqusjs"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言 在AES加密算法中分有AES-128、AES-192、AES-256，而每种对加密数据的分块长度又各有要求，分别为16byte【128位、24byte【192位和32byte【256位。 在AES加密的CBC模式中，若加密数据的长度模除分块长度而有余，则会在末尾填充一组数据。 即**(pad_length-len(data)%pad_length)*hex(pad_length-len(da">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅析 Padding Oracle Attack">
+<meta property="og:url" content="https://southsea.st/Study-Padding-Oracle/index.html">
+<meta property="og:site_name" content="南溟NaN">
+<meta property="og:description" content="前言 在AES加密算法中分有AES-128、AES-192、AES-256，而每种对加密数据的分块长度又各有要求，分别为16byte【128位、24byte【192位和32byte【256位。 在AES加密的CBC模式中，若加密数据的长度模除分块长度而有余，则会在末尾填充一组数据。 即**(pad_length-len(data)%pad_length)*hex(pad_length-len(da">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://southsea.st/images/Study-Padding-Oracle/CBC_Encryption.png">
+<meta property="og:image" content="https://southsea.st/images/Study-Padding-Oracle/CBC_Decryption.png">
+<meta property="article:published_time" content="2019-08-08T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-24T03:34:53.074Z">
+<meta property="article:author" content="南溟NaN">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="Crypto">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://southsea.st/images/Study-Padding-Oracle/CBC_Encryption.png">
+
+
+<link rel="canonical" href="https://southsea.st/Study-Padding-Oracle/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://southsea.st/Study-Padding-Oracle/","path":"Study-Padding-Oracle/","title":"浅析 Padding Oracle Attack"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>浅析 Padding Oracle Attack | 南溟NaN</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">南溟NaN</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">在这浩瀚星河的你是什么</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">68</span></a></li><li class="menu-item menu-item-links"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BE%E4%BE%8B"><span class="nav-number">1.1.</span> <span class="nav-text">举例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86"><span class="nav-number">2.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86"><span class="nav-number">3.</span> <span class="nav-text">解密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8Epadding-oracle"><span class="nav-number">4.</span> <span class="nav-text">关于Padding Oracle</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BE%E4%BE%8B-1"><span class="nav-number">4.1.</span> <span class="nav-text">举例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text">例题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#hulk"><span class="nav-number">5.1.</span> <span class="nav-text">hulk</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%BE%E4%BE%8B-2"><span class="nav-number">5.1.1.</span> <span class="nav-text">举例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#refer"><span class="nav-number">6.</span> <span class="nav-text">Refer</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟NaN"
+      src="https://avatars.githubusercontent.com/u/34373144?v=4">
+  <p class="site-author-name" itemprop="name">南溟NaN</p>
+  <div class="site-description" itemprop="description">在这浩瀚星河的你是什么</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:st.southsea@gmail.com" title="E-Mail → mailto:st.southsea@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/Study-Padding-Oracle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/34373144?v=4">
+      <meta itemprop="name" content="南溟NaN">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟NaN">
+      <meta itemprop="description" content="在这浩瀚星河的你是什么">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="浅析 Padding Oracle Attack | 南溟NaN">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          浅析 Padding Oracle Attack
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-08-08 00:00:00" itemprop="dateCreated datePublished" datetime="2019-08-08T00:00:00+00:00">2019-08-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="前言">前言</h3>
+<p>在<strong>AES</strong>加密算法中分有<strong>AES-128</strong>、<strong>AES-192</strong>、<strong>AES-256</strong>，而每种对加密数据的分块长度又各有要求，分别为<strong>16byte</strong>【<strong>128</strong>位、<strong>24byte</strong>【<strong>192</strong>位和<strong>32byte</strong>【<strong>256</strong>位。</p>
+<p>在<strong>AES</strong>加密的<strong>CBC</strong>模式中，若加密数据的长度模除分块长度而有余，则会在末尾填充一组数据。</p>
+<p>即**(pad_length-len(data)%pad_length)*hex(pad_length-len(data)%pad_length)**。</p>
+<p>若模除后为零，则直接填充一组如上公式所示的数据。</p>
+<span id="more"></span>
+<h4 id="举例">举例</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">数据：</span><br><span class="line">south</span><br><span class="line">补齐后的数据：</span><br><span class="line">south/x13/x13/x13/x13/x13/x13/x13/x13/x13/x13/x13</span><br><span class="line">数据：</span><br><span class="line">southseast</span><br><span class="line">补齐后的数据：</span><br><span class="line">southseast/x06/x06/x06/x06/x06/x06</span><br><span class="line">数据：</span><br><span class="line">southseastisacat</span><br><span class="line">补齐后的数据：</span><br><span class="line">southseastisacat/x10/x10/x10/x10/x10/x10/x10/x10/x10/x10/x10/x10/x10/x10/x10/x10</span><br></pre></td></tr></table></figure>
+<h3 id="加密">加密</h3>
+<figure>
+<img src="/images/Study-Padding-Oracle/CBC_Encryption.png"
+alt="CBC_Encryption.png" />
+<figcaption aria-hidden="true">CBC_Encryption.png</figcaption>
+</figure>
+<p>首先是对明文分组，根据选择的模式所要求的分组长度来分组，填充数据块。</p>
+<p>接着初始化一个<strong>IV</strong>【初始向量和<strong>Key</strong>【秘钥。</p>
+<p>再将第一组明文和<strong>IV</strong>异或，后同<strong>Key</strong>进行块加密。</p>
+<p>然后将得到的密文作为下一组明文进行快加密前的<strong>IV</strong>用来异或。</p>
+<p>如此反复，最后拼接所有密文和<strong>IV</strong>。</p>
+<h3 id="解密">解密</h3>
+<figure>
+<img src="/images/Study-Padding-Oracle/CBC_Decryption.png"
+alt="CBC_Decryption.png" />
+<figcaption aria-hidden="true">CBC_Decryption.png</figcaption>
+</figure>
+<p>首先是从密文中截取出<strong>IV</strong>【一般是拼接在头尾。</p>
+<p>然后对密文分组，将第一组密文先同秘钥进行解密。</p>
+<p>接着和<strong>IV</strong>异或得到明文，第二组的密文解密后同上一组的密文异或得到明文。</p>
+<p>如此反复到最后一组，得到明文后判断最后填充的数据是否符合**(pad_length-len(data)%pad_length)*hex(pad_length-len(data)%pad_length)<strong>，若不对，即</strong>Padding**错误，抛出异常。</p>
+<h3 id="关于padding-oracle">关于Padding Oracle</h3>
+<p>在<strong>CBC</strong>模式中，<strong>IV</strong>是不要求保密的，故对于攻击者而言，可以获取到的数据有<strong>IV</strong>和密文。</p>
+<p>在确定了加密模式后，提取<strong>IV</strong>，并分组密文，然后构造另一组<strong>IV</strong>拼接密文发回服务器来对其进行爆破。</p>
+<h4 id="举例-1">举例</h4>
+<p>此处选择了<strong>AES-128</strong>作为例子，明文长度为<strong>17</strong>位，故补齐至<strong>32</strong>位后分<strong>2</strong>组进行加密。</p>
+<p>后伪造一组<strong>IV</strong>来和第一组密文一起发回服务器，让其进行判定。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">明文：</span><br><span class="line">southseastisacat!</span><br><span class="line">IV：</span><br><span class="line">\x31\x32\x33\x34\x35\x36\x37\x38\x38\x37\x36\x35\x34\x33\x32\x31</span><br><span class="line">密文：</span><br><span class="line">\xbf\x61\xb3\x1b\xd3\x6a\x47\x11\xb9\xcc\xd7\x11\x7b\x8a\x42\xd9\x3a\x1e\x37\xe9\xd2\xde\xfa\xca\xa2\x50\xfd\xc0\x6e\xf2\x11\xc1</span><br></pre></td></tr></table></figure>
+<p>对最后一位字符进行爆破，构造<strong>0x00</strong>到<strong>0xff</strong>，使得第一组密文的最后一个字节解密的结果同IV异或结果为<strong>0x01</strong>，导致<strong>Padding</strong>通过，服务器返回正确结果。</p>
+<p>这时<strong>IV</strong>的最后一个字节和原<strong>IV</strong>的最后一个字节还有<strong>0x01</strong>异或，即<strong>0x44^0x31^0x01</strong>，得到结果为<strong>t</strong>，是第一组明文的最后一个字符。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">第一组密文：</span><br><span class="line">\xbf\x61\xb3\x1b\xd3\x6a\x47\x11\xb9\xcc\xd7\x11\x7b\x8a\x42\xd9</span><br><span class="line">IV：</span><br><span class="line">\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x44</span><br></pre></td></tr></table></figure>
+<p>这个就是逆推的公式。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">∵</span><br><span class="line">decryp(cipher) ^ iv = plain</span><br><span class="line">decryp(cipher) ^ fake_iv = new_plain </span><br><span class="line">new_plain[-1:] = 0x01</span><br><span class="line">∴</span><br><span class="line">fake_iv[:-1] ^ iv[:-1] ^ plain[:-1] = 0x01</span><br></pre></td></tr></table></figure>
+<h3 id="例题">例题</h3>
+<h4 id="hulk">hulk</h4>
+<p>这是<strong>BCTF 2017</strong>的一道题。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Unbuffered</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">   <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, stream</span>):</span><br><span class="line">       self.stream = stream</span><br><span class="line">   <span class="keyword">def</span> <span class="title function_">write</span>(<span class="params">self, data</span>):</span><br><span class="line">       self.stream.write(data)</span><br><span class="line">       self.stream.flush()</span><br><span class="line">   <span class="keyword">def</span> <span class="title function_">__getattr__</span>(<span class="params">self, attr</span>):</span><br><span class="line">       <span class="keyword">return</span> <span class="built_in">getattr</span>(self.stream, attr)</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">sys.stdout = Unbuffered(sys.stdout)</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">from</span> mycryptolib <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hex2charlist</span>(<span class="params">hexstr</span>):</span><br><span class="line">    charlist = []</span><br><span class="line">    length = <span class="built_in">len</span>(hexstr)</span><br><span class="line">    <span class="keyword">if</span> length % <span class="number">2</span> != <span class="number">0</span>:</span><br><span class="line">        hexstr = <span class="string">&#x27;0&#x27;</span> + hexstr</span><br><span class="line">        length += <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, length, <span class="number">2</span>):</span><br><span class="line">        charlist.append(<span class="built_in">chr</span>(<span class="built_in">int</span>(hexstr[i]+hexstr[i+<span class="number">1</span>], <span class="number">16</span>)))</span><br><span class="line">    <span class="keyword">return</span> charlist</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    pattern = <span class="string">&#x27;\A[0-9a-fA-F]+\Z&#x27;</span></span><br><span class="line">    request1 = raw_input(<span class="string">&#x27;Give me the first hex vaule to encrypt: 0x&#x27;</span>).strip()</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(request1) &gt; <span class="number">96</span> <span class="keyword">or</span> <span class="keyword">not</span> re.<span class="keyword">match</span>(pattern, request1):</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&#x27;invalid input, bye!&#x27;</span></span><br><span class="line">        exit(<span class="number">0</span>)</span><br><span class="line">    plaintext1 = <span class="string">&quot;&quot;</span>.join(item <span class="keyword">for</span> item <span class="keyword">in</span> hex2charlist(request1)) + flag</span><br><span class="line">    ciphertext1 = encrypt(plaintext1, refresh_key = <span class="literal">True</span>)</span><br><span class="line">    plaintext1_str = request1+<span class="string">&#x27;|flag&#x27;</span></span><br><span class="line">    ciphertext1_str = ciphertext1.encode(<span class="string">&#x27;hex&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&#x27;plaintext: 0x%s\nciphertext: 0x%s&#x27;</span> % (plaintext1_str, ciphertext1_str)</span><br><span class="line">    </span><br><span class="line">    request2 = raw_input(<span class="string">&#x27;Give me the second hex vaule to encrypt: 0x&#x27;</span>).strip()</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(request2) &gt; <span class="number">96</span> <span class="keyword">or</span> <span class="keyword">not</span> re.<span class="keyword">match</span>(pattern, request2):</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&#x27;invalid input, bye!&#x27;</span></span><br><span class="line">        exit(<span class="number">0</span>)</span><br><span class="line">    plaintext2 = <span class="string">&quot;&quot;</span>.join(item <span class="keyword">for</span> item <span class="keyword">in</span> hex2charlist(request2))</span><br><span class="line">    ciphertext2 = encrypt(plaintext2, iv_p = <span class="built_in">str</span>(ciphertext1[-<span class="number">16</span>:]), refresh_key = <span class="literal">False</span>)</span><br><span class="line">    plaintext2_str = request2</span><br><span class="line">    ciphertext2_str = ciphertext2.encode(<span class="string">&#x27;hex&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&#x27;plaintext: 0x%s\nciphertext: 0x%s&#x27;</span> % (plaintext2_str, ciphertext2_str)</span><br></pre></td></tr></table></figure>
+<p>源码中，在对第二次获取到的明文加密时，使用的<strong>IV</strong>是第一次密文的后十六个字节，故推出这是一个<strong>AES-128</strong>加密，分组长度为<strong>16</strong>比特。</p>
+<p>此中，密文采用了<strong>ASCII</strong>十六进制的表示方法，即两个字符表示一个字节的十六进制数，这是因为密码学算法中得到的密文经常会出现不可打印字符。因此<strong>16</strong>个字节加密后得到的会是<strong>32</strong>字节的密文长度。</p>
+<p>测试了一下，在输入数据的字节数从<strong>9</strong>字节增长到<strong>10</strong>字节的时候，密文长度增加了<strong>16x2</strong>，因此根据前文，当明文模除分组长度【<strong>16</strong>为<strong>0</strong>时填充一个<strong>16x/0x10</strong>的<strong>Padding</strong>，推测出<strong>flag</strong>的长度为<strong>38</strong>字节，填充后分组加密，密文长度为<strong>48</strong>字节。</p>
+<h5 id="举例-2">举例</h5>
+<p>爆破得出<strong>flag</strong>的第<strong>1</strong>字节。</p>
+<p>构造第一次输入的<strong>Payload</strong>长度需为<strong>47</strong>字节，拼接<strong>flag</strong>后，明文长度共计<strong>85</strong>字节，共分六组。</p>
+<p>其中由于拼接明文和<strong>flag</strong>，因此第<strong>48</strong>字节为<strong>flag</strong>的第一字节，分组后位于密文的第三组最后一位，将第二组密文作为<strong>IV</strong>异或后加密。</p>
+<p>而第二次输入的明文和第一次加密的第六组密文异或后加密。</p>
+<p>所以如果第一次输入的第三组和第二次输入的第一组的<strong>IV</strong>与明文的异或结果一样，密钥也一样，那么其加密后的密文也就一样。</p>
+<p>则此处可以爆破构造输入，已知<strong>IV</strong>，可以通过爆破明文的方式。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 第一次输入的第三组加密</span><br><span class="line">fir_iv = fir_cipher[2]</span><br><span class="line">encryp(fir_plain[3] ^ fir_iv) = fir_cipher[3]</span><br><span class="line"># 第二次输入的第一组加密</span><br><span class="line">sec_iv = fir_cipher[6]</span><br><span class="line">encryp(sec_plain[1] ^ sec_iv) = sec_cipher[1]</span><br><span class="line"># 联立等式，第三组明文前十五字节已知，需要爆破fir_plain[3]最后一个字节。</span><br><span class="line">fir_plain[3] ^ fir_cipher[2] ^ fir_cipher[6] = sec_plain[1]</span><br></pre></td></tr></table></figure>
+<p>然后，使得<strong>fir_cipher[3]==sec_cipher[1]</strong>的最后一个字节就是<strong>flag</strong>的第一个字节。</p>
+<p>最后构造<strong>payload</strong>长度为<strong>46</strong>字节，引入后面拼接的<strong>flag</strong>的两个字节到第三分组，此时已知<strong>flag</strong>的第一个字节，那么继续爆破第二个字节即可，以此类推，脚本借鉴自<a
+target="_blank" rel="noopener" href="https://www.xctf.org.cn/library/details/4603ec7f0031408acca073b80edb63744f92bacb/"><strong>Nu1L</strong></a>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding: utf-8</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> zio <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line">target = (<span class="string">&#x27;127.0.0.1&#x27;</span>, <span class="number">9999</span>)</span><br><span class="line">step = <span class="number">32</span></span><br><span class="line">dic = <span class="string">&quot;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#123;&#125;&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">xor</span>(<span class="params">cipher_2, cipher_6, payload</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>.join(<span class="built_in">chr</span>(<span class="built_in">ord</span>(cipher_2[i]) ^ <span class="built_in">ord</span>(cipher_6[i]) ^ <span class="built_in">ord</span>(payload[i])) <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">16</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_flag</span>(<span class="params">i, part_flag</span>):</span><br><span class="line">    io = zio(target, timeout=<span class="number">5</span>, print_read=COLORED(NONE, <span class="string">&#x27;red&#x27;</span>), print_write=COLORED(NONE, <span class="string">&#x27;green&#x27;</span>))</span><br><span class="line">    io.read_until(<span class="string">&#x27;encrypt: 0x&#x27;</span>)</span><br><span class="line">    <span class="comment"># 构造第一次输入明文，用于逐字节引入flag进行爆破。</span></span><br><span class="line">    fir_plain = (<span class="string">&#x27;a&#x27;</span> * (<span class="number">48</span> - i)).encode(<span class="string">&#x27;hex&#x27;</span>)</span><br><span class="line">    io.writeline(fir_plain)</span><br><span class="line">    io.read_until(<span class="string">&#x27;ciphertext: 0x&#x27;</span>)</span><br><span class="line">    <span class="comment"># 截取密文。</span></span><br><span class="line">    fir_cipher = io.read_line()[:-<span class="number">1</span>]</span><br><span class="line">    <span class="comment"># 分组密文。</span></span><br><span class="line">    fir_cipher = [fir_cipher[j:j + step] <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(fir_cipher), step)]</span><br><span class="line">    <span class="comment"># 构造第二次输入明文，用于爆破最后一字节flag。</span></span><br><span class="line">    payload = (<span class="string">&#x27;a&#x27;</span> * (<span class="number">39</span> - <span class="built_in">len</span>(flag + part_flag)) + flag + part_flag)[-<span class="number">16</span>:]</span><br><span class="line">    <span class="comment"># 异或</span></span><br><span class="line">    sec_plain = xor(fir_cipher[<span class="number">1</span>].decode(<span class="string">&#x27;hex&#x27;</span>), fir_cipher[-<span class="number">1</span>].decode(<span class="string">&#x27;hex&#x27;</span>), payload).encode(<span class="string">&#x27;hex&#x27;</span>)</span><br><span class="line">    io.read_until(<span class="string">&#x27;encrypt: 0x&#x27;</span>)</span><br><span class="line">    io.writeline(sec_plain)</span><br><span class="line">    io.read_until(<span class="string">&#x27;ciphertext: 0x&#x27;</span>)</span><br><span class="line">    sec_cipher = io.read_line()[:<span class="number">32</span>]</span><br><span class="line">    io.close()</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> fir_cipher[<span class="number">2</span>] == sec_cipher <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">1</span>, <span class="number">39</span>):</span><br><span class="line">    <span class="keyword">for</span> part_flag <span class="keyword">in</span> dic:</span><br><span class="line">        <span class="keyword">if</span> get_flag(i, part_flag):</span><br><span class="line">            flag += part_flag</span><br><span class="line">            sys.stdout.write(<span class="string">&quot;\r%s&quot;</span> % flag)</span><br><span class="line">            sys.stdout.flush()</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<h3 id="refer">Refer</h3>
+<p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/15504.html">我对Padding
+Oracle攻击的分析和思考（详细）</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ad8bdd87e131">Web狗要懂的Padding
+Oracle攻击</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://www.jianshu.com/p/1851f778e579?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">Padding
+Oracle</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"><i class="fa fa-tag"></i> CTF</a>
+              <a href="/tags/Crypto/" rel="tag"><i class="fa fa-tag"></i> Crypto</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019-De1CTF/" rel="prev" title="2019 De1CTF 部分题解">
+                  <i class="fa fa-chevron-left"></i> 2019 De1CTF 部分题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019-XMan-Personal/" rel="next" title="第四届XMan个人排位赛 部分题解">
+                  第四届XMan个人排位赛 部分题解 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs-container">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟NaN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"Cz7uQCDoGwWYGv80HeDq40mZr1rrmYy9tHhCpcWG95DFzOD1TJKLXtbTxFqWBCr5","shortname":"southseast","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

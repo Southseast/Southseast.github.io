@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"southsea.st","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":false,"nav":null,"activeClass":"disqusjs"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="XMan Day2，整理一下bibi师傅的笔记。 古典密码部分。 古典密码学通常可以拿到加密算法【否则要么脑洞要么就是特征明显的题，且大部分是唯密文攻击。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="密码学 从入门到放弃 古典密码">
+<meta property="og:url" content="https://southsea.st/Study-Cipher-Classical/index.html">
+<meta property="og:site_name" content="南溟NaN">
+<meta property="og:description" content="XMan Day2，整理一下bibi师傅的笔记。 古典密码部分。 古典密码学通常可以拿到加密算法【否则要么脑洞要么就是特征明显的题，且大部分是唯密文攻击。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-08-02T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-24T03:34:53.073Z">
+<meta property="article:author" content="南溟NaN">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="Crypto">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://southsea.st/Study-Cipher-Classical/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://southsea.st/Study-Cipher-Classical/","path":"Study-Cipher-Classical/","title":"密码学 从入门到放弃 古典密码"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>密码学 从入门到放弃 古典密码 | 南溟NaN</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">南溟NaN</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">在这浩瀚星河的你是什么</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">68</span></a></li><li class="menu-item menu-item-links"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E7%A0%81"><span class="nav-number">1.</span> <span class="nav-text">编码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#hex"><span class="nav-number">1.1.</span> <span class="nav-text">HEX</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#base%E5%AE%B6%E6%97%8F"><span class="nav-number">1.2.</span> <span class="nav-text">Base家族</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98"><span class="nav-number">1.2.1.</span> <span class="nav-text">例题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">1.3.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81"><span class="nav-number">2.</span> <span class="nav-text">古典密码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E4%BD%8D%E5%AF%86%E7%A0%81"><span class="nav-number">2.1.</span> <span class="nav-text">移位密码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E7%A7%BB%E4%BD%8D"><span class="nav-number">2.1.1.</span> <span class="nav-text">简单移位</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%B2%E8%B7%AF%E5%AF%86%E7%A0%81"><span class="nav-number">2.1.2.</span> <span class="nav-text">曲路密码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%91%E5%BD%B1%E5%AF%86%E7%A0%81"><span class="nav-number">2.1.3.</span> <span class="nav-text">云影密码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%85%E6%A0%8F%E5%AF%86%E7%A0%81"><span class="nav-number">2.1.4.</span> <span class="nav-text">栅栏密码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%BF%E4%BB%A3%E5%AF%86%E7%A0%81"><span class="nav-number">2.2.</span> <span class="nav-text">替代密码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E8%A1%A8%E6%9B%BF%E6%8D%A2"><span class="nav-number">2.2.1.</span> <span class="nav-text">单表替换</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%87%AF%E6%92%92%E5%AF%86%E7%A0%81"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">凯撒密码</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98-1"><span class="nav-number">2.2.1.1.1.</span> <span class="nav-text">例题</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%83%E7%89%B9%E5%B7%B4%E4%BB%80%E7%A0%81"><span class="nav-number">2.2.1.2.</span> <span class="nav-text">埃特巴什码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%B9%E6%A0%B9%E5%AF%86%E7%A0%81"><span class="nav-number">2.2.1.3.</span> <span class="nav-text">培根密码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%8C%AA%E5%9C%88%E5%AF%86%E7%A0%81"><span class="nav-number">2.2.1.4.</span> <span class="nav-text">猪圈密码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%BF%E5%B0%84%E5%AF%86%E7%A0%81"><span class="nav-number">2.2.1.5.</span> <span class="nav-text">仿射密码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E8%A1%A8%E6%9B%BF%E6%8D%A2"><span class="nav-number">2.2.2.</span> <span class="nav-text">多表替换</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%B4%E5%90%89%E5%B0%BC%E4%BA%9A%E5%AF%86%E7%A0%81"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">维吉尼亚密码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%8D%E9%A2%91%E7%BB%9F%E8%AE%A1"><span class="nav-number">2.2.3.</span> <span class="nav-text">词频统计</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#twctf2016-vigenere"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">TWCTF2016 vigenere</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%8D%A1%E8%A5%BF%E6%96%AF%E5%9F%BA%E5%AE%9E%E9%AA%8C"><span class="nav-number">2.2.3.1.1.</span> <span class="nav-text">卡西斯基实验</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟NaN"
+      src="https://avatars.githubusercontent.com/u/34373144?v=4">
+  <p class="site-author-name" itemprop="name">南溟NaN</p>
+  <div class="site-description" itemprop="description">在这浩瀚星河的你是什么</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:st.southsea@gmail.com" title="E-Mail → mailto:st.southsea@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/Study-Cipher-Classical/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/34373144?v=4">
+      <meta itemprop="name" content="南溟NaN">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟NaN">
+      <meta itemprop="description" content="在这浩瀚星河的你是什么">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="密码学 从入门到放弃 古典密码 | 南溟NaN">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          密码学 从入门到放弃 古典密码
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-08-02 00:00:00" itemprop="dateCreated datePublished" datetime="2019-08-02T00:00:00+00:00">2019-08-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><strong>XMan
+Day2</strong>，整理一下<strong>bibi</strong>师傅的笔记。</p>
+<p>古典密码部分。</p>
+<p>古典密码学通常可以拿到加密算法【否则要么脑洞要么就是特征明显的题，且大部分是唯密文攻击。</p>
+<span id="more"></span>
+<p>前情提要介绍一下编码</p>
+<h2 id="编码">编码</h2>
+<p>编码是为了传输方便以及协议中的格式统一。</p>
+<h3 id="hex">HEX</h3>
+<ul>
+<li>实际存储内容的<strong>16</strong>进制表示。</li>
+<li>冗余：<strong>1：2</strong>【<strong>1</strong>个<strong>byte</strong>会变成<strong>2</strong>个<strong>bytes</strong>进行存储。</li>
+<li>识别：只存在<strong>0-9</strong>，<strong>A-F</strong>，<strong>a-f</strong>。</li>
+<li>一般用处：可作为各类编码转换的过渡，最常见的是<strong>str</strong>和<strong>int</strong>的转换。</li>
+</ul>
+<h3 id="base家族">Base家族</h3>
+<ul>
+<li><strong>Base64/32/16</strong>：用<strong>64/32/16</strong>种<strong>bytes</strong>表示所有的<strong>bytes</strong>。</li>
+<li>越多的可见字符数来表现其他所有的字符越节省空间。</li>
+<li><strong>Base16==hex</strong>【使用特定的<strong>16</strong>个字符表达所有的字符，<strong>2<sup>4→2</sup>8</strong>。</li>
+<li><strong>Base64</strong>【<strong>base32</strong>同理，使用特定的<strong>64</strong>个字符表达所有的字符，
+<strong>2<sup>6→2</sup>8</strong>。</li>
+<li>单个字符取前六个<strong>bits</strong>根据编码表转码，后两位<strong>bits</strong>归入下一个字符。</li>
+</ul>
+<h4 id="例题">例题</h4>
+<p>当<strong>Base64</strong>的表被替换，该如何编码解码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /usr/bin/python</span></span><br><span class="line"><span class="comment"># encoding: utf-8</span></span><br><span class="line">base64_table = [<span class="string">&#x27;=&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;E&#x27;</span>, <span class="string">&#x27;F&#x27;</span>, <span class="string">&#x27;G&#x27;</span>, <span class="string">&#x27;H&#x27;</span>, <span class="string">&#x27;I&#x27;</span>, <span class="string">&#x27;J&#x27;</span>, <span class="string">&#x27;K&#x27;</span>, <span class="string">&#x27;L&#x27;</span>, <span class="string">&#x27;M&#x27;</span>, <span class="string">&#x27;N&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;P&#x27;</span>, <span class="string">&#x27;Q&#x27;</span>, <span class="string">&#x27;R&#x27;</span>, <span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;T&#x27;</span>,</span><br><span class="line">                <span class="string">&#x27;U&#x27;</span>, <span class="string">&#x27;V&#x27;</span>, <span class="string">&#x27;W&#x27;</span>, <span class="string">&#x27;X&#x27;</span>, <span class="string">&#x27;Y&#x27;</span>, <span class="string">&#x27;Z&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>, <span class="string">&#x27;g&#x27;</span>, <span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;i&#x27;</span>, <span class="string">&#x27;j&#x27;</span>, <span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;l&#x27;</span>, <span class="string">&#x27;m&#x27;</span>, <span class="string">&#x27;n&#x27;</span>, <span class="string">&#x27;o&#x27;</span>,</span><br><span class="line">                <span class="string">&#x27;p&#x27;</span>, <span class="string">&#x27;q&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;s&#x27;</span>, <span class="string">&#x27;t&#x27;</span>, <span class="string">&#x27;u&#x27;</span>, <span class="string">&#x27;v&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, <span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;y&#x27;</span>, <span class="string">&#x27;z&#x27;</span>, <span class="string">&#x27;0&#x27;</span>, <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;4&#x27;</span>, <span class="string">&#x27;5&#x27;</span>, <span class="string">&#x27;6&#x27;</span>, <span class="string">&#x27;7&#x27;</span>, <span class="string">&#x27;8&#x27;</span>, <span class="string">&#x27;9&#x27;</span>,</span><br><span class="line">                <span class="string">&#x27;+&#x27;</span>, <span class="string">&#x27;/&#x27;</span>][::-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">encode_b64</span>(<span class="params">s</span>):</span><br><span class="line">    l = <span class="built_in">len</span>(s)</span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line">    result = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">while</span> i &lt; l:</span><br><span class="line">        <span class="comment"># 将字符转换为二进制编码，然后对齐</span></span><br><span class="line">        s1 = s[i]</span><br><span class="line">        b1 = <span class="built_in">bin</span>(<span class="built_in">ord</span>(s1))[<span class="number">2</span>:]</span><br><span class="line">        cb1 = b1.rjust(<span class="number">8</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">        i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> i &gt;= l:</span><br><span class="line">            cb2 = <span class="string">&#x27;00000000&#x27;</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            s2 = s[i]</span><br><span class="line">            b2 = <span class="built_in">bin</span>(<span class="built_in">ord</span>(s2))[<span class="number">2</span>:]</span><br><span class="line">            cb2 = b2.rjust(<span class="number">8</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">        i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> i &gt;= l:</span><br><span class="line">            cb3 = <span class="string">&#x27;00000000&#x27;</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            s3 = s[i]</span><br><span class="line">            b3 = <span class="built_in">bin</span>(<span class="built_in">ord</span>(s3))[<span class="number">2</span>:]</span><br><span class="line">            cb3 = b3.rjust(<span class="number">8</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">        <span class="comment"># 将三字节转换为四字节</span></span><br><span class="line">        cb = cb1 + cb2 + cb3</span><br><span class="line">        rb1 = cb[:<span class="number">6</span>]</span><br><span class="line">        rb2 = cb[<span class="number">6</span>:<span class="number">12</span>]</span><br><span class="line">        rb3 = cb[<span class="number">12</span>:<span class="number">18</span>]</span><br><span class="line">        rb4 = cb[<span class="number">18</span>:]</span><br><span class="line">        <span class="comment"># 转换后的编码转为十进制备用</span></span><br><span class="line">        ri1 = <span class="built_in">int</span>(rb1, <span class="number">2</span>)</span><br><span class="line">        ri2 = <span class="built_in">int</span>(rb2, <span class="number">2</span>)</span><br><span class="line">        ri3 = <span class="built_in">int</span>(rb3, <span class="number">2</span>)</span><br><span class="line">        ri4 = <span class="built_in">int</span>(rb4, <span class="number">2</span>)</span><br><span class="line">        <span class="comment"># 处理末尾为０的情况，以＇＝＇填充</span></span><br><span class="line">        <span class="keyword">if</span> i - <span class="number">1</span> &gt;= l <span class="keyword">and</span> ri3 == <span class="number">0</span>:</span><br><span class="line">            ri3 = -<span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> i &gt;= l <span class="keyword">and</span> ri4 == <span class="number">0</span>:</span><br><span class="line">            ri4 = -<span class="number">1</span></span><br><span class="line">        result += base64_table[ri1] + base64_table[ri2] + base64_table[ri3] + base64_table[ri4]</span><br><span class="line">        i += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> encode_b64(<span class="built_in">open</span>(<span class="string">&quot;flag&quot;</span>, <span class="string">&quot;r&quot;</span>).read())</span><br><span class="line"><span class="comment"># output: mZOemISXmpOTkKCHkp6Rgv==</span></span><br></pre></td></tr></table></figure>
+<p>两种思路，一是自己实现一个<strong>base64</strong>的解密算法来解，二是替换原表中的字符来恢复正常的编码，这儿列出第二种解题脚本。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">base64_table = [<span class="string">&#x27;=&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;E&#x27;</span>, <span class="string">&#x27;F&#x27;</span>, <span class="string">&#x27;G&#x27;</span>, <span class="string">&#x27;H&#x27;</span>, <span class="string">&#x27;I&#x27;</span>, <span class="string">&#x27;J&#x27;</span>, <span class="string">&#x27;K&#x27;</span>, <span class="string">&#x27;L&#x27;</span>, <span class="string">&#x27;M&#x27;</span>, <span class="string">&#x27;N&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;P&#x27;</span>, <span class="string">&#x27;Q&#x27;</span>, <span class="string">&#x27;R&#x27;</span>, <span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;T&#x27;</span>,</span><br><span class="line">                <span class="string">&#x27;U&#x27;</span>, <span class="string">&#x27;V&#x27;</span>, <span class="string">&#x27;W&#x27;</span>, <span class="string">&#x27;X&#x27;</span>, <span class="string">&#x27;Y&#x27;</span>, <span class="string">&#x27;Z&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>, <span class="string">&#x27;g&#x27;</span>, <span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;i&#x27;</span>, <span class="string">&#x27;j&#x27;</span>, <span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;l&#x27;</span>, <span class="string">&#x27;m&#x27;</span>, <span class="string">&#x27;n&#x27;</span>, <span class="string">&#x27;o&#x27;</span>,</span><br><span class="line">                <span class="string">&#x27;p&#x27;</span>, <span class="string">&#x27;q&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;s&#x27;</span>, <span class="string">&#x27;t&#x27;</span>, <span class="string">&#x27;u&#x27;</span>, <span class="string">&#x27;v&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, <span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;y&#x27;</span>, <span class="string">&#x27;z&#x27;</span>, <span class="string">&#x27;0&#x27;</span>, <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;4&#x27;</span>, <span class="string">&#x27;5&#x27;</span>, <span class="string">&#x27;6&#x27;</span>, <span class="string">&#x27;7&#x27;</span>, <span class="string">&#x27;8&#x27;</span>, <span class="string">&#x27;9&#x27;</span>,</span><br><span class="line">                <span class="string">&#x27;+&#x27;</span>, <span class="string">&#x27;/&#x27;</span>][::-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">old_base64_table = [<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;E&#x27;</span>, <span class="string">&#x27;F&#x27;</span>, <span class="string">&#x27;G&#x27;</span>, <span class="string">&#x27;H&#x27;</span>, <span class="string">&#x27;I&#x27;</span>, <span class="string">&#x27;J&#x27;</span>, <span class="string">&#x27;K&#x27;</span>, <span class="string">&#x27;L&#x27;</span>, <span class="string">&#x27;M&#x27;</span>, <span class="string">&#x27;N&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;P&#x27;</span>, <span class="string">&#x27;Q&#x27;</span>, <span class="string">&#x27;R&#x27;</span>, <span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;T&#x27;</span>,</span><br><span class="line">                    <span class="string">&#x27;U&#x27;</span>, <span class="string">&#x27;V&#x27;</span>, <span class="string">&#x27;W&#x27;</span>, <span class="string">&#x27;X&#x27;</span>, <span class="string">&#x27;Y&#x27;</span>, <span class="string">&#x27;Z&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>, <span class="string">&#x27;g&#x27;</span>, <span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;i&#x27;</span>, <span class="string">&#x27;j&#x27;</span>, <span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;l&#x27;</span>, <span class="string">&#x27;m&#x27;</span>, <span class="string">&#x27;n&#x27;</span>,</span><br><span class="line">                    <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;p&#x27;</span>, <span class="string">&#x27;q&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;s&#x27;</span>, <span class="string">&#x27;t&#x27;</span>, <span class="string">&#x27;u&#x27;</span>, <span class="string">&#x27;v&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, <span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;y&#x27;</span>, <span class="string">&#x27;z&#x27;</span>, <span class="string">&#x27;0&#x27;</span>, <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;4&#x27;</span>, <span class="string">&#x27;5&#x27;</span>, <span class="string">&#x27;6&#x27;</span>, <span class="string">&#x27;7&#x27;</span>,</span><br><span class="line">                    <span class="string">&#x27;8&#x27;</span>, <span class="string">&#x27;9&#x27;</span>, <span class="string">&#x27;+&#x27;</span>, <span class="string">&#x27;/&#x27;</span>, <span class="string">&#x27;=&#x27;</span>, ]</span><br><span class="line">res = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="string">&quot;mZOemISXmpOTkKCHkp6Rgv==&quot;</span>:</span><br><span class="line">    res += old_base64_table[base64_table.index(i)]</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(res)</span><br></pre></td></tr></table></figure>
+<h3 id="其他"><a
+target="_blank" rel="noopener" href="https://www.tuicool.com/articles/2E3INnm">其他</a></h3>
+<p>还有<strong>URLencode</strong>、<strong>morsecode</strong>、<strong>jsfuck</strong>、<strong>uuencode</strong>、<strong>Xxencode</strong>、<strong>Unicode</strong>编码、<strong>Escape/Unescape</strong>编码、<strong>HTML</strong>实体编码等诸多编码，挖坑待补充。</p>
+<h2 id="古典密码">古典密码</h2>
+<h3 id="移位密码">移位密码</h3>
+<p>仅对密文的排列顺序进行变化。</p>
+<h4 id="简单移位">简单移位</h4>
+<p>将密文以数字<strong>k</strong>的长度<strong>4</strong>进行分组，后按<strong>k</strong>的排列顺序排列密文，而攻击方法为肉眼识别、爆破秘钥、根据<strong>flag</strong>字符串逆推。</p>
+<h4 id="曲路密码">曲路密码</h4>
+<p>一般是将明文填入一个表中，并按照一定的曲路遍历，攻击方法只需逆向遍历。</p>
+<h4 id="云影密码">云影密码</h4>
+<p>仅包含<strong>01248</strong>，以<strong>0</strong>分割，其他数字取和后按照<strong>26</strong>字母表转化。</p>
+<h4 id="栅栏密码">栅栏密码</h4>
+<p>秘钥只有一个<strong>k</strong>，表示栅栏长度。把密文按每组<strong>k</strong>个分组，循环<strong>k</strong>次，取每组第<strong>k</strong>个字符拼接。</p>
+<h3 id="替代密码">替代密码</h3>
+<p>会变更密文。</p>
+<h4 id="单表替换">单表替换</h4>
+<p>以下为特例，一般是以乱序表来替换，经典的单表替代密码就是用一个替代表对每一个位置的字符进行查表替换，词频分析可解。</p>
+<h5 id="凯撒密码">凯撒密码</h5>
+<p>通过把字母在字母表上移动一定位数来实现加密解密，秘钥空间小，可直接爆破。</p>
+<h6 id="例题-1">例题</h6>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">caesar_encrypt</span>(<span class="params">m, k</span>):</span><br><span class="line">    r = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> m:</span><br><span class="line">        r += <span class="built_in">chr</span>((<span class="built_in">ord</span>(i) + k) % <span class="number">128</span>)</span><br><span class="line">    <span class="keyword">return</span> r</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> secret <span class="keyword">import</span> m, k</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> caesar_encrypt(m, k).encode(<span class="string">&quot;base64&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># output:bXNobgJyaHB6aHRwdGgE</span></span><br></pre></td></tr></table></figure>
+<p>解法为爆破。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">caesar_encrypt</span>(<span class="params">m, k</span>):</span><br><span class="line">    r = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> m:</span><br><span class="line">        r += <span class="built_in">chr</span>((<span class="built_in">ord</span>(i) + k) % <span class="number">128</span>)</span><br><span class="line">    <span class="keyword">return</span> r</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">m = <span class="string">&quot;bXNobgJyaHB6aHRwdGgE&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">129</span>):</span><br><span class="line">    <span class="built_in">print</span>  caesar_encrypt(m.decode(<span class="string">&quot;base64&quot;</span>), i)</span><br></pre></td></tr></table></figure>
+<h5 id="埃特巴什码">埃特巴什码</h5>
+<p>通过将字母表的位置完全镜面对称后获得字母的替代表进行加密，攻击方法为将其替代回去。</p>
+<h5 id="培根密码">培根密码</h5>
+<p>AB表达两种字体，五个一组。类似二进制。</p>
+<h5 id="猪圈密码">猪圈密码</h5>
+<p>图形替代密码，不做赘述。</p>
+<h5 id="仿射密码">仿射密码</h5>
+<p>依据公式<strong>c=am+b mod n</strong>来生成仿射密码的替代表。</p>
+<ul>
+<li><strong>m</strong>为明文对应字母得到的数字。</li>
+<li><strong>n</strong>为字符数量。</li>
+<li><strong>c</strong>为密文。</li>
+<li><strong>a</strong>、<strong>b</strong>为秘钥。</li>
+</ul>
+<p>解密方法为求<strong>a</strong>关于<strong>n</strong>的逆元，公式<strong>m
+= modinv(a)(c-b) mod
+n</strong>，攻击方法有爆破、词频统计和已知明文攻击【如果知道一对<strong>(m,c)</strong>，那么知道<strong>a</strong>和<strong>b</strong>是简单的。</p>
+<h4 id="多表替换">多表替换</h4>
+<h5 id="维吉尼亚密码">维吉尼亚密码</h5>
+<p>秘钥不是固定不变的，随位置产生而改变，若密文为LOVE，则四个为一组进行循环加密。</p>
+<h4 id="词频统计"><a
+href="**http://quipqiup.com/index.php**">词频统计</a></h4>
+<p>依赖在英语语言中字母的使用频率进行分析。</p>
+<p>单表替换：统计所有字母频率，替换频率最近的。</p>
+<p>多表替换：抽取使用相同替换表的所有密文，然后使用单表替换。</p>
+<h5 id="twctf2016-vigenere">TWCTF2016 vigenere</h5>
+<p>先进行<strong>base64</strong>编码后维吉尼亚加密。</p>
+<h6 id="卡西斯基实验">卡西斯基实验</h6>
+<p>若连续三个相同字母如ABC在密文中重复出现会是什么原因。</p>
+<p>不同明文，不同秘钥：碰巧</p>
+<p>相同明文，相同秘钥：如the经常连续出现，出现的间距的秘钥长度的倍数</p>
+<p>解密方式为寻找重复出现的密文，求间距最大公约数。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"><i class="fa fa-tag"></i> CTF</a>
+              <a href="/tags/Crypto/" rel="tag"><i class="fa fa-tag"></i> Crypto</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Study-Cipher-Stream/" rel="prev" title="密码学 从入门到放弃 序列密码">
+                  <i class="fa fa-chevron-left"></i> 密码学 从入门到放弃 序列密码
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Study-Cipher-Block/" rel="next" title="密码学 从入门到放弃 分组密码">
+                  密码学 从入门到放弃 分组密码 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs-container">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟NaN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"Cz7uQCDoGwWYGv80HeDq40mZr1rrmYy9tHhCpcWG95DFzOD1TJKLXtbTxFqWBCr5","shortname":"southseast","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

